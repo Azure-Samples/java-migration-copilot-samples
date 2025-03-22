@@ -34,5 +34,4 @@ cd "$PROJECT_ROOT/worker" && "$PROJECT_ROOT/mvnw" spring-boot:run -Dspring-boot.
 
 echo "All services started! Check logs directory for output."
 echo "Web application: http://localhost:8080"
-echo "Worker application: http://localhost:8081"
 echo "RabbitMQ Management: http://localhost:15672 (guest/guest)"
