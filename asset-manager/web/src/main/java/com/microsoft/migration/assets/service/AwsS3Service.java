@@ -35,7 +35,7 @@ public class AwsS3Service implements StorageService {
     private final ServiceBusTemplate serviceBusTemplate;
     private final ImageMetadataRepository imageMetadataRepository;
 
-    @Value("${{azure.storage.blob.container-name}")
+    @Value("${azure.storage.blob.container-name}")
     private String containerName;
 
     @Override
