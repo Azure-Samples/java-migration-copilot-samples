@@ -2,23 +2,16 @@
 setlocal enabledelayedexpansion
 
 rem Azure Resources Cleanup Script for Assets Manager
-rem Execute with: cleanup-azure-resources.cmd -ResourceGroupName "my-rg" -Prefix "myapp"
+rem Execute with: .\scripts\cleanup-azure-resources.cmd -ResourceGroupName "my-rg"
 
 rem Default parameters
 set ResourceGroupName=assets-manager-rg
-set Prefix=assetsapp
 
 rem Parse command line arguments
 :parse_args
 if "%~1"=="" goto :end_parse_args
 if /i "%~1"=="-ResourceGroupName" (
     set ResourceGroupName=%~2
-    shift
-    shift
-    goto :parse_args
-)
-if /i "%~1"=="-Prefix" (
-    set Prefix=%~2
     shift
     shift
     goto :parse_args

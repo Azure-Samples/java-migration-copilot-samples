@@ -1,23 +1,17 @@
 #!/bin/bash
 
 # Azure Resources Cleanup Script for Assets Manager
-# Execute with: ./cleanup-azure-resources.sh -r "my-rg" -p "myapp"
+# Execute with: ./scripts/cleanup-azure-resources.sh -ResourceGroupName "my-rg"
 
 # Default parameters
 RESOURCE_GROUP_NAME="assets-manager-rg"
-PREFIX="assetsapp"
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
   key="$1"
   case $key in
-    -r|--resource-group)
+    -ResourceGroupName)
       RESOURCE_GROUP_NAME="$2"
-      shift
-      shift
-      ;;
-    -p|--prefix)
-      PREFIX="$2"
       shift
       shift
       ;;
