@@ -57,11 +57,6 @@ if ! command -v az &> /dev/null; then
     echo "Azure CLI not found. Please install it: https://docs.microsoft.com/cli/azure/install-azure-cli"
     exit 1
 fi
-
-if ! command -v docker &> /dev/null; then
-    echo "Docker not found. Please install it: https://docs.docker.com/get-docker/"
-    exit 1
-fi
 echo "Prerequisites satisfied."
 
 echo "Please ensure you are logged into Azure before running this script."
@@ -280,43 +275,22 @@ if [ $? -ne 0 ]; then
 fi
 echo "Web and worker modules built."
 
-# Build and push Docker images to ACR
-echo "Building and pushing Docker images to ACR..."
-
 # Web module
-echo "Building web Docker image..."
-docker build -t "${AcrLoginServer}/${WebAppName}:latest" --file ./web/Dockerfile ./web
+echo "Building web Docker image in ACR..."
+az acr build -t "${WebAppName}:latest" -r $AcrName --file ./web/Dockerfile ./web
 if [ $? -ne 0 ]; then
-    echo "Failed to build Web Docker image. Exiting."
+    echo "Failed to build Web Docker image in ACR. Exiting."
     exit 1
 fi
+echo "Web Docker image built and pushed to ACR."
 # Worker module
-echo "Building worker Docker image..."
-docker build -t "${AcrLoginServer}/${WorkerAppName}:latest" --file ./worker/Dockerfile ./worker
+echo "Building worker Docker image in ACR..."
+az acr build -t "${WorkerAppName}:latest" -r $AcrName --file ./worker/Dockerfile ./worker
 if [ $? -ne 0 ]; then
-    echo "Failed to build Worker Docker image. Exiting."
+    echo "Failed to build Worker Docker image in ACR. Exiting."
     exit 1
 fi
-az acr login --name "$AcrName"
-if [ $? -ne 0 ]; then
-    echo "Failed to log in to ACR. Exiting."
-    exit 1
-fi
-echo "Logged in to ACR."
-echo "Pushing web Docker image to ACR..."
-docker push "${AcrLoginServer}/${WebAppName}:latest"
-if [ $? -ne 0 ]; then
-    echo "Failed to push Web Docker image to ACR. Exiting."
-    exit 1
-fi
-echo "Web Docker image pushed to ACR."
-echo "Pushing worker Docker image to ACR..."
-docker push "${AcrLoginServer}/${WorkerAppName}:latest"
-if [ $? -ne 0 ]; then
-    echo "Failed to push Worker Docker image to ACR. Exiting."
-    exit 1
-fi
-echo "Worker Docker image pushed to ACR."
+echo "Worker Docker image built and pushed to ACR."
 
 # Create Container Apps with user-assigned managed identity for web module
 echo "Creating Container App for web module..."

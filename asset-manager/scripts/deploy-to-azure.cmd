@@ -63,12 +63,6 @@ if %ERRORLEVEL% neq 0 (
     echo Azure CLI not found. Please install it: https://docs.microsoft.com/cli/azure/install-azure-cli
     exit /b 1
 )
-
-where docker >nul 2>&1
-if %ERRORLEVEL% neq 0 (
-    echo Docker not found. Please install it: https://docs.docker.com/get-docker/
-    exit /b 1
-)
 echo Prerequisites satisfied.
 
 echo Please ensure you are logged into Azure before running this script.
@@ -299,43 +293,22 @@ if %ERRORLEVEL% neq 0 (
 )
 echo Web and worker modules built.
 
-rem Build and push Docker images to ACR
-echo Building and pushing Docker images to ACR...
-
 rem Web module
-echo Building web Docker image...
-docker build -t !AcrLoginServer!/%WebAppName%:latest --file .\web\Dockerfile .\web
+echo Building web Docker image in ACR...
+cmd /c az acr build -t %WebAppName%:latest -r %AcrName% --file .\web\Dockerfile .\web
 if %ERRORLEVEL% neq 0 (
-    echo Failed to build Web Docker image. Exiting.
+    echo Failed to build Web Docker image in ACR. Exiting.
     exit /b 1
 )
+echo Web Docker image built and pushed to ACR.
 rem Worker module
-echo Building worker Docker image...
-docker build -t !AcrLoginServer!/%WorkerAppName%:latest --file .\worker\Dockerfile .\worker
+echo Building worker Docker image in ACR...
+cmd /c az acr build -t %WorkerAppName%:latest -r %AcrName% --file .\worker\Dockerfile .\worker
 if %ERRORLEVEL% neq 0 (
-    echo Failed to build Worker Docker image. Exiting.
+    echo Failed to build Worker Docker image in ACR. Exiting.
     exit /b 1
 )
-cmd /c az acr login --name %AcrName%
-if %ERRORLEVEL% neq 0 (
-    echo Failed to log in to ACR. Exiting.
-    exit /b 1
-)
-echo Logged in to ACR.
-echo Pushing web Docker image to ACR...
-docker push !AcrLoginServer!/%WebAppName%:latest
-if %ERRORLEVEL% neq 0 (
-    echo Failed to push Web Docker image to ACR. Exiting.
-    exit /b 1
-)
-echo Web Docker image pushed to ACR.
-echo Pushing worker Docker image to ACR...
-docker push !AcrLoginServer!/%WorkerAppName%:latest
-if %ERRORLEVEL% neq 0 (
-    echo Failed to push Worker Docker image to ACR. Exiting.
-    exit /b 1
-)
-echo Worker Docker image pushed to ACR.
+echo Worker Docker image built and pushed to ACR.
 
 rem Create Container Apps with user-assigned managed identities
 echo Creating Container App for web module...
