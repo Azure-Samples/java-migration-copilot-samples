@@ -210,7 +210,24 @@ Linux:
 scripts/deploy-to-azure.sh -ResourceGroupName <your resource group name> -Location <your resource group location, e.g., eastus2> -Prefix <your unique resource prefix>
 ```
 
-To clean up, run `cleanup-azure-resources.cmd` or `cleanup-azure-resources.sh` in the `scripts` directory.
+To clean up, run `scripts\cleanup-azure-resources.cmd -ResourceGroupName <your resource group name>` or `scripts/cleanup-azure-resources.sh -ResourceGroupName <your resource group name>` for Windows and Linux, respectively.
+
+### Use GitHub Codespaces for Deployment
+
+The deployment scripts can also be executed in GitHub Codespaces, which pre-installs the necessary dependencies. Follow the steps below to deploy the apps to Azure using GitHub Codespaces:
+
+1. Open the repository in GitHub Codespaces by selecting on the **Code** button, selecting **Codespaces** tab, openining the existing codespace or selecting **Create codespace** for the target branch.
+1. The codespace will automatically open in the browser. Wait until it is ready.
+1. Navigate to the terminal in the codespace and run `az login` to sign in to Azure. Follow the instructions to complete the sign-in process.
+1. At the last step of the sign-in process, you will be asked to select a subscription and tenant. Select the appropriate subscription and tenant.
+1. Run the following commands in the terminal to deploy the apps to Azure:
+
+   ```bash
+   cd asset-manager && git pull
+   scripts/deploy-to-azure.sh -ResourceGroupName <your resource group name> -Location <your resource group location, e.g., eastus2> -Prefix <your unique resource prefix>
+   ```
+
+1. To clean up, run `scripts\cleanup-azure-resources.cmd -ResourceGroupName <your resource group name>` or `scripts/cleanup-azure-resources.sh -ResourceGroupName <your resource group name>` for Windows and Linux, respectively.
 
 ## Java Migration Copilot Workshop
 
