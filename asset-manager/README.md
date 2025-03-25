@@ -239,7 +239,7 @@ cd java-migration-copilot-samples/asset-manager
 git checkout workshop
 ```
 
-Compared to the `main` branch, the `workshop` branch has additional comments that have already migrated the code for **Web Application** with custom code remediation, including:
+Compared to the `main` branch, the `workshop` branch has additional commits that have already migrated the code for **Web Application** with custom code remediation, including:
 * Azure Blob Storage for image storage, using managed identity authentication
 * Azure Service Bus for message queuing, using managed identity authentication
 
