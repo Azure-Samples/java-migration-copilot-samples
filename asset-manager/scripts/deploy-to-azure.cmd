@@ -163,6 +163,35 @@ if %ERRORLEVEL% neq 0 (
 )
 echo Blob container created.
 
+rem Create Azure Container Registry
+echo Creating Azure Container Registry...
+cmd /c az acr create --resource-group %ResourceGroupName% --name %AcrName% --sku Basic
+if %ERRORLEVEL% neq 0 (
+    echo Failed to create Azure Container Registry. Exiting.
+    exit /b 1
+)
+echo ACR created.
+for /f "tokens=*" %%i in ('az acr show --name %AcrName% --resource-group %ResourceGroupName% --query loginServer -o tsv') do (
+  set AcrLoginServer=%%i
+)
+if not defined AcrLoginServer (
+    echo Failed to get ACR login server. Exiting.
+    exit /b 1
+)
+echo Using ACR login server: !AcrLoginServer!
+
+rem Create Container Apps environment
+echo Creating Container Apps environment...
+cmd /c az containerapp env create ^
+  --resource-group %ResourceGroupName% ^
+  --name %EnvironmentName% ^
+  --location %Location%
+if %ERRORLEVEL% neq 0 (
+    echo Failed to create Container Apps environment. Exiting.
+    exit /b 1
+)
+echo Container Apps environment created.
+
 rem Create managed identity for web and worker apps
 echo Creating managed identity...
 cmd /c az identity create ^
@@ -227,34 +256,17 @@ if %ERRORLEVEL% neq 0 (
 )
 echo Service Bus Data Owner role assigned.
 
-rem Create Azure Container Registry
-echo Creating Azure Container Registry...
-cmd /c az acr create --resource-group %ResourceGroupName% --name %AcrName% --sku Basic
+rem AcrPull role for accessing ACR
+cmd /c az role assignment create ^
+  --assignee-object-id !IdentityPrincipalId! ^
+  --assignee-principal-type ServicePrincipal ^
+  --role "acrpull" ^
+  --scope "/subscriptions/!SubscriptionId!/resourceGroups/%ResourceGroupName%/providers/Microsoft.ContainerRegistry/registries/%AcrName%"
 if %ERRORLEVEL% neq 0 (
-    echo Failed to create Azure Container Registry. Exiting.
+    echo Failed to assign AcrPull role to identity. Exiting.
     exit /b 1
 )
-echo ACR created.
-for /f "tokens=*" %%i in ('az acr show --name %AcrName% --resource-group %ResourceGroupName% --query loginServer -o tsv') do (
-  set AcrLoginServer=%%i
-)
-if not defined AcrLoginServer (
-    echo Failed to get ACR login server. Exiting.
-    exit /b 1
-)
-echo Using ACR login server: !AcrLoginServer!
-
-rem Create Container Apps environment
-echo Creating Container Apps environment...
-cmd /c az containerapp env create ^
-  --resource-group %ResourceGroupName% ^
-  --name %EnvironmentName% ^
-  --location %Location%
-if %ERRORLEVEL% neq 0 (
-    echo Failed to create Container Apps environment. Exiting.
-    exit /b 1
-)
-echo Container Apps environment created.
+echo AcrPull role assigned.
 
 rem Create Dockerfiles for both modules
 echo Creating Dockerfile for web module...

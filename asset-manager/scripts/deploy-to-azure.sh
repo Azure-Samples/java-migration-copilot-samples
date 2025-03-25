@@ -153,6 +153,33 @@ if [ $? -ne 0 ]; then
 fi
 echo "Blob container created."
 
+# Create Azure Container Registry
+echo "Creating Azure Container Registry..."
+az acr create --resource-group "$ResourceGroupName" --name "$AcrName" --sku Basic
+if [ $? -ne 0 ]; then
+    echo "Failed to create Azure Container Registry. Exiting."
+    exit 1
+fi
+echo "ACR created."
+AcrLoginServer=$(az acr show --name "$AcrName" --resource-group "$ResourceGroupName" --query loginServer -o tsv)
+if [ -z "$AcrLoginServer" ]; then
+    echo "Failed to get ACR login server. Exiting."
+    exit 1
+fi
+echo "Using ACR login server: $AcrLoginServer"
+
+# Create Container Apps environment
+echo "Creating Container Apps environment..."
+az containerapp env create \
+  --resource-group "$ResourceGroupName" \
+  --name "$EnvironmentName" \
+  --location "$Location"
+if [ $? -ne 0 ]; then
+    echo "Failed to create Container Apps environment. Exiting."
+    exit 1
+fi
+echo "Container Apps environment created."
+
 # Create managed identity for web and worker apps
 echo "Creating managed identity..."
 az identity create \
@@ -211,32 +238,18 @@ if [ $? -ne 0 ]; then
 fi
 echo "Service Bus Data Owner role assigned."
 
-# Create Azure Container Registry
-echo "Creating Azure Container Registry..."
-az acr create --resource-group "$ResourceGroupName" --name "$AcrName" --sku Basic
+# Assign AcrPull role to the managed identity
+echo "Assigning AcrPull role to managed identity..."
+az role assignment create \
+  --assignee-object-id "$IdentityPrincipalId" \
+  --assignee-principal-type ServicePrincipal \
+  --role "acrpull" \
+  --scope "/subscriptions/${SubscriptionId}/resourceGroups/${ResourceGroupName}/providers/Microsoft.ContainerRegistry/registries/${AcrName}"
 if [ $? -ne 0 ]; then
-    echo "Failed to create Azure Container Registry. Exiting."
+    echo "Failed to assign AcrPull role to identity. Exiting."
     exit 1
 fi
-echo "ACR created."
-AcrLoginServer=$(az acr show --name "$AcrName" --resource-group "$ResourceGroupName" --query loginServer -o tsv)
-if [ -z "$AcrLoginServer" ]; then
-    echo "Failed to get ACR login server. Exiting."
-    exit 1
-fi
-echo "Using ACR login server: $AcrLoginServer"
-
-# Create Container Apps environment
-echo "Creating Container Apps environment..."
-az containerapp env create \
-  --resource-group "$ResourceGroupName" \
-  --name "$EnvironmentName" \
-  --location "$Location"
-if [ $? -ne 0 ]; then
-    echo "Failed to create Container Apps environment. Exiting."
-    exit 1
-fi
-echo "Container Apps environment created."
+echo "AcrPull role assigned."
 
 # Create Dockerfiles for both modules
 echo "Creating Dockerfile for web module..."
