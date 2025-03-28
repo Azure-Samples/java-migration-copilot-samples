@@ -34,8 +34,9 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 
 1. Open Java Migration Copilot tool in VSCode. It consists of Assessment and Prompts features currently.
 1. Select **Assess**, wait for the assessment to complete, and review the assessment report.
-   > [!NOTE]
-   > If you are asked to allow the tool access the language models provided by GitHub Copilot Chat, slect **Allow** to proceed.
+
+   > **NOTE**: If you are asked to allow the tool access the language models provided by GitHub Copilot Chat, slect **Allow** to proceed.
+
 1. Select **Propose Solution** to view the proposed solutions for the issues identified in the assessment report, for example, **Migrate from AWS S3 to Azure Blob Storage**, **Migrate from Spring AMQP RabbitMQ to Azure Service Bus** and **Use Azure Database for PostgreSQL**.
 1. For this workshop, deselect all solutions and select **Use Azure Database for PostgreSQL**, then select **Confirm the Solution**.
 1. Review the solution details and select **Migrate** to initiate the migration process.
