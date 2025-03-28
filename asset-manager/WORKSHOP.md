@@ -16,6 +16,7 @@ To successfully complete this workshop, you need the following:
 - [GitHub Copilot extension in VSCode](https://code.visualstudio.com/docs/copilot/overview): The latest version is recommended.
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/): Required for the Assessment feature and running the initial application locally.
 - [JDK 21](https://learn.microsoft.com/en-us/java/openjdk/download#openjdk-21): Required for the code remediation feature and running the initial application locally.
+- [Maven 3.9.9](https://maven.apache.org/install.html): Required for the code remediation feature.
 - [Azure subscription](https://azure.microsoft.com/free/): Required to deploy the migrated application to Azure.
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli): Required if you deploy the migrated application to Azure locally. The latest version is recommended.
 - Fork the [GitHub repository](https://github.com/Azure-Samples/java-migration-copilot-samples) that contains the sample Java application, and clone it to your local machine. Open the `asset-manager` folder in VSCode and checkout the `workshop` branch.
