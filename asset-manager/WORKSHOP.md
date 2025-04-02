@@ -33,14 +33,16 @@ Reference the doc **Getting Started.docx** for how to use the Java Migration Cop
 
 The first step is to assess the sample Java application `asset-manager`. The assessment provides insights into the application's readiness for migration to Azure.
 
-1. Open Java Migration Copilot tool in VSCode. It consists of Assessment and Prompts features currently.
-1. Select **Assess**, wait for the assessment to complete, and review the assessment report.
+1. Ensure Docker Desktop is running.
+1. Open the VS code with all the prerequisites installed on the asset manager by changing the directory to the `asset manager` directory and running `code .` in that directory.
+1. Open Java Migration Copilot tool in VSCode. It consists of Assessment and Prompts features currently. As of 2025-04-03, the icon looks like the M365 a copilot icon in one color.
+1. The **Assess** button looks a triangle pointing right. Select **Assess**, wait for the assessment to complete, and review the assessment report.
 
    > **NOTE**: If you are asked to allow the tool access the language models provided by GitHub Copilot Chat, slect **Allow** to proceed.
 
 1. Select **Propose Solution** to view the proposed solutions for the issues identified in the assessment report, for example, **Migrate from AWS S3 to Azure Blob Storage**, **Migrate from Spring AMQP RabbitMQ to Azure Service Bus** and **Use Azure Database for PostgreSQL**.
 1. For this workshop, deselect all solutions and select **Use Azure Database for PostgreSQL**, then select **Confirm the Solution**.
-1. Review the solution details and select **Migrate** to initiate the migration process.
+1. Review the solution details and select **Migrate** to initiate the migration process. **Migrate** is located in the middle pane.
 
 ### Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Prompt
 
@@ -58,7 +60,7 @@ Once you complete this step, suggest opening **Source Control** view to revisit 
 
 Recall that the sample Java application `asset-manager` uses AWS S3 for image storage and Spring AMQP RabbitMQ for message queuing. The `workshop` branch has additional commits that have already migrated the code for **Web Application** with custom code remediation to use Azure Blob Storage and Azure Service Bus, respectively. 
 
-Now, you migrate the **Worker Service** to use Azure Blob Storage and Azure Service Bus as well, by using custom propmt created from existing commits that migrated the **Web Application**.
+Now, you migrate the **Worker Service** to use Azure Blob Storage and Azure Service Bus as well, by using custom prompt created from existing commits that migrated the **Web Application**.
 
 1. Select **Create prompt from source control**, type **migrate web** to search for the commits that migrated the **Web Application**, and you should see two commits listed:
    * migrate web rabbitmq to azure service bus
