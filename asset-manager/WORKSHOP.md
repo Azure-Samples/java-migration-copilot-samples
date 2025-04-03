@@ -48,7 +48,8 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 
 You should see the matched predefined prompts for the selected solution are listed. Follow instructions to start the migration process.
 
-1. Select the predefined prompt that best matches the solution. In the search area, select **OK**.
+1. Select the predefined prompt that best matches the solution. In this workshop, select the one for **Spring** because the sample Java application is a Spring Boot application.
+1. In the search area, select **OK**.
 1. In the **Formulas** pane, on the left, review the migration plan with files proposed to be modified. Disregard files you believe are not necessary to modify. For files you want to modify, do the following for each file:
    - Select the file. It starts to generate the code changes. Wait until the code changes are generated.
    - Review the proposed changes carefully.
@@ -79,7 +80,33 @@ Once you have completed the code changes, you can ask the tool to automatically 
 
 ## Deploy to Azure
 
-At this point, you have successfully migrated the sample Java application `asset-manager` to use Azure Database for PostgreSQL, Azure Blob Storage, and Azure Service Bus. Now, you deploy the migrated application to Azure using the Azure CLI. You can either run the deployment script locally or use the GitHub Codespaces. The recommended approach is to run the deployment script in the GitHub Codespaces, as it provides a ready-to-use environment with all the necessary dependencies.
+At this point, you have successfully migrated the sample Java application `asset-manager` to use Azure Database for PostgreSQL, Azure Blob Storage, and Azure Service Bus. Now, you deploy the migrated application to Azure using the Azure CLI after you identify a working location for your Azure resources.
+
+For example, an Azure Database for PostgreSQL Flexible Server requires a location that supports the service. Follow the instructions below to find a suitable location.
+
+1. Run the following command to list all available locations for your account:
+
+   ```bash
+   az account list-locations -o table
+   ```
+
+1. Try a location from column **Name** in the output. For example, `eastus2` stands for **East US 2**.
+
+1. Run the following command to list all available SKUs in the selected location for Azure Database for PostgreSQL Flexible Server:
+
+   ```bash
+   az postgres flexible-server list-skus --location <your location> -o table
+   ```
+
+1. If you see the output contains the SKU `Standard_B1ms` and the **Tier** is `Burstable`, you can use the location for the deployment. Otherwise, try another location.
+
+   ```text
+   SKU                Tier             VCore    Memory    Max Disk IOPS
+   -----------------  ---------------  -------  --------  ---------------
+   Standard_B1ms      Burstable        1        2 GiB     640e
+   ```
+
+You can either run the deployment script locally or use the GitHub Codespaces. The recommended approach is to run the deployment script in the GitHub Codespaces, as it provides a ready-to-use environment with all the necessary dependencies.
 
 Deploy using GitHub Codespaces:
 1. Commit and push the changes to your forked repository.
