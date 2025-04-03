@@ -50,10 +50,11 @@ You should see the matched predefined prompts for the selected solution are list
 
 1. Select the predefined prompt that best matches the solution. In this workshop, select the one for **Spring** because the sample Java application is a Spring Boot application.
 1. In the search area, select **OK**.
-1. In the **Formulas** pane, on the left, review the migration plan with files proposed to be modified. Disregard files you believe are not necessary to modify. For files you want to modify, do the following for each file:
+1. In the **Apply Formulas** pane, on the left, review the migration plan with files proposed to be modified. Disregard files you believe are not necessary to modify. For files you want to modify, do the following for each file:
    - Select the file. It starts to generate the code changes. Wait until the code changes are generated.
+      Notice that when you select a file in the **Apply formulas** pane, the **Apply formula details** pane is populated with the details of the currently selected file.
    - Review the proposed changes carefully.
-   - In the **Apply Formulas** pane, select the checkmark (the tooltip is **Accept**) to apply the changes if you agree with them.
+   - Hover the mouse over the file in the **Apply Formula details** pane. Select the checkmark (the tooltip is **Accept**) to apply the changes if you agree with them.
 
 Once you complete this step, suggest opening **Source Control** view to revisit the changes, and stage changes if you are satisfied with them.
 
@@ -63,11 +64,11 @@ Recall that the sample Java application `asset-manager` uses AWS S3 for image st
 
 Now, you migrate the **Worker Service** to use Azure Blob Storage and Azure Service Bus as well, by using custom prompt created from existing commits that migrated the **Web Application**.
 
-1. In the **Formulas** section, select **Create formula from source control**. This icon looks like two circles with arrows pointing to the other circle. Type **migrate web** to search for the commits that migrated the **Web Application**, and you should see two commits listed:
+1. Hover the mouse over the **Formulas** section.  Select **Create formula from source control**. This icon looks like two circles with arrows pointing to the other circle. Type **migrate web** to search for the commits that migrated the **Web Application**, and you should see two commits listed:
    * migrate web rabbitmq to azure service bus
    * migrate web s3 to azure blob storage
-1. Select these two commits to create a custom prompt, with all defaults populated including the name and description. 
-1. Select and run the custom prompt you just created, and follow the same steps as the predefined prompt to review and apply the changes.
+1. Select these two commits to create a custom formula, with all defaults populated including the name and description. 
+1. Select and run the custom formula you just created, and follow the same steps as the predefined formula to review and apply the changes.
 
 Once you complete this step, suggest opening **Source Control** view to revisit the changes, and stage changes if you are satisfied with them.
 
