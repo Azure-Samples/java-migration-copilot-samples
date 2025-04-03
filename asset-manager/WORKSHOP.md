@@ -19,7 +19,7 @@ To successfully complete this workshop, you need the following:
 - [Maven 3.9.9](https://maven.apache.org/install.html): Required for the code remediation feature.
 - [Azure subscription](https://azure.microsoft.com/free/): Required to deploy the migrated application to Azure.
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli): Required if you deploy the migrated application to Azure locally. The latest version is recommended.
-- Fork the [GitHub repository](https://github.com/Azure-Samples/java-migration-copilot-samples) that contains the sample Java application, and clone it to your local machine. Open the `asset-manager` folder in VSCode and checkout the `workshop` branch.
+- Fork the [GitHub repository](https://github.com/Azure-Samples/java-migration-copilot-samples) that contains the sample Java application. **MAKE SURE TO UNCHECK THE BOX "Copy the `main` branch only.** Clone it to your local machine. Open the `asset-manager` folder in VSCode and checkout the `workshop` branch.
 
 ## Install Java Migration Copilot Tool
 
@@ -40,7 +40,7 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 
    > **NOTE**: If you are asked to allow the tool access the language models provided by GitHub Copilot Chat, slect **Allow** to proceed.
 
-1. Select **Propose Solution** to view the proposed solutions for the issues identified in the assessment report, for example, **Migrate from AWS S3 to Azure Blob Storage**, **Migrate from Spring AMQP RabbitMQ to Azure Service Bus** and **Use Azure Database for PostgreSQL**.
+1. On the **Summary** pane, scroll to the bottom. Select **Propose Solution** to view the proposed solutions for the issues identified in the assessment report, for example, **Migrate from AWS S3 to Azure Blob Storage**, **Migrate from Spring AMQP RabbitMQ to Azure Service Bus** and **Use Azure Database for PostgreSQL**.
 1. For this workshop, deselect all solutions and select **Use Azure Database for PostgreSQL**, then select **Confirm the Solution**.
 1. Review the solution details and select **Migrate** to initiate the migration process. **Migrate** is located in the middle pane.
 
@@ -48,11 +48,11 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 
 You should see the matched predefined prompts for the selected solution are listed. Follow instructions to start the migration process.
 
-1. Select the predefined prompt that best matches the solution, and confirm the prompt to run.
-1. Review the migration plan with files proposed to be modified. Disregard files you believe are not necessary to modify. For files you want to modify, do the following for each file:
+1. Select the predefined prompt that best matches the solution. In the search area, select **OK**.
+1. In the **Formulas** pane, on the left, review the migration plan with files proposed to be modified. Disregard files you believe are not necessary to modify. For files you want to modify, do the following for each file:
    - Select the file. It starts to generate the code changes. Wait until the code changes are generated.
    - Review the proposed changes carefully.
-   - Select **Accept** to apply the changes if you agree with them.
+   - In the **Apply Formulas** pane, select the checkmark (the tooltip is **Accept**) to apply the changes if you agree with them.
 
 Once you complete this step, suggest opening **Source Control** view to revisit the changes, and stage changes if you are satisfied with them.
 
@@ -62,7 +62,7 @@ Recall that the sample Java application `asset-manager` uses AWS S3 for image st
 
 Now, you migrate the **Worker Service** to use Azure Blob Storage and Azure Service Bus as well, by using custom prompt created from existing commits that migrated the **Web Application**.
 
-1. Select **Create prompt from source control**, type **migrate web** to search for the commits that migrated the **Web Application**, and you should see two commits listed:
+1. In the **Formulas** section, select **Create formula from source control**. This icon looks like two circles with arrows pointing to the other circle. Type **migrate web** to search for the commits that migrated the **Web Application**, and you should see two commits listed:
    * migrate web rabbitmq to azure service bus
    * migrate web s3 to azure blob storage
 1. Select these two commits to create a custom prompt, with all defaults populated including the name and description. 
