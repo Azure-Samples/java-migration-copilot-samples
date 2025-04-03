@@ -3,6 +3,7 @@ package com.microsoft.migration.assets.service;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.microsoft.migration.assets.model.ImageMetadata;
@@ -65,9 +66,10 @@ public class AwsS3Service implements StorageService {
     public void uploadObject(MultipartFile file) throws IOException {
         String key = generateKey(file.getOriginalFilename());
 
-        blobServiceClient.getBlobContainerClient(containerName)
-                .getBlobClient(key)
-                .upload(file.getInputStream(), file.getSize(), true);
+        var blobClient = blobServiceClient.getBlobContainerClient(containerName).getBlobClient(key);
+        BlobHttpHeaders headers = new BlobHttpHeaders().setContentType(file.getContentType());
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(file.getInputStream()).setHeaders(headers);
+        blobClient.uploadWithResponse(options, null, null);
 
         // Send message to queue for thumbnail generation
         ImageProcessingMessage message = new ImageProcessingMessage(
