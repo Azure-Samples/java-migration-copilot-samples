@@ -69,7 +69,7 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 
 The Application `asset-manager` used AWS S3 for image storage and Spring AMQP with RabbitMQ for message queuing. We have already migrated the code of **Web** module to use Azure Blob Storage and Azure Service Bus. These changes are recorded in two separate commits in the `workshop` branch.
 
-The following steps will demonstrate how to generate custom formulas based on those existing commits. Then, you will migrate **Worker** module to use Azure Blob Storage and Azure Service Bus as well, using the created custom formulas.
+The following steps demonstrate how to generate custom formulas based on those existing commits. Then, you can migrate **Worker** module to use Azure Blob Storage and Azure Service Bus as well, using the created custom formulas.
 
 1. Open the sidebar of `App Modernization for Java`. Hover the mouse over the **Formulas** section.  Select **Create formula from source control**. This icon looks like two circles with arrows pointing to the other circle. 
 ![Create Formula From Source Control](doc-media/create-formula-from-source-control.png)
