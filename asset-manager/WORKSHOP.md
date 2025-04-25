@@ -19,7 +19,7 @@ To successfully complete this workshop, you need the following:
 - [Maven 3.9.9](https://maven.apache.org/install.html): Required for the assessment and code remediation feature.
 - [Azure subscription](https://azure.microsoft.com/free/): Required to deploy the migrated application to Azure.
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli): Required if you deploy the migrated application to Azure locally. The latest version is recommended.
-- Fork the [GitHub repository](https://github.com/Azure-Samples/java-migration-copilot-samples) that contains the sample Java application. Clone it to your local machine. Open the `asset-manager` folder in VSCode and checkout the `workshop` branch.
+- Fork the [GitHub repository](https://github.com/Azure-Samples/java-migration-copilot-samples) that contains the sample Java application. Please ensure to **uncheck** the default selection "Copy the `main` branch only". Clone it to your local machine. Open the `asset-manager` folder in VSCode and checkout the `workshop` branch.
 
 ## Install GitHub Copilot App Modernization for Java (Preview)
 
@@ -52,7 +52,7 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 1. After each step, please manually input "continue" to confirm and proceed.
 1. Wait for the assessment to be completed and the report to be generated.
 1. Review the **Summary** report. Select **Propose Solution** to view the proposed solutions for the issues identified in the summary report.
-1. For this workshop, deselect all solutions and select **Use Azure Database for PostgreSQL** in the Solution report, then select **Confirm Solution**.
+1. For this workshop, deselect all solutions and select **Migrate to Azure Database for PostgreSQL (SDK on Public Cloud)** in the Solution report, then select **Confirm Solution**.
 ![Confirm Solution](doc-media/confirm-postgresql-solution.png)
 1. In the Migrate report, click **Migrate**.
 
@@ -92,7 +92,7 @@ The following steps demonstrate how to generate custom formulas based on those e
 
 ## Deploy to Azure
 
-At this point, you have successfully migrated the sample Java application `asset-manager` to use Azure Database for PostgreSQL, Azure Blob Storage, and Azure Service Bus. Now, you can deploy the migrated application to Azure using the Azure CLI after you identify a working location for your Azure resources.
+At this point, you have successfully migrated the sample Java application `asset-manager` to Migrate to Azure Database for PostgreSQL (SDK on Public Cloud), Azure Blob Storage, and Azure Service Bus. Now, you can deploy the migrated application to Azure using the Azure CLI after you identify a working location for your Azure resources.
 
 For example, an Azure Database for PostgreSQL Flexible Server requires a location that supports the service. Follow the instructions below to find a suitable location.
 
