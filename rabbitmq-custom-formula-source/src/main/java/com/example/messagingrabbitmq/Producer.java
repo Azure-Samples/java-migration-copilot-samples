@@ -1,25 +1,26 @@
 package com.example.messagingrabbitmq;
 
-import org.springframework.amqp.core.Message;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class Producer {
 
     @Autowired
-    private final RabbitTemplate rabbitTemplate;
+    private final ServiceBusTemplate serviceBusTemplate;
 
-    public Producer(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
+    public Producer(ServiceBusTemplate serviceBusTemplate) {
+        this.serviceBusTemplate = serviceBusTemplate;
     }
 
     public void run()  {
         for (int i = 0; i < 10; i++) {
             System.out.println("Sending message..." + i);
             String responseString = "test " + i;
-            rabbitTemplate.convertAndSend(MessagingRabbitmqApplication.queueName, new Message(responseString.getBytes()));
+            serviceBusTemplate.send(MessagingRabbitmqApplication.queueName, MessageBuilder.withPayload(responseString).build());
         }
     }
 }
