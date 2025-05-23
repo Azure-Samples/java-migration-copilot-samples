@@ -15,9 +15,16 @@
   - [Deploy to Azure](#deploy-to-azure)
   - [Clean up](#clean-up)
 
+> [!IMPORTANT]
+> `GitHub Copilot App Modernization for Java` is in preview and is subject to change before becoming generally available.
+
+GitHub Copilot App Modernization for Java (Preview), also referred to as `App Modernization for Java`, assists with app assessment, planning and code remediation. It automates repetitive tasks, boosting developer confidence and speeding up the Azure migration and ongoing optimization.
+
+In this workshop, you learn how to use GitHub Copilot App Modernization for Java (Preview) to assess and migrate a sample Java application `asset-manager` to Azure. For more information about this sample application, see [Asset Manager](README.md).
+
 ## About this Project
 
-This project contains two modules: `web` and `worker`. Both of them contain functions of using storage service and message queue. To demonstrate the migration process, this GitHub repository is mainly composed of 3 different branches:
+This application consists of two sub-modules, **Web** and **Worker**.  Both of them contain functions of using storage service and message queue. To demonstrate the migration process, this GitHub repository is mainly composed of 3 different branches:
 
 - [`source`](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/source/asset-manager) branch: The original project before being migrated to Azure service.
 - [`main`](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager) branch: Only the `web` module is migrated to use Azure service.
@@ -178,14 +185,6 @@ class Queue,RetryQueue queue
 class User user
 ```
 Managed identity based authentication
-
-
-> [!IMPORTANT]
-> `GitHub Copilot App Modernization for Java` is in preview and is subject to change before becoming generally available.
-
-GitHub Copilot App Modernization for Java (Preview), also referred to as `App Modernization for Java`, assists with app assessment, planning and code remediation. It automates repetitive tasks, boosting developer confidence and speeding up the Azure migration and ongoing optimization.
-
-In this workshop, you learn how to use GitHub Copilot App Modernization for Java (Preview) to assess and migrate a sample Java application `asset-manager` to Azure. This application consists of two sub-modules, **Web** and **Worker**. For more information about this sample application, see [Asset Manager](README.md).
 
 ## Prerequisites
 
