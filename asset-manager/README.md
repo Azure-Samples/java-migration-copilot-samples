@@ -1,6 +1,6 @@
 # Asset Manager
 
-This branch is the final migrated state of the asset-manager project, and both `web` and `worker` modules are migrated to Azure:
+This [`expected`](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/expected/asset-manager) branch is the final migrated state of the asset-manager project, and both `web` and `worker` modules are migrated to Azure:
 * Azure Blob Storage for image storage, using managed identity authentication
 * Azure Service Bus for message queuing, using managed identity authentication
 * Azure Database for PostgreSQL for metadata storage, using managed identity authentication
