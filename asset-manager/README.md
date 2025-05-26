@@ -2,7 +2,7 @@
 Sample project for migration tool code remediation that manages assets in cloud storage.
 
 ## Current Infrastructure
-The project currently uses the following infrastructure, in [`main`](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager) branch:
+The project currently uses the following infrastructure, in [`source`](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/source/asset-manager) branch, which is the original project before being migrated to Azure service:
 * AWS S3 for image storage, using password-based authentication (access key/secret key)
 * RabbitMQ for message queuing, using password-based authentication
 * PostgreSQL database for metadata storage, using password-based authentication
@@ -153,12 +153,12 @@ Managed identity based authentication
 
 ## Run Locally
 
-Check out the [`main`](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager) branch to run the current infrastructure locally:
+Check out the [`source`](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/source/asset-manager) branch to run the current infrastructure locally:
 
 ```bash
 git clone https://github.com/Azure-Samples/java-migration-copilot-samples.git
 cd java-migration-copilot-samples/asset-manager
-git checkout main
+git checkout source
 ```
 
 **Prerequisites**: JDK, Docker
@@ -231,15 +231,15 @@ The deployment scripts can also be executed in GitHub Codespaces, which pre-inst
 
 ## Java Migration Copilot Workshop
 
-Check out the [`workshop`](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/asset-manager) branch for Java Migration Copilot workshop:
+Check out the [`main`](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/asset-manager) branch for Java Migration Copilot workshop:
 
 ```bash
 git clone https://github.com/Azure-Samples/java-migration-copilot-samples.git
 cd java-migration-copilot-samples/asset-manager
-git checkout workshop
+git checkout main
 ```
 
-Compared to the `main` branch, the `workshop` branch has additional commits that have already migrated the code for **Web Application** with custom code remediation, including:
+Compared to the `source` branch, the `main` branch has additional commits that have already migrated the code for **Web Application** with custom code remediation, including:
 * Azure Blob Storage for image storage, using managed identity authentication
 * Azure Service Bus for message queuing, using managed identity authentication
 
