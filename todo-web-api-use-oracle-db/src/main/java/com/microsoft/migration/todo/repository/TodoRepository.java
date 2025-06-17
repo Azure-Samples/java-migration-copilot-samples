@@ -15,13 +15,17 @@ public interface TodoRepository extends JpaRepository<TodoItem, Long> {
 
     List<TodoItem> findByPriorityGreaterThanEqual(int priority);
 
-    // Oracle specific SQL with VARCHAR2
-    @Query(value = "SELECT * FROM TODO_ITEMS WHERE TITLE LIKE '%' || :keyword || '%' OR DESCRIPTION LIKE '%' || :keyword || '%'",
+    // Migrated from Oracle to PostgreSQL according to java check item 1: Convert all table and column names from uppercase to lowercase in JPA annotations.
+    // Migrated from Oracle to PostgreSQL according to java check item 6: Use lowercase for identifiers and uppercase for SQL keywords in SQL string literals.
+    // Migrated from Oracle to PostgreSQL according to java check item 9999: Replace Oracle string concatenation with PostgreSQL CONCAT function.
+    @Query(value = "SELECT * FROM todo_items WHERE CONCAT('%', :keyword, '%') ILIKE title OR CONCAT('%', :keyword, '%') ILIKE description",
            nativeQuery = true)
     List<TodoItem> findByKeyword(String keyword);
 
-    // Another Oracle specific query showing off more Oracle SQL features
-    @Query(value = "SELECT * FROM TODO_ITEMS WHERE PRIORITY > :priority AND ROWNUM <= :limit ORDER BY CREATED_AT DESC",
+    // Migrated from Oracle to PostgreSQL according to java check item 1: Convert all table and column names from uppercase to lowercase in JPA annotations.
+    // Migrated from Oracle to PostgreSQL according to java check item 6: Use lowercase for identifiers and uppercase for SQL keywords in SQL string literals.
+    // Migrated from Oracle to PostgreSQL according to java check item 18: Replace ROWNUM pagination with LIMIT/OFFSET in native SQL queries.
+    @Query(value = "SELECT * FROM todo_items WHERE priority > :priority ORDER BY created_at DESC LIMIT :limit",
            nativeQuery = true)
     List<TodoItem> findTopPriorityTasks(int priority, int limit);
 }

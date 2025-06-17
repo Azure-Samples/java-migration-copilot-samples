@@ -30,23 +30,24 @@ public class OracleSqlDemonstrator {
      */
     public List<Map<String, Object>> executeRawOracleQuery(String keyword, int minPriority) {
         String sql = """
+                -- Migrated from Oracle to PostgreSQL according to java check item 1, 3, 4, 6
                 SELECT
-                    ID,
-                    TITLE,
-                    SUBSTR(DESCRIPTION, 1, 50) AS SHORT_DESC,
-                    CASE WHEN LENGTH(DESCRIPTION) > 50 THEN 'Y' ELSE 'N' END AS IS_LONG_DESC,
-                    PRIORITY,
-                    TO_CHAR(DUE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS FORMATTED_DUE_DATE,
-                    ROUND(SYSDATE - CREATED_AT) AS DAYS_SINCE_CREATION
+                    id,
+                    title,
+                    SUBSTRING(description FROM 1 FOR 50) AS short_desc,
+                    CASE WHEN LENGTH(description) > 50 THEN 'Y' ELSE 'N' END AS is_long_desc,
+                    priority,
+                    TO_CHAR(due_date, 'YYYY-MM-DD HH24:MI:SS') AS formatted_due_date,
+                    ROUND(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - created_at)) / 86400) AS days_since_creation
                 FROM
-                    TODO_ITEMS
+                    todo_items
                 WHERE
-                    (UPPER(TITLE) LIKE UPPER('%' || ? || '%') OR
-                     UPPER(DESCRIPTION) LIKE UPPER('%' || ? || '%'))
-                    AND PRIORITY >= ?
+                    (UPPER(title) LIKE UPPER('%' || ? || '%') OR
+                     UPPER(description) LIKE UPPER('%' || ? || '%'))
+                    AND priority >= ?
                 ORDER BY
-                    PRIORITY DESC,
-                    DUE_DATE ASC
+                    priority DESC,
+                    due_date ASC
                 """;
 
         List<Map<String, Object>> results = new ArrayList<>();
@@ -65,61 +66,49 @@ public class OracleSqlDemonstrator {
             // Process results
             while (rs.next()) {
                 Map<String, Object> row = new HashMap<>();
-                row.put("id", rs.getLong("ID"));
-                row.put("title", rs.getString("TITLE"));
-                row.put("shortDescription", rs.getString("SHORT_DESC"));
-                row.put("isLongDescription", "Y".equals(rs.getString("IS_LONG_DESC")));
-                row.put("priority", rs.getInt("PRIORITY"));
-                row.put("formattedDueDate", rs.getString("FORMATTED_DUE_DATE"));
-                row.put("daysSinceCreation", rs.getInt("DAYS_SINCE_CREATION"));
+                row.put("id", rs.getLong("id"));
+                row.put("title", rs.getString("title"));
+                row.put("shortDescription", rs.getString("short_desc"));
+                row.put("isLongDescription", "Y".equals(rs.getString("is_long_desc")));
+                row.put("priority", rs.getInt("priority"));
+                row.put("formattedDueDate", rs.getString("formatted_due_date"));
+                row.put("daysSinceCreation", rs.getInt("days_since_creation"));
                 results.add(row);
             }
 
-            log.info("Executed Oracle-specific SQL query with {} results", results.size());
+            log.info("Executed PostgreSQL-compatible SQL query with {} results", results.size());
             return results;
 
         } catch (SQLException e) {
-            log.error("Error executing Oracle SQL", e);
-            throw new RuntimeException("Failed to execute Oracle SQL query", e);
+            log.error("Error executing PostgreSQL SQL", e);
+            throw new RuntimeException("Failed to execute PostgreSQL SQL query", e);
         }
     }
 
     /**
-     * Demonstrates Oracle-specific database operations
-     * Uses Oracle's VARCHAR2 data type and other Oracle-specific functions
+     * Demonstrates PostgreSQL-specific database operations
+     * Uses PostgreSQL's VARCHAR data type and other PostgreSQL-specific functions
      */
     public void performOracleSpecificOperations() {
-        // Example of creating a temporary table with VARCHAR2
-        String createTempTable = """
-                DECLARE
-                   v_count NUMBER;
-                BEGIN
-                   SELECT COUNT(*) INTO v_count FROM USER_TABLES WHERE TABLE_NAME = 'TEMP_TODO_STATS';
-                   IF v_count > 0 THEN
-                      EXECUTE IMMEDIATE 'DROP TABLE TEMP_TODO_STATS';
-                   END IF;
-
-                   EXECUTE IMMEDIATE 'CREATE TABLE TEMP_TODO_STATS (
-                      CATEGORY VARCHAR2(100),
-                      COUNT_VALUE NUMBER,
-                      LAST_UPDATED TIMESTAMP
-                   )';
-
-                   -- Insert some statistics
-                   EXECUTE IMMEDIATE 'INSERT INTO TEMP_TODO_STATS VALUES (''TOTAL'', (SELECT COUNT(*) FROM TODO_ITEMS), SYSTIMESTAMP)';
-                   EXECUTE IMMEDIATE 'INSERT INTO TEMP_TODO_STATS VALUES (''COMPLETED'', (SELECT COUNT(*) FROM TODO_ITEMS WHERE COMPLETED = 1), SYSTIMESTAMP)';
-                   EXECUTE IMMEDIATE 'INSERT INTO TEMP_TODO_STATS VALUES (''PENDING'', (SELECT COUNT(*) FROM TODO_ITEMS WHERE COMPLETED = 0), SYSTIMESTAMP)';
-                   EXECUTE IMMEDIATE 'INSERT INTO TEMP_TODO_STATS VALUES (''HIGH_PRIORITY'', (SELECT COUNT(*) FROM TODO_ITEMS WHERE PRIORITY >= 8), SYSTIMESTAMP)';
-
-                   COMMIT;
-                END;
-                """;
+        // Migrated from Oracle to PostgreSQL according to java check item 16, 9999
+        // Create temporary table if not exists
+        String dropTable = "DROP TABLE IF EXISTS temp_todo_stats";
+        String createTempTable = "CREATE TABLE temp_todo_stats (category VARCHAR(100), count_value INTEGER, last_updated TIMESTAMP)";
+        String insertTotal = "INSERT INTO temp_todo_stats VALUES ('TOTAL', (SELECT COUNT(*) FROM todo_items), CURRENT_TIMESTAMP)";
+        String insertCompleted = "INSERT INTO temp_todo_stats VALUES ('COMPLETED', (SELECT COUNT(*) FROM todo_items WHERE completed = 1), CURRENT_TIMESTAMP)";
+        String insertPending = "INSERT INTO temp_todo_stats VALUES ('PENDING', (SELECT COUNT(*) FROM todo_items WHERE completed = 0), CURRENT_TIMESTAMP)";
+        String insertHighPriority = "INSERT INTO temp_todo_stats VALUES ('HIGH_PRIORITY', (SELECT COUNT(*) FROM todo_items WHERE priority >= 8), CURRENT_TIMESTAMP)";
 
         try {
+            jdbcTemplate.execute(dropTable);
             jdbcTemplate.execute(createTempTable);
-            log.info("Successfully executed Oracle PL/SQL block to create and populate temporary statistics table");
+            jdbcTemplate.execute(insertTotal);
+            jdbcTemplate.execute(insertCompleted);
+            jdbcTemplate.execute(insertPending);
+            jdbcTemplate.execute(insertHighPriority);
+            log.info("Successfully executed PostgreSQL SQL to create and populate temporary statistics table");
         } catch (Exception e) {
-            log.error("Error executing Oracle PL/SQL block", e);
+            log.error("Error executing PostgreSQL SQL", e);
         }
     }
 }

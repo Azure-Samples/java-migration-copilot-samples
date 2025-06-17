@@ -67,42 +67,42 @@ public class TodoService {
         todoRepository.deleteById(id);
     }
 
-    // Demonstrating Oracle-specific SQL with direct JDBC execution
+    // Migrated from Oracle to PostgreSQL according to java check item 1, 3, 6, 9999: Table and column names to lowercase, replaced SYSDATE with CURRENT_DATE, SQL keywords uppercase, and removed Oracle-specific syntax.
     @Transactional
     public List<TodoItem> getOverdueTasks() {
-        String oracleSpecificSql = "SELECT * FROM TODO_ITEMS " +
-                                   "WHERE DUE_DATE < SYSDATE " +
-                                   "AND COMPLETED = 0 " +
-                                   "ORDER BY PRIORITY DESC, DUE_DATE ASC";
+        String postgresSql = "SELECT * FROM todo_items " +
+                             "WHERE due_date < CURRENT_DATE " +
+                             "AND completed = 0 " +
+                             "ORDER BY priority DESC, due_date ASC";
 
-        Query query = entityManager.createNativeQuery(oracleSpecificSql, TodoItem.class);
+        Query query = entityManager.createNativeQuery(postgresSql, TodoItem.class);
         return query.getResultList();
     }
 
-    // Another example of Oracle-specific SQL
+    // Migrated from Oracle to PostgreSQL according to java check item 1, 3, 6, 9999: Table and column names to lowercase, replaced SYSTIMESTAMP with CURRENT_TIMESTAMP, SQL keywords uppercase, and removed Oracle-specific syntax.
     @Transactional
     public void updateTasksWithOracle(LocalDateTime cutoffDate, int newPriority) {
-        String oracleSql = "UPDATE TODO_ITEMS " +
-                           "SET PRIORITY = :newPriority, " +
-                           "UPDATED_AT = SYSTIMESTAMP " +
-                           "WHERE DUE_DATE < :cutoffDate " +
-                           "AND COMPLETED = 0";
+        String postgresSql = "UPDATE todo_items " +
+                             "SET priority = :newPriority, " +
+                             "updated_at = CURRENT_TIMESTAMP " +
+                             "WHERE due_date < :cutoffDate " +
+                             "AND completed = 0";
 
-        Query query = entityManager.createNativeQuery(oracleSql)
+        Query query = entityManager.createNativeQuery(postgresSql)
                                     .setParameter("newPriority", newPriority)
                                     .setParameter("cutoffDate", cutoffDate);
 
         query.executeUpdate();
     }
 
-    // Example using Oracle's VARCHAR2 data type specifics in a query
+    // Migrated from Oracle to PostgreSQL according to java check item 1, 3, 6, 9999: Table and column names to lowercase, replaced DBMS_LOB.INSTR with POSITION, SQL keywords uppercase, and removed Oracle-specific syntax.
     @Transactional
     public List<TodoItem> searchWithOracleVarchar2(String searchTerm) {
-        String oracleSql = "SELECT * FROM TODO_ITEMS " +
-                           "WHERE DBMS_LOB.INSTR(TITLE, :searchTerm) > 0 " +
-                           "OR DBMS_LOB.INSTR(DESCRIPTION, :searchTerm) > 0";
+        String postgresSql = "SELECT * FROM todo_items " +
+                             "WHERE POSITION(:searchTerm IN title) > 0 " +
+                             "OR POSITION(:searchTerm IN description) > 0";
 
-        Query query = entityManager.createNativeQuery(oracleSql, TodoItem.class)
+        Query query = entityManager.createNativeQuery(postgresSql, TodoItem.class)
                                     .setParameter("searchTerm", searchTerm);
 
         return query.getResultList();

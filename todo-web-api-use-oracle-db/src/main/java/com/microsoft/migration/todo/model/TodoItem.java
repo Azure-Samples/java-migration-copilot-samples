@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "TODO_ITEMS")
+// Migrated from Oracle to PostgreSQL according to java check item 1: Convert all table and column names from uppercase to lowercase in JPA annotations.
+@Table(name = "todo_items")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,28 +17,28 @@ public class TodoItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "TITLE", nullable = false, length = 200)
+    @Column(name = "title", nullable = false, length = 200)
     private String title;
 
-    @Column(name = "DESCRIPTION", length = 4000)
+    @Column(name = "description", length = 4000)
     private String description;
 
-    @Column(name = "COMPLETED")
+    @Column(name = "completed")
     private boolean completed;
 
-    @Column(name = "PRIORITY")
+    @Column(name = "priority")
     private int priority;
 
-    @Column(name = "DUE_DATE")
+    @Column(name = "due_date")
     private LocalDateTime dueDate;
 
-    @Column(name = "CREATED_AT", nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "UPDATED_AT")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @PrePersist

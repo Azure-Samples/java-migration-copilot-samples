@@ -31,10 +31,11 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- Oracle Database Driver -->
+        <!-- Migrated from Oracle to PostgreSQL according to Build file check item 1: Replace Oracle JDBC driver with PostgreSQL driver dependency. -->
         <dependency>
-            <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc11</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.7</version>
             <scope>runtime</scope>
         </dependency>
 

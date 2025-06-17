@@ -1,11 +1,11 @@
 spring:
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521/XEPDB1
-    username: system
-    password: oracle
-    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:postgresql://localhost:5432/postgres  # Migrated from Oracle to PostgreSQL according to property check item 1: Change JDBC URL from Oracle to PostgreSQL.
+    username: ${POSTGRES_USERNAME}  # Migrated from Oracle to PostgreSQL according to property check item 5: Change username and password to environment variable placeholder.
+    password: ${POSTGRES_PASSWORD}  # Migrated from Oracle to PostgreSQL according to property check item 5: Change username and password to environment variable placeholder.
+    driver-class-name: org.postgresql.Driver  # Migrated from Oracle to PostgreSQL according to property check item 2: Replace Oracle JDBC driver class with PostgreSQL driver class.
   jpa:
-    database-platform: org.hibernate.dialect.OracleDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect  # Migrated from Oracle to PostgreSQL according to property check item 3: Change Hibernate dialect from Oracle to PostgreSQL.
     hibernate:
       ddl-auto: none  # We're using schema.sql for schema definition
     # show-sql: true
@@ -15,7 +15,7 @@ spring:
   sql:
     init:
       mode: always  # Run schema.sql and data.sql on startup
-      platform: oracle
+      platform: postgresql  # Migrated from Oracle to PostgreSQL according to property check item 9999: Migrate all other Oracle-specific content to PostgreSQL.
       continue-on-error: true  # Set to true to continue despite errors
       schema-locations: classpath:schema.sql
       data-locations: classpath:data.sql
