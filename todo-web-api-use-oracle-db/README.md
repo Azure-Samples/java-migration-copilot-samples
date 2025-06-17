@@ -117,3 +117,24 @@ This sample demonstrates several Oracle-specific features:
 4. Oracle-specific SQL syntax (ROWNUM)
 5. PL/SQL blocks for complex operations
 
+## Migrate form Oracle DB to PostgreSQL
+
+## Migration Prerequisites
+
+- [Visual Studio Code](https://code.visualstudio.com/download)
+- [VS Code extension: GitHub Copilot app modernization for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.migrate-java-to-azure)
+
+## Migration Steps
+
+1. Open current sample in Visual Studio Code.
+1. Click `GitHub Copilot app modernization for Java`.
+   > ![click-extension](./images/click-extension.png)
+1. Find `Oracle to PostgreSQL`.
+1. Click `Run formula`.
+   > ![click-run-formula](./images/click-run-formula.png)
+1. GitHub Copilot makes a plan for migrating this sample.
+   > ![list-the-steps](./images/list-the-steps.png)
+1. Click `Confirm` or `Continue` in the GitHub Copilot chat window if necessary, until the whole migration process finishes.
+1. If everything goes well, it will finish migration work and give a summary file.
+1. Click `keep` to save the changes.
+   > ![click-keep-to-save-changes](./images/click-keep-to-save-changes.png)
