@@ -67,6 +67,27 @@ The application will automatically:
 3. Insert sample data using the data.sql file (via Spring Boot's automatic data initialization)
 4. Start the web server on port 8080
 
+### 4. Access Sample Requests
+
+### Get All Todos
+
+```bash
+curl -X GET http://localhost:8080/api/todos
+```
+
+### Create a Todo Item
+
+```bash
+curl -X POST http://localhost:8080/api/todos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Learn Oracle Database",
+    "description": "Study Oracle-specific features and SQL syntax",
+    "priority": 7,
+    "dueDate": "2023-12-31T23:59:59"
+  }'
+```
+
 ## API Endpoints
 
 | Method | URL                                | Description                                    |
@@ -85,27 +106,6 @@ The application will automatically:
 | GET    | /api/todos/oracle-search?term=demo | Search using Oracle-specific functions         |
 | GET    | /api/todos/oracle-demo             | Demonstrate Oracle-specific query features     |
 | POST   | /api/todos/run-oracle-operations   | Run Oracle-specific database operations        |
-
-## Sample Requests
-
-### Create a Todo Item
-
-```bash
-curl -X POST http://localhost:8080/api/todos \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Learn Oracle Database",
-    "description": "Study Oracle-specific features and SQL syntax",
-    "priority": 7,
-    "dueDate": "2023-12-31T23:59:59"
-  }'
-```
-
-### Get All Todos
-
-```bash
-curl -X GET http://localhost:8080/api/todos
-```
 
 ## Oracle-Specific Features
 
