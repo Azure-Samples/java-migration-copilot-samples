@@ -1,9 +1,8 @@
 # Todo Web API with Oracle Database
 
-This sample application demonstrates a Spring Boot REST API for managing Todo items using an Oracle database with JPA. The application showcases Oracle-specific SQL features and data types such as VARCHAR2.
+This application is developed using Spring Boot REST APIs to manage Todo items with an Oracle database integrated through JPA. It leverages Oracle-specific SQL features and data types, for instance, VARCHAR2. The goal is to migrate this application to utilize Azure Database for PostgreSQL.
 
-## Features
-
+The app uses:
 - CRUD operations for Todo items
 - Spring Data JPA with Oracle database
 - Custom SQL queries using Oracle-specific features
@@ -81,10 +80,10 @@ curl -X GET http://localhost:8080/api/todos
 curl -X POST http://localhost:8080/api/todos \
   -H "Content-Type: application/json" \
   -d '{
-    "title": "Learn Oracle Database",
-    "description": "Study Oracle-specific features and SQL syntax",
-    "priority": 7,
-    "dueDate": "2023-12-31T23:59:59"
+    "title": "Learn GitHub Copilot App Modernzation for Java",
+    "description": "Get started today https://aka.ms/AM4Jgetstarted",
+    "priority": 1,
+    "dueDate": "2025-6-18T23:59:59"
   }'
 ```
 
@@ -109,7 +108,7 @@ curl -X POST http://localhost:8080/api/todos \
 
 ## Oracle-Specific Features
 
-This sample demonstrates several Oracle-specific features:
+This sample uses several Oracle-specific features:
 
 1. Oracle data types (VARCHAR2)
 2. Oracle date functions (SYSDATE, SYSTIMESTAMP)
