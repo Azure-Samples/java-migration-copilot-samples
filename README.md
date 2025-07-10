@@ -7,6 +7,9 @@
 - [rabbitmq-sender](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/rabbitmq-sender) : Getting started sample application that sends messages to a RabbitMQ message broker. Demonstrate creating and applying your own custom migration formulas.
 
 - [asset manager](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager) : This is a complete workshop with an end-to-end scenario that migrates an app to Azure using predefined and custom formulas. After the migration, the app will run on Azure Container Apps and interact with Auzure Blob, Azure Service Bus and Azure Database for PostgreSQL.
+
+-[Todo Web API with Oracle Database](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/todo-web-api-use-oracle-db) A To-do application using Oracle database for storage. It leverages Oracle-specific SQL features and data types, for instance, VARCHAR2. This sample migrates the application to use Azure Database for PostgreSQL instead.
+  
 ## Branches
 
 * `main`: source projects
