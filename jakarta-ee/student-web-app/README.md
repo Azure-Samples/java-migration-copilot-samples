@@ -53,7 +53,7 @@ Now you can convert the Ant project to Maven project.
 
 1. After the migration is complete, select **Keep** for changed files.
 
-## Assess and detect the legacy Java EE and Spring Framework project
+## Assess and Detect the Legacy Java EE and Spring Framework Project
 
 Please follow the similar steps before to assess and detect the legacy Java EE and Spring Framework project:
 
