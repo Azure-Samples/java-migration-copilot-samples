@@ -1,0 +1,30 @@
+target/
+build/
+dist/
+*.war
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+/bin/
+.project
+.classpath
+.settings/
+
+# Local configuration files (contain environment-specific paths)
+local.properties
+liberty_config/server.env
+
+# Compile-time dependencies (can be downloaded)
+compile-lib/*.jar
+
+# Docker files
+mysql-connector/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log

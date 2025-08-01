@@ -1,0 +1,46 @@
+<server description="Open Liberty Server - Docker">
+    <featureManager>
+        <feature>localConnector-1.0</feature>
+        <feature>servlet-4.0</feature>
+        <feature>jsp-2.3</feature>
+        <feature>transportSecurity-1.0</feature>
+        <feature>jaxws-2.2</feature>
+        <feature>jdbc-4.3</feature>
+        <feature>jndi-1.0</feature>
+        <feature>javaMail-1.6</feature>
+        <feature>appSecurity-3.0</feature>
+        <feature>springBoot-2.0</feature>
+        <feature>webProfile-8.0</feature>
+    </featureManager>
+
+    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080" httpsPort="9443"/>
+
+    <!-- Enable logging -->
+    <logging maxFileSize="100" maxFiles="10" traceSpecification=""/>
+
+    <!-- Mail Session for JavaMail -->
+    <mailSession id="StudentMailSession" jndiName="mail/StudentMailSession" description="Mail session for sending emails"
+        host="localhost"
+        from="noreply@example.com"
+        port="25"
+        transportProtocol="smtp"
+        mailSessionID="SendGridMailSession" password="changeit" user="user"/>
+
+    <applicationMonitor updateTrigger="mbean"/>
+
+    <library id="mysql-lib">
+        <fileset dir="${env.MYSQL_LIB_DIR}" includes="*.jar"/>
+    </library>
+    
+    <dataSource id="StudentDB" jndiName="jdbc/StudentDB">
+        <jdbcDriver libraryRef="mysql-lib"/>
+        <properties URL="${env.JDBC_URL}"
+            user="${env.DB_USER}"
+            password="${env.DB_PASSWORD}"/>
+        <connectionManager maxPoolSize="10" minPoolSize="2"/>
+    </dataSource>
+
+    <application location="OpenLibertyApp.war" context-root="/">
+        <classloader commonLibraryRef="mysql-lib" delegation="parentLast"/>
+    </application>
+</server>
