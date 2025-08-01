@@ -62,11 +62,6 @@ Please follow the similar steps before to assess and detect the legacy Java EE a
 1. Interact with Copilot in the chat window and select **Continue** to proceed whenever you're ok with the actions suggested by the Copilot.
 1. After the assessment is done, an **Assessment Report** will be generated and opened in the editor. From the bottom of the report, you can see **Framework Upgrade (Java EE/Jakarta EE)** and **Framework Upgrade (Spring Framework)** in sectioin **Java Modernization**, and associated action **Upgrade** to upgrade the project.
 
-Before you proceed with the next step, manually clean up the assistant files of the assessment tool. They will be automatically cleaned up in the future releases of the tool.
-
-1. Replace `appcat` with `*` in the `.github\appmod-java\.gitignore` file to ignore all files within the `.github\appmod-java` directory.
-1. Open **Source Control** view in VSCode, and select **Discard All Changes** to discard all changes made by the assessment tool.
-
 ## Upgrade the Project to Jakarta EE 10 and Spring Framework 6.x
 
 Now you can upgrade the project. In this workshop, you select to upgrade Spring Framework version as it will also upgrade dependent Java EE version.
