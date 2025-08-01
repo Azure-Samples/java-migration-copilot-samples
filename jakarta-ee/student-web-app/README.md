@@ -67,6 +67,9 @@ Please follow the similar steps before to assess and detect the legacy Java EE a
 Now you can upgrade the project. In this workshop, you select to upgrade Spring Framework version as it will also upgrade dependent Java EE version.
 
 1. Select Action **Upgrade** associated with **Upgrade Spring Framework Version**, and start the upgrade with the predefined prompt. Recommend to use LLM model **Claude Sonnet 3.7** for the migration.
+
+    ![upgrade-solution](assets/upgrade-solution.png)
+
 1. Interact with Copilot in the chat window and select **Continue** to proceed whenever you're ok with the actions suggested by the Copilot.
 1. After the migration is complete, select **Keep** if there are any changed files.
 
