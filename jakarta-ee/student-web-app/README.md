@@ -14,7 +14,7 @@ For how to start this project, see [getting started](doc/getting-started.md)
 - **Java 17** or higher
 - **Apache Ant**, tested version: `1.10.14`.
 - **Maven**, tested version: `3.8.7`.
-- **Docker & Docker Compose** (Optional, for running the sample application)
+- **Docker & Docker Compose** (Optional, for running the sample application before migration)
 - [Visual Studio Code](https://code.visualstudio.com/download)
 - [VS Code Extension: GitHub Copilot App Modernization](https://marketplace.visualstudio.com/items?itemName=vscjava.migrate-java-to-azure)
   - This extension depends on [VS Code Extension: GitHub Copilot App Modernization – Upgrade for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-upgrade). Both extensions will be installed automatically when you install **GitHub Copilot App Modernization**.
