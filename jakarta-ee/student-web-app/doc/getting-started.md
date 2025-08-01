@@ -53,5 +53,5 @@ curl http://localhost:9080/studentProfileList
 Access the pages from browser: http://localhost:9080/
 
 <div align="left">
-  <img src="assets/student_profiles_list.png" alt="Student Profiles List" width="50%"/>
+  <img src="../assets/student_profiles_list.png" alt="Student Profiles List" width="50%"/>
 </div>
