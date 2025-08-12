@@ -27,7 +27,7 @@ Please follow the steps below to assess and detect the Eclipse/Ant project:
 
 1. Click **GitHub Copilot app modernization for Java** from the left side tool bar.
 
-    Click the `Toggle Chat` icon on the top, select `Agent` mode. If the **blue reload button** appears at the bottom, click it to reload the tools registration. This is only required the first time you install the extensions.
+    Click the `Toggle Chat` icon on the top, select `Agent` mode. If the **reload button** (looks like an arrow going counter clockwise) appears at the bottom, click it to reload the tools registration. This is only required the first time you install the extensions.
 
     ![assessment-start](assets/assessment-start.png)
 
@@ -35,7 +35,7 @@ Please follow the steps below to assess and detect the Eclipse/Ant project:
 
 1. Interact with Copilot in the chat window and select **Continue** to proceed whenever you're ok with the actions suggested by the Copilot.
 
-1. After the assessment is done, an **Assessment Report** will be generated and opened in the editor. From the bottom of the report, you can see **Build Tool (Ant)** in sectioin **Java Modernization**, and associated action **Migrate** to migrate the project to Maven project.
+1. After the assessment is done, an **Assessment Report** will be generated and opened in the editor. From the bottom of the report, you can see **Build Tool (Ant)** in section **Java Modernization**, and associated action **Migrate** to migrate the project to Maven project.
 
     ![assessment-ant-to-maven-solution](assets/assessment-ant-to-maven-solution.png)
 
@@ -43,7 +43,7 @@ Please follow the steps below to assess and detect the Eclipse/Ant project:
 
 Now you can convert the Ant project to Maven project.
 
-1. Select Action **Migrate** associated with **Build Tool (Ant)**, and start the migration with the predefined prompt. Recommend to use LLM model **Claude Sonnet 3.7** for the migration.
+1. Select Action **Migrate** associated with **Build Tool (Ant)**, and start the migration with the predefined prompt. We recommend using the LLM model **Claude Sonnet 3.7** for the migration.
 
     ![convert-ant-to-maven](assets/convert-ant-to-maven.png)
 
@@ -60,7 +60,7 @@ Please follow the similar steps before to assess and detect the legacy Java EE a
 1. Select **GitHub Copilot app modernization for Java** from the left side tool bar.
 1. Select **Run Assessment** from the **Assessment** section. It will open GitHub Copilot Chat window at the right side, and start to assess the project with the predefined prompt. 
 1. Interact with Copilot in the chat window and select **Continue** to proceed whenever you're ok with the actions suggested by the Copilot.
-1. After the assessment is done, an **Assessment Report** will be generated and opened in the editor. From the bottom of the report, you can see **Framework Upgrade (Java EE/Jakarta EE)** and **Framework Upgrade (Spring Framework)** in sectioin **Java Modernization**, and associated action **Upgrade** to upgrade the project.
+1. After the assessment is done, an **Assessment Report** will be generated and opened in the editor. From the bottom of the report, you can see **Framework Upgrade (Java EE/Jakarta EE)** and **Framework Upgrade (Spring Framework)** in section **Java Modernization**, and associated action **Upgrade** to upgrade the project.
 
 Before you proceed with the next step, manually clean up the assistant files of the assessment tool. They will be automatically cleaned up in the future releases of the tool.
 
