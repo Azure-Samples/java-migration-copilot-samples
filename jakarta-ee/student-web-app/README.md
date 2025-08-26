@@ -16,7 +16,7 @@ For how to start this project, see [getting started](doc/getting-started.md)
 - **Maven**, tested version: `3.8.7`.
 - **Docker & Docker Compose** (Optional, for running the sample application)
 - [Visual Studio Code](https://code.visualstudio.com/download)
-- [VS Code Extension: GitHub Copilot App Modernization](https://marketplace.visualstudio.com/items?itemName=vscjava.migrate-java-to-azure). Make sure the version is higher than `1.3.0`; if not, switch to a pre-release version.
+- [VS Code Extension: GitHub Copilot App Modernization](https://marketplace.visualstudio.com/items?itemName=vscjava.migrate-java-to-azure). Make sure the version is higher than `1.2.1`; if not, switch to a pre-release version.
   - This extension depends on [VS Code Extension: GitHub Copilot App Modernization – Upgrade for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-upgrade). Both extensions will be installed automatically when you install **GitHub Copilot App Modernization**.
 
 ## Assess the Project
@@ -53,6 +53,8 @@ Now you can convert the Ant project to Maven project.
 
 1. After the migration is complete, select **Keep** for changed files.
 
+1. Commit changes if they have not been committed.
+
 ## Assess and detect the legacy Java EE and Spring Framework project
 
 Please follow the similar steps before to assess and detect the legacy Java EE and Spring Framework project:
@@ -61,11 +63,6 @@ Please follow the similar steps before to assess and detect the legacy Java EE a
 1. Select **Run Assessment** from the **Assessment** section. It will open GitHub Copilot Chat window at the right side, and start to assess the project with the predefined prompt. 
 1. Interact with Copilot in the chat window and select **Continue** to proceed whenever you're ok with the actions suggested by the Copilot.
 1. After the assessment is done, an **Assessment Report** will be generated and opened in the editor. From the bottom of the report, you can see **Framework Upgrade (Java EE/Jakarta EE)** and **Framework Upgrade (Spring Framework)** in section **Java Modernization**, and associated action **Upgrade** to upgrade the project.
-
-Before you proceed with the next step, manually clean up the assistant files of the assessment tool. They will be automatically cleaned up in the future releases of the tool.
-
-1. Replace `appcat` with `*` in the `.github\appmod-java\.gitignore` file to ignore all files within the `.github\appmod-java` directory.
-1. Open **Source Control** view in VSCode, and select **Discard All Changes** to discard all changes made by the assessment tool.
 
 ## Upgrade the Project to Jakarta EE 10 and Spring Framework 6.x
 
