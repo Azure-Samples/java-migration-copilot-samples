@@ -1,7 +1,7 @@
-package ca.on.gov.edu.coreft.controller;
+package org.sample.azure.student.coreft.controller;
 
-import ca.on.gov.edu.coreft.StudentProfile;
-import ca.on.gov.edu.coreft.service.StudentService;
+import org.sample.azure.student.coreft.StudentProfile;
+import org.sample.azure.student.coreft.service.StudentService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

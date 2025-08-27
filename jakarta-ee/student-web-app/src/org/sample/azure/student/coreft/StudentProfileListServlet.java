@@ -1,6 +1,6 @@
-package ca.on.gov.edu.coreft;
+package org.sample.azure.student.coreft;
 
-import ca.on.gov.edu.coreft.util.MyBatisUtil;
+import org.sample.azure.student.coreft.util.MyBatisUtil;
 import com.ibatis.sqlmap.client.SqlMapSession;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;

@@ -1,4 +1,4 @@
-package ca.on.gov.edu.coreft;
+package org.sample.azure.student.coreft;
 
 import java.io.Serializable;
 

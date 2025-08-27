@@ -35,7 +35,7 @@
     <!-- Index Servlet to handle root path with student data -->
     <servlet>
         <servlet-name>IndexServlet</servlet-name>
-        <servlet-class>ca.on.gov.edu.coreft.IndexServlet</servlet-class>
+        <servlet-class>org.sample.azure.student.coreft.IndexServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
@@ -45,7 +45,7 @@
     <!-- Existing Servlets for backward compatibility -->
     <servlet>
         <servlet-name>AddStudentServlet</servlet-name>
-        <servlet-class>ca.on.gov.edu.coreft.AddStudentServlet</servlet-class>
+        <servlet-class>org.sample.azure.student.coreft.AddStudentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AddStudentServlet</servlet-name>
@@ -54,7 +54,7 @@
 
     <servlet>
         <servlet-name>StudentProfileListServlet</servlet-name>
-        <servlet-class>ca.on.gov.edu.coreft.StudentProfileListServlet</servlet-class>
+        <servlet-class>org.sample.azure.student.coreft.StudentProfileListServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>StudentProfileListServlet</servlet-name>

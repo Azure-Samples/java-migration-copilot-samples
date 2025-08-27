@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="ca.on.gov.edu.coreft.StudentProfile" %>
+<%@ page import="org.sample.azure.student.coreft.StudentProfile" %>
 <%@ page import="java.util.List" %>
 <html>
 <head>

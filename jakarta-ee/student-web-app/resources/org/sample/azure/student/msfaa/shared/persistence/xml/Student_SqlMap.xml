@@ -5,7 +5,7 @@
 <sqlMap namespace="com.azure.sample.StudentMapper">
 
 <!-- SELECT 操作 -->
-<select id="listStudent" resultClass="ca.on.gov.edu.coreft.StudentProfile">
+<select id="listStudent" resultClass="org.sample.azure.student.coreft.StudentProfile">
     SELECT id, name, email, major FROM student_profiles
 </select>
 

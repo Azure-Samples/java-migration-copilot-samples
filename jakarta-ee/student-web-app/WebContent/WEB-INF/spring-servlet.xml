@@ -11,7 +11,7 @@
                            http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!-- Enable component scanning for controllers -->
-    <context:component-scan base-package="ca.on.gov.edu.coreft.controller"/>
+    <context:component-scan base-package="org.sample.azure.student.coreft.controller"/>
 
     <!-- Enable Spring MVC annotations -->
     <mvc:annotation-driven/>

@@ -8,8 +8,8 @@
                            http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- Enable component scanning -->
-    <context:component-scan base-package="ca.on.gov.edu.coreft.service"/>
-    <context:component-scan base-package="ca.on.gov.edu.coreft.dao"/>
+    <context:component-scan base-package="org.sample.azure.student.coreft.service"/>
+    <context:component-scan base-package="org.sample.azure.student.coreft.dao"/>
 
     <!-- Service and DAO beans will be auto-discovered -->
 

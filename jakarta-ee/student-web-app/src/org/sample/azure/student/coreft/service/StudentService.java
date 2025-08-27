@@ -1,7 +1,7 @@
-package ca.on.gov.edu.coreft.service;
+package org.sample.azure.student.coreft.service;
 
-import ca.on.gov.edu.coreft.StudentProfile;
-import ca.on.gov.edu.coreft.util.MyBatisUtil;
+import org.sample.azure.student.coreft.StudentProfile;
+import org.sample.azure.student.coreft.util.MyBatisUtil;
 import com.ibatis.sqlmap.client.SqlMapSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
