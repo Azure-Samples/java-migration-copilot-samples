@@ -11,5 +11,5 @@
         </dataSource>
     </transactionManager>
 
-    <sqlMap resource="ca/on/gov/edu/msfaa/shared/persistence/xml/Student_SqlMap.xml"/>
+    <sqlMap resource="org/sample/azure/student/msfaa/shared/persistence/xml/Student_SqlMap.xml"/>
 </sqlMapConfig>

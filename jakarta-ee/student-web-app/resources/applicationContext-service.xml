@@ -8,7 +8,7 @@
     <bean id="schemaNameProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="locations">
             <list>
-                <value>classpath:ca/on/gov/edu/coreft/persistence/xml/ucm_schema.properties</value>
+                <value>classpath:org/sample/azure/student/coreft/persistence/xml/ucm_schema.properties</value>
             </list>
         </property>
     </bean>
