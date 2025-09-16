@@ -203,15 +203,15 @@ In VSCode, open the Extensions view from Activity Bar, search `GitHub Copilot Ap
 
 ## Migrate the Sample Java Application
 
-The following sections guide you through the process of migrating the sample Java application `asset-manager` to Azure using GitHub Copilot App Modernization for Java (Preview).
+The following sections guide you through the process of migrating the sample Java application `asset-manager` to Azure using GitHub Copilot App Modernization for Java.
 
 ### Assess Your Java Application
 
 The first step is to assess the sample Java application `asset-manager`. The assessment provides insights into the application's readiness for migration to Azure.
 
 1. Open the VS code with all the prerequisites installed on the asset manager by changing the directory to the `asset-manager` directory and running `code .` in that directory.
-1. Open the extension `App Modernization for Java`.
-1. Hover the mouse over the **Assessment** section and click **Run Assessment** button which looks like a triangle pointing right. Then, the Github Copilot Chat window will be opened and propose to run Modernization Assessor. Please confirm the tool usage by clicking **Continue**.
+1. Open the extension `GitHub Copilot app modernization for Java`.
+1. Hover the mouse over the **Assessment** view and click **Run Assessment** button which looks like a triangle pointing right. Then, the Github Copilot Chat panel will be opened and propose to run Modernization Assessor. Please confirm the tool usage by clicking **Continue**.
    
    ![Trigger Assessment](doc-media/trigger-assessment.png)
 
@@ -223,40 +223,43 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 1. For this workshop, select **Migrate to Azure Database for PostgreSQL (Spring)** in the Solution list, then click **Run Task**.
    ![Confirm Solution](doc-media/confirm-postgresql-solution.png)
 
-### Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Formula
+### Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Taks
 
-1. After clicking the **Run Task** button in the Solution Report, Copilot chat window will be opened with Agent Mode.
+1. After clicking the **Run Task** button in the Solution Report, Copilot chat panel will be opened with Agent Mode.
 1. The Copilot Agent will firstly analyse the project and generate a migratin plan. During the progress, please click **Continue** repeatedly to confirm each tool action. The Copilot Agent uses various tools to facilitate application modernization. Each tool's usage requires confirmation by clicking the `Continue` button.
 1. After the plan is generated, Copilot chat will stop with two generated files: **plan.md** and **progress.md**. Please manually input "Continue" or "Proceed" in the chat to confirm the plan and proceed its following actions to execute the plan.
-1. Click **Allow** buttons repeatedly to allow the git operations for version control during the migration process.
+1. Click **Allow** repeatedly to allow the git operations for version control during the migration process.
 1. Click **Allow** to proceed the validation process.
 1. Review the proposed code changes and click **Keep** to apply them.
 
-### Migrate to Azure Blob Storage and Azure Service Bus using Custom Formula
+### Migrate to Azure Blob Storage and Azure Service Bus using Custom Tasks
 
 The Application `asset-manager` used AWS S3 for image storage and Spring AMQP with RabbitMQ for message queuing. We have already migrated the code of **Web** module to use Azure Blob Storage and Azure Service Bus. These changes are recorded in two separate commits in the `main` branch.
 
 The following steps demonstrate how to generate custom formulas based on those existing commits. Then, you can migrate **Worker** module to use Azure Blob Storage and Azure Service Bus as well, using the created custom formulas.
 
-1. Open the sidebar of `App Modernization for Java`. Hover the mouse over the **Formulas** section.  Select **Create formula from source control**. This icon looks like two circles with arrows pointing to the other circle.
+1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION FOR JAVA`. Hover the mouse over the **Tasks** view.  Select **Create a Custom Task**.
    ![Create Formula From Source Control](doc-media/create-formula-from-source-control.png)
+1. In the poped up quick-pick window, select **Create new task**.
+   ![Create new task](doc-media/create-new-task.png)
 1. Type **migrate web** to search for the commits that migrated the **Web** module, and you should see two commits listed:
    * migrate web RabbitMQ to azure service bus
    * migrate web s3 to azure blob storage
    
    ![Migration Commits](doc-media/migration-commits.png)
-1. You will create two custom formulas based on the two commits. First, create the formula for migrating RabbitMQ. Select the commit of **migrate web RabbitMQ to azure service bus**, click OK.
-1. Click **Create New** to create a new custom formula.
-1. Default formula name will be generated. Give it a new name: "custom formula migrate RabbitMQ". Press `Enter` to confirm. Then, formula description, and search patterns will be generated in order. Press `Enter` repeatedly to confirm.
-1. Now, the custom formula for migrating RabbitMQ is generated and shows in the section of formulas in of `App Modernization for Java` blade.
-   ![Custom Formula of Migrating Rabbitmq](doc-media/custom-formula-RabbitMQ.png)
-1. Create another custom formula for migrating S3. Follow the same steps you just did, select the commit **migrate web s3 to azure blob storage** to create a new custom formula with name: "custom formula migrate s3".
-1. Now, the two custom formulas are ready.
+1. You will create two custom tasks based on the two commits. First, create the task for migrating RabbitMQ. Select the commit of **migrate web RabbitMQ to azure service bus**, click OK.
+1. For the next question of **Select uncommited changes (Optional)**, select nothing and click OK.
+1. For the next question of **Describe changes using local files (Optional)**, choose **Skip file selection**.
+   ![Skip file selection](doc-media/skip-file-selection.png)
+1. Default task name will be generated. Give it a new name: "custom task migrate RabbitMQ". Press `Enter` to confirm. Then, task description, and search patterns will be generated in order. Press `Enter` repeatedly to confirm.
+1. Now, the custom task for migrating RabbitMQ is generated and shows under the item of `My Tasks` of the `Tasks` view.
+1. Create another custom task for migrating S3. Follow the same steps you just did, select the commit **migrate web s3 to azure blob storage** to create a new custom task with name: "custom task migrate s3".
+1. Now, the two custom tasks are ready.
    
    ![Custom Formulas](doc-media/custom-formulas.png)
-1. Select and run the two custom formulas one by one you created in the formulas section of `App Modernization for Java`, one at a time.
+1. Select and run the two custom tasks one by one you created in the `Tasks` section of `GITHUB COPILOT APP MODERNIZATION FOR JAVA`, one at a time.
    ![Run Formula](doc-media/run-formula.png)
-1. Follow the same steps as the predefined formula to review and apply the changes, and run the Java Application Build-Fix tool to apply build fixes.
+1. Follow the same steps as the predefined task to review and apply the changes.
 1. Review the proposed code changes and click **Keep** to apply them.
 
 ## Deploy to Azure
