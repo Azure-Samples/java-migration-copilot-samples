@@ -7,7 +7,7 @@
     - [Migrated Infrastructure](#migrated-infrastructure)
     - [Migrated Architecture](#migrated-architecture)
   - [Prerequisites](#prerequisites)
-  - [Install GitHub Copilot App Modernization for Java](#install-github-copilot-app-modernization-for-java)
+  - [Install GitHub Copilot app modernization](#install-github-copilot-app-modernization)
   - [Migrate the Sample Java Application](#migrate-the-sample-java-application)
     - [Assess Your Java Application](#assess-your-java-application)
     - [Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Tasks](#migrate-to-azure-database-for-postgresql-flexible-server-using-predefined-tasks)
@@ -15,9 +15,9 @@
   - [Deploy to Azure](#deploy-to-azure)
   - [Clean up](#clean-up)
 
-GitHub Copilot app modernization for Java, also referred to as `App Modernization for Java`, assists with app assessment, planning and code remediation. It automates repetitive tasks, boosting developer confidence and speeding up the Azure migration and ongoing optimization.
+GitHub Copilot app modernization, assists with app assessment, planning and code remediation. It automates repetitive tasks, boosting developer confidence and speeding up the Azure migration and ongoing optimization.
 
-In this workshop, you learn how to use GitHub Copilot app modernization for Java to assess and migrate a sample Java application `asset-manager` to Azure.
+In this workshop, you learn how to use GitHub Copilot app modernization to assess and migrate a sample Java application `asset-manager` to Azure.
 
 ## About this Project
 
@@ -197,39 +197,34 @@ To successfully complete this workshop, you need the following:
 - [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli): Required if you deploy the migrated application to Azure locally. The latest version is recommended.
 - Fork the [GitHub repository](https://github.com/Azure-Samples/java-migration-copilot-samples) that contains the sample Java application. Please ensure to **uncheck** the default selection "Copy the `main` branch only". Clone it to your local machine. Open the `asset-manager` folder in VSCode and checkout the `main` branch.
 
-## Install GitHub Copilot App Modernization for Java
+## Install GitHub Copilot app modernization
 
-In VSCode, open the Extensions view from Activity Bar, search `GitHub Copilot app modernization for Java` extension in marketplace. Select the Install button on the extension. After installation completes, you should see a notification in the bottom-right corner of VSCode confirming success.
+In VSCode, open the Extensions view from Activity Bar, search `GitHub Copilot app modernization` extension in marketplace. Select the Install button on the extension. After installation completes, you should see a notification in the bottom-right corner of VSCode confirming success.
 
 ## Migrate the Sample Java Application
 
-The following sections guide you through the process of migrating the sample Java application `asset-manager` to Azure using GitHub Copilot app modernization for Java.
+The following sections guide you through the process of migrating the sample Java application `asset-manager` to Azure using GitHub Copilot app modernization.
 
 ### Assess Your Java Application
 
 The first step is to assess the sample Java application `asset-manager`. The assessment provides insights into the application's readiness for migration to Azure.
 
 1. Open the VS code with all the prerequisites installed on the asset manager by changing the directory to the `asset-manager` directory and running `code .` in that directory.
-1. Open the extension `GitHub Copilot app modernization for Java`.
-1. Hover the mouse over the **Assessment** view and click **Run Assessment** button which looks like a triangle pointing right. Then, the Github Copilot Chat panel will be opened and propose to run Modernization Assessor. Please confirm the tool usage by clicking **Continue**.
+1. Open the extension `GitHub Copilot app modernization`.
+1. In the **QUICKSTART** view, click **Migrate to Azure** button to trigger the Modernization Assessor.
    
    ![Trigger Assessment](doc-media/trigger-assessment.png)
 
-   > **NOTE**: If you are asked to allow the tool access the language models provided by GitHub Copilot Chat, select **Allow** to proceed.
-
-1. After each step, please manually input "continue" to confirm and proceed.
 1. Wait for the assessment to be completed and the report to be generated.
-1. Review the **Assessment** report. Select the **Issues** tab to view the proposed solutions for the issues identified in the report.
+1. Review the **Assessment Report**. Select the **Issues** tab to view the proposed solutions for the issues identified in the report.
 1. For this workshop, select **Migrate to Azure Database for PostgreSQL (Spring)** in the Solution list, then click **Run Task**.
    ![Confirm Solution](doc-media/confirm-postgresql-solution.png)
 
 ### Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Tasks
 
 1. After clicking the **Run Task** button in the Solution Report, Copilot Chat panel will be opened with Agent Mode.
-1. The Copilot Agent will firstly analyse the project and generate a migratin plan. During the progress, please click **Continue** repeatedly to confirm each tool action. The Copilot Agent uses various tools to facilitate application modernization. Each tool's usage requires confirmation by clicking the `Continue` button.
-1. After the plan is generated, Copilot chat will stop with two generated files: **plan.md** and **progress.md**. Please manually input "Continue" or "Proceed" in the chat to confirm the plan and proceed its following actions to execute the plan.
-1. Click **Allow** repeatedly to allow the git operations for version control during the migration process.
-1. Click **Allow** to proceed the validation process.
+1. The Copilot Agent will firstly analyse the project and generate a migratin plan. Then the agent will start to migrate the code as the plan.
+1. When the code is migrated, the extension will prepare the **CVE Validation and Fixing** process. Click **Allow** to proceed.
 1. Review the proposed code changes and click **Keep** to apply them.
 
 ### Migrate to Azure Blob Storage and Azure Service Bus using Custom Tasks
@@ -238,7 +233,7 @@ The Application `asset-manager` used AWS S3 for image storage and Spring AMQP wi
 
 The following steps demonstrate how to generate custom formulas based on those existing commits. Then, you can migrate **Worker** module to use Azure Blob Storage and Azure Service Bus as well, using the created custom formulas.
 
-1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION FOR JAVA`. Hover the mouse over the **Tasks** view.  Select **Create a Custom Task**.
+1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. Hover the mouse over the **Tasks** view.  Select **Create a Custom Task**.
    ![Create Formula From Source Control](doc-media/create-formula-from-source-control.png)
 1. In the poped up quick-pick window, select **Create new task**.
    ![Create new task](doc-media/create-new-task.png)
@@ -257,9 +252,11 @@ The following steps demonstrate how to generate custom formulas based on those e
 1. Now, the two custom tasks are ready.
    
    ![Custom Formulas](doc-media/custom-formulas.png)
-1. Select and run the two custom tasks one by one you created in the `Tasks` view of `GITHUB COPILOT APP MODERNIZATION FOR JAVA`, one at a time.
+1. Select and run the two custom tasks one by one you created in the `Tasks` view of `GITHUB COPILOT APP MODERNIZATION`, one at a time.
    ![Run Formula](doc-media/run-formula.png)
 1. Follow the same steps as the predefined task to review and apply the changes.
+
+   > **NOTE**:  After the plan is generated, Copilot chat will stop with two generated files: **plan.md** and **progress.md**. Please manually input "Continue" or "Proceed" in the chat to confirm the plan and proceed its following actions to execute the plan. 
 1. Review the proposed code changes and click **Keep** to apply them.
 
 ## Deploy to Azure
