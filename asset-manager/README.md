@@ -218,12 +218,14 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 1. Wait for the assessment to be completed and the report to be generated.
 1. Review the **Assessment Report**. Select the **Issues** tab to view the proposed solutions for the issues identified in the report.
 1. For this workshop, select **Migrate to Azure Database for PostgreSQL (Spring)** in the Solution list, then click **Run Task**.
+
    ![Confirm Solution](doc-media/confirm-postgresql-solution.png)
 
 ### Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Tasks
 
 1. After clicking the **Run Task** button in the Solution Report, Copilot Chat panel will be opened with Agent Mode.
-1. The Copilot Agent will firstly analyse the project and generate a migratin plan. Then the agent will start to migrate the code as the plan.
+1. The Copilot Agent will firstly analyse the project and generate a migratin plan.
+1. After the plan is generated, Copilot chat will stop with two generated files: **plan.md** and **progress.md**. Please manually input "Continue" or "Proceed" in the chat to confirm the plan and proceed its following actions to execute the plan.
 1. When the code is migrated, the extension will prepare the **CVE Validation and Fixing** process. Click **Allow** to proceed.
 1. Review the proposed code changes and click **Keep** to apply them.
 
@@ -234,8 +236,10 @@ The Application `asset-manager` used AWS S3 for image storage and Spring AMQP wi
 The following steps demonstrate how to generate custom formulas based on those existing commits. Then, you can migrate **Worker** module to use Azure Blob Storage and Azure Service Bus as well, using the created custom formulas.
 
 1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. Hover the mouse over the **Tasks** view.  Select **Create a Custom Task**.
+
    ![Create Formula From Source Control](doc-media/create-formula-from-source-control.png)
 1. In the poped up quick-pick window, select **Create new task**.
+
    ![Create new task](doc-media/create-new-task.png)
 1. Type **migrate web** to search for the commits that migrated the **Web** module, and you should see two commits listed:
    * migrate web RabbitMQ to azure service bus
@@ -245,6 +249,7 @@ The following steps demonstrate how to generate custom formulas based on those e
 1. You will create two custom tasks based on the two commits. First, create the task for migrating RabbitMQ. Select the commit of **migrate web RabbitMQ to azure service bus**, click OK.
 1. For the next question of **Select uncommited changes (Optional)**, select nothing and click OK.
 1. For the next question of **Describe changes using local files (Optional)**, choose **Skip file selection**.
+
    ![Skip file selection](doc-media/skip-file-selection.png)
 1. Default task name will be generated. Give it a new name: "custom task migrate RabbitMQ". Press `Enter` to confirm. Then, task description, and search patterns will be generated in order. Press `Enter` repeatedly to confirm.
 1. Now, the custom task for migrating RabbitMQ is generated and shows under the item of `My Tasks` of the `Tasks` view.
@@ -253,10 +258,9 @@ The following steps demonstrate how to generate custom formulas based on those e
    
    ![Custom Formulas](doc-media/custom-formulas.png)
 1. Select and run the two custom tasks one by one you created in the `Tasks` view of `GITHUB COPILOT APP MODERNIZATION`, one at a time.
+
    ![Run Formula](doc-media/run-formula.png)
 1. Follow the same steps as the predefined task to review and apply the changes.
-
-   > **NOTE**:  After the plan is generated, Copilot chat will stop with two generated files: **plan.md** and **progress.md**. Please manually input "Continue" or "Proceed" in the chat to confirm the plan and proceed its following actions to execute the plan. 
 1. Review the proposed code changes and click **Keep** to apply them.
 
 ## Deploy to Azure
