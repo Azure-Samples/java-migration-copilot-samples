@@ -230,9 +230,9 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 1. When the code is migrated, the extension will prepare the **CVE Validation and Fixing** process. Click **Allow** to proceed.
 1. Review the proposed code changes and click **Keep** to apply them.
 
-### Option 1 - Migrate to Azure Blob Storage and Azure Service Bus using Predefined Tasks
+### Option 1 - Migrate to Azure Blob Storage using Predefined Tasks
 
-At this stage, you can choose to use the predefined tasks for other migration scenarios showed in this section, or use the custom tasks showed in the next section (option 2).
+At this stage, you can use the predefined tasks for other migration scenarios showed in this section, or use the custom tasks showed in the next section (option 2).
 
 1. Click the **Run Task** in the Assessment Report, on the right of the row `Storage Migration (AWS S3)` - `Migrate from AWS S3 to Azure Blob Storage`.
 2. The followed steps are the same as the above PostgreSQL server migration.
