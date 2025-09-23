@@ -23,7 +23,7 @@ Before you begin, ensure you have:
     1. Search for **"GitHub Copilot App Modernization for .NET"**
     1. Click **Download**
 1. Restart Visual Studio
-1. Click the "GitHub Copilot button on the top right of VS, and click "Open Chat Window". Sign in with your GitHub account.
+1. Click the "GitHub Copilot" button on the top right of VS, and click "Open Chat Window". Sign in with your GitHub account.
 
 ## 🚀 Getting Started
 
