@@ -9,7 +9,7 @@ Before you begin, ensure you have:
 - **[Visual Studio 2022](https://visualstudio.microsoft.com/)**. Ensure the installed version is equal or higher than 17.14.16. If not, install the preview version **[Microsoft Visual Studio Enterprise 2022 - Int Preview](https://aka.ms/vs/17/intpreview/vs_enterprise.exe)**. Ensure the following workloads are selected during installation
     - ASP.NET and web development
     - .NET desktop development
-- **Git** for version control
+- **[Git](https://git-scm.com/)** for version control
 - **GitHub account** with Copilot access
 
 ## ⚙️ VS Configuration
