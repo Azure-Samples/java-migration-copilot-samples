@@ -45,7 +45,7 @@ Before you begin, ensure you have:
 
 ```sh
 git clone https://github.com/Azure-Samples/java-migration-copilot-samples.git
-cd java-migration-copilot-samples\ContosoUniversity-NoAuth-EFCore
+cd java-migration-copilot-samples\ContosoUniversity
 ```
 
 Open the solution file `ContosoUniversity.sln` in Visual Studio 2022.
