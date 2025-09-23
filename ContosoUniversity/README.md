@@ -28,8 +28,7 @@ Before you begin, ensure you have:
 ## ⚙️ VS Configuration
 
 1. Set the environment variable `COPILOT_INTERNALUSER=true` in your system to enable the GitHub Copilot internal use features.
-1. Set the following GitHub Copilot settings in "Tools" menu --> "Options...". Search the setting from the top left search box, and update the value accordingly.
-    - `TokenLowWarningThresholdPercentage`: 200 (This is to mitigate a issue where the token limit is too strict and the session cannot proceed after a few steps)
+1. Set the following GitHub Copilot setting in "Tools" menu --> "Options...". Search the setting from the top left search box, and update the value accordingly.
     - `MaxFunctionCallIterations`: 100
 1. Install the App Modernization extension
     1. Navigate to **Extensions** → **Manage Extensions**
