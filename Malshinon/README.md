@@ -34,6 +34,7 @@ Before you begin, ensure you have:
     1. Click **Download**
 1. Restart Visual Studio
 1. Click the "GitHub Copilot" button on the top right of VS, and click "Open Chat Window". Sign in with your GitHub account.
+    > **NOTE**: At the bottom of the GitHub Copilot Chat window, select the mode of **Agent** and model of **Claude Sonnet 4**.
 
 ## 🚀 Getting Started
 
