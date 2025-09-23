@@ -2,6 +2,16 @@
 
 A comprehensive demonstration project showcasing how to use **GitHub Copilot app modernization for .NET** to migrate a .NET Framework application from local file storage to Azure Blob Storage.
 
+## Project Overview
+
+Malshinon (forked from [haimassraf/Malshinon](https://github.com/haimassraf/Malshinon.git) is a C# application designed to track and manage intelligence reports between agents and targets. The system maintains records of people and the surveillance reports filed about them, with functionality to identify agents and dangerous individuals.
+
+Malshinon provides a database-driven system for intelligence management, allowing users to:
+- Create and manage profiles for individuals with unique secret codes
+- Generate and store intelligence reports between reporters and targets
+- Track relationships between individuals based on reporting patterns
+- Flag individuals as agents or dangerous based on intelligence activities
+- Access comprehensive information about all individuals in the system
 ## 📋 Prerequisites
 
 Before you begin, ensure you have:
