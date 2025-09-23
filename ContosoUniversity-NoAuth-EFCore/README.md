@@ -18,7 +18,12 @@ Before you begin, ensure you have:
 1. Set the following GitHub Copilot settings in "Tools" menu --> "Options...". Search the setting from the top left search box, and update the value accordingly.
     - `TokenLowWarningThresholdPercentage`: 200 (This is to mitigate a issue where the token limit is too strict and the session cannot proceed after a few steps)
     - `MaxFunctionCallIterations`: 100
-- restart Visual Studio when update all the configuration options.
+1. Install the App Modernization extension
+    1. Navigate to **Extensions** → **Manage Extensions**
+    1. Search for **"GitHub Copilot App Modernization for .NET"**
+    1. Click **Download**
+1. Restart Visual Studio
+1. Click the "GitHub Copilot button on the top right of VS, and click "Open Chat Window". Sign in with your GitHub account.
 
 ## 🚀 Getting Started
 
