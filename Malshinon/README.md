@@ -12,6 +12,7 @@ Malshinon provides a database-driven system for intelligence management, allowin
 - Track relationships between individuals based on reporting patterns
 - Flag individuals as agents or dangerous based on intelligence activities
 - Access comprehensive information about all individuals in the system
+
 ## 📋 Prerequisites
 
 Before you begin, ensure you have:

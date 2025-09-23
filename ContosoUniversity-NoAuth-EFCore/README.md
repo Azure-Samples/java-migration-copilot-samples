@@ -2,6 +2,19 @@
 
 A comprehensive demonstration project showcasing how to use **GitHub Copilot app modernization for .NET** to migrate a .NET Framework application from local file storage to Azure Blob Storage.
 
+## ✨ Project Overview
+
+ContosoUniversity is a comprehensive ASP.NET Core MVC application designed to manage university operations and academic data. The system provides a complete educational management platform with functionality to handle students, courses, instructors, and departments.
+
+ContosoUniversity provides a database-driven system for educational management, allowing users to:
+- Create and manage student profiles with enrollment tracking
+- Manage course catalogs with departments, credits, and teaching materials
+- Track instructor assignments and office locations
+- Handle course enrollments and academic relationships
+- Monitor departmental budgets and administrative details
+- Upload and manage teaching material images for courses
+- Access comprehensive reporting and data visualization
+
 ## 📋 Prerequisites
 
 Before you begin, ensure you have:
