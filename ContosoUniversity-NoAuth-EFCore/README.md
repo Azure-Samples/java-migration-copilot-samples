@@ -69,7 +69,7 @@ Some tips during the migration:
 
 - After updating project related settings, it will reload the project. This is likely to bring the "Solution Explorer" view to the top, and you need to click the "GitHub Copilot Chat" view tab to bring it back and check the latest conversations.
 - If the session stop in the middle of the whole process. Try sending "Continue" in the chat box to resume.
-### Step : Review Migration Results
+### Step 3: Review Migration Results
 
 The extension provides comprehensive tracking:
 - ✅ **Detailed progress tracking** with checkboxes for each task
