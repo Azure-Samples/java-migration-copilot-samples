@@ -224,7 +224,7 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 
 ### Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Tasks
 
-1. After clicking the **Run Task** button in the Solution Report, Copilot Chat panel will be opened with Agent Mode.
+1. After clicking the **Run Task** button in the Assessment Report, Copilot Chat panel will be opened with Agent Mode.
 1. The Copilot Agent will firstly analyze the project and generate a migration plan.
 1. After the plan is generated, Copilot chat will stop with two generated files: **plan.md** and **progress.md**. Please manually input "Continue" or "Proceed" in the chat to confirm the plan and proceed its following actions to execute the plan.
 1. When the code is migrated, the extension will prepare the **CVE Validation and Fixing** process. Click **Allow** to proceed.
@@ -234,9 +234,8 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 
 At this stage, you can choose to use the predefined tasks for other migration scenarios showed in this section, or use the custom tasks showed in the next section (option 2).
 
-The steps are the same as the above PostgreSQL server migration. Just click the **Run Task** button on the following rows in the assessment report and follow the Copilot Agent mode to complete the migration.
-- Storage Migration (AWS S3) / Migrate from AWS S3 to Azure Blob Storage
-- Messaging Service Migration (Spring AMQP RabbitMQ) / Migrate from RabbitMQ(AMQP) to Azure Service Bus
+1. Click the **Run Task** in the Assessment Report, on the right of the row `Storage Migration (AWS S3)` - `Migrate from AWS S3 to Azure Blob Storage`.
+2. The followed steps are the same as the above PostgreSQL server migration.
 
 ### Option 2 - Migrate to Azure Blob Storage and Azure Service Bus using Custom Tasks
 
