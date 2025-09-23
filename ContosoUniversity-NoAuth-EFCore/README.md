@@ -1,6 +1,6 @@
 # ContosoUniversity - Azure Migration Demo for GitHub Copilot
 
-A comprehensive demonstration project showcasing how to use **GitHub Copilot for App Modernization** to migrate a .NET Framework application from local file storage to Azure Blob Storage.
+A comprehensive demonstration project showcasing how to use **GitHub Copilot app modernization for .NET** to migrate a .NET Framework application from local file storage to Azure Blob Storage.
 
 ## 📋 Prerequisites
 
