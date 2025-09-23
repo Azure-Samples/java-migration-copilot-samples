@@ -27,13 +27,6 @@ Before you begin, ensure you have:
 
 ## 🚀 Getting Started
 
-### Step 1: Install GitHub Copilot for App Modernization Extension
-
-1. Open **Visual Studio 2022**
-2. Navigate to **Extensions** → **Manage Extensions**
-3. Search for **"GitHub Copilot App Modernization for .NET"**
-4. Click **Download** and restart Visual Studio when prompted
-5. Sign in with your GitHub account that has Copilot access
 
 ### Step 2: Clone and Open the Project
 
