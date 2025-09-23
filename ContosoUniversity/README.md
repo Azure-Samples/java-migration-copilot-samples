@@ -4,7 +4,7 @@ A comprehensive demonstration project showcasing how to use **GitHub Copilot app
 
 ## ✨ Project Overview
 
-ContosoUniversity is a comprehensive ASP.NET Core MVC application designed to manage university operations and academic data. The system provides a complete educational management platform with functionality to handle students, courses, instructors, and departments.
+ContosoUniversity is a university management application built on .NET Framework 4.8 with traditional Windows infrastructure dependencies and runs on on-premises Windows-based hosting. The system provides a complete educational management platform with functionality to handle students, courses, instructors, and departments.
 
 ContosoUniversity provides a database-driven system for educational management, allowing users to:
 - Create and manage student profiles with enrollment tracking
