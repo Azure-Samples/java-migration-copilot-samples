@@ -28,7 +28,7 @@ Before you begin, ensure you have:
 ## 🚀 Getting Started
 
 
-### Step 2: Clone and Open the Project
+### Step 1: Clone and Open the Project
 
 ```sh
 git clone https://github.com/Azure-Samples/java-migration-copilot-samples.git
