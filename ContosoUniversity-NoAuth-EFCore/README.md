@@ -15,9 +15,9 @@ Before you begin, ensure you have:
 ## ⚙️ VS Configuration
 
 - Set the environment variable `COPILOT_INTERNALUSER=true` in your system to enable the GitHub Copilot internal use features.
-- Set GitHub Copilot settings in Visual Studio by clicking on the GitHub Copilot icon in the toolbar and selecting **Settings**. Choose **Options**, then in the opened settings window, select **Feature flags(internal)** and **Chat UX**, at the bottom of the window, you will the following two options, modify their values as listed.
-  - `MaxFunctionCallIterations` = `100`
-  - `TokenLowWarningThresholdPercentage` = `200`
+1. Set the following GitHub Copilot settings in "Tools" menu --> "Options...". Search the setting from the top left search box, and update the value accordingly.
+    - `TokenLowWarningThresholdPercentage`: 200 (This is to mitigate a issue where the token limit is too strict and the session cannot proceed after a few steps)
+    - `MaxFunctionCallIterations`: 100
 - restart Visual Studio when update all the configuration options.
 
 ## 🚀 Getting Started
