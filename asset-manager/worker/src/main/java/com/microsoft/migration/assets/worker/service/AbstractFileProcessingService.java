@@ -2,10 +2,11 @@ package com.microsoft.migration.assets.worker.service;
 
 import com.microsoft.migration.assets.worker.model.ImageProcessingMessage;
 import com.microsoft.migration.assets.worker.util.StorageUtil;
-import com.rabbitmq.client.Channel;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.messaging.servicebus.implementation.core.annotation.ServiceBusListener;
+import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.support.AmqpHeaders;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Header;
 
 import javax.imageio.ImageIO;
@@ -16,15 +17,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.microsoft.migration.assets.worker.config.RabbitConfig.IMAGE_PROCESSING_QUEUE;
+import static com.microsoft.migration.assets.worker.config.ServiceBusConfig.IMAGE_PROCESSING_TOPIC;
+import static com.microsoft.migration.assets.worker.config.ServiceBusConfig.IMAGE_PROCESSING_SUBSCRIPTION;
 
 @Slf4j
 public abstract class AbstractFileProcessingService implements FileProcessor {
 
-    @RabbitListener(queues = IMAGE_PROCESSING_QUEUE)
-    public void processImage(final ImageProcessingMessage message, 
-                           Channel channel, 
-                           @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) {
+    @ServiceBusListener(destination = IMAGE_PROCESSING_TOPIC, group = IMAGE_PROCESSING_SUBSCRIPTION)
+    public void processImage(final ImageProcessingMessage message,
+                             @Header(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT) ServiceBusReceivedMessageContext context,
+                             Message<ImageProcessingMessage> rawMessage) {
         boolean processingSuccess = false;
         Path tempDir = null;
         Path originalFile = null;
@@ -74,18 +76,21 @@ public abstract class AbstractFileProcessingService implements FileProcessor {
                     Files.deleteIfExists(tempDir);
                 }
 
-                if (processingSuccess) {
-                    // Acknowledge the message if processing was successful
-                    channel.basicAck(deliveryTag, false);
-                    log.debug("Message acknowledged for: {}", message.getKey());
+                if (context != null) {
+                    if (processingSuccess) {
+                        // Complete the message on success
+                        context.complete();
+                        log.debug("Message completed for: {}", message.getKey());
+                    } else {
+                        // Abandon (could schedule or dead-letter in future enhancement)
+                        context.abandon();
+                        log.debug("Message abandoned for retry semantics: {}", message.getKey());
+                    }
                 } else {
-                    // Reject the message with requeue=false to trigger dead letter exchange
-                    // This will route the message to the retry queue with delay
-                    channel.basicNack(deliveryTag, false, false);
-                    log.debug("Message rejected and sent to dead letter exchange for delayed retry: {}", message.getKey());
+                    log.warn("ServiceBusReceivedMessageContext was null, cannot explicitly complete/abandon message for: {}", message.getKey());
                 }
             } catch (IOException e) {
-                log.error("Error handling RabbitMQ acknowledgment for: {}", message.getKey(), e);
+                log.error("Error during local file cleanup for: {}", message.getKey(), e);
             }
         }
     }

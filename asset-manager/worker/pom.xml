@@ -11,6 +11,8 @@
 
     <properties>
         <aws-sdk.version>2.25.13</aws-sdk.version>
+        <!-- Added for Azure Service Bus migration -->
+        <spring-cloud-azure.version>5.22.0</spring-cloud-azure.version>
     </properties>
 
     <artifactId>assets-manager-worker</artifactId>
@@ -22,10 +24,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
+        <!-- Removed RabbitMQ dependency (spring-boot-starter-amqp) during migration to Azure Service Bus -->
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>
@@ -53,6 +52,15 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- Azure Service Bus dependencies -->
+        <dependency>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>spring-cloud-azure-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>spring-messaging-azure-servicebus</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -62,8 +70,17 @@
                 <artifactId>s3</artifactId>
                 <version>${aws-sdk.version}</version>
             </dependency>
+            <!-- Azure Service Bus BOM -->
+            <dependency>
+                <groupId>com.azure.spring</groupId>
+                <artifactId>spring-cloud-azure-dependencies</artifactId>
+                <version>${spring-cloud-azure.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
 
     <build>
         <plugins>
