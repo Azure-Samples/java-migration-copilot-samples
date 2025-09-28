@@ -1,0 +1,16 @@
+{
+  "azure-aws-config-region-02000": "bare/aws-region-configuration-to-azure",
+  "azure-aws-config-s3-03000": "s3-to-azure-blob-storage",
+  "azure-aws-config-s3-03001": "s3-to-azure-blob-storage",
+  "azure-database-postgresql-02000": "managed-identity-spring/mi-postgresql-spring",
+  "azure-message-queue-amqp-02000": "amqp-rabbitmq-servicebus",
+  "azure-message-queue-config-rabbitmq-01000": "amqp-rabbitmq-servicebus",
+  "azure-message-queue-rabbitmq-01000": "amqp-rabbitmq-servicebus",
+  "database-reliability-01000": "bare/database-migration/database-reliability",
+  "azure-password-01000": "plaintext-credential-to-azure-keyvault",
+  "dockerfile-00000": "bare/docker-containerization",
+  "local-storage-00005": "mount-local-file",
+  "localhost-00004": "bare/local-resource-access",
+  "localhost-jdbc-00002": "bare/local-resource-access",
+  "azure-java-version-02000": "java-version-upgrade"
+}

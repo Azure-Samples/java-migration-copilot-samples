@@ -1,0 +1,7 @@
+appcat:
+  - target:
+      - azure-aks
+      - azure-appservice
+      - azure-container-apps
+      - cloud-readiness
+    mode: source-only
