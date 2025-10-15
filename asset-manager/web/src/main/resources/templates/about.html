@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>About - Assets Manager</title>
+</head>
+<body>
+    <main>
+        <div class="container mt-4">
+            <h1>About Assets Manager</h1>
+            
+            <div class="row">
+                <div class="col-md-8">
+                    <h3>Overview</h3>
+                    <p>Assets Manager is a Spring Boot application that demonstrates file storage and management capabilities using AWS S3 and RabbitMQ for message processing.</p>
+                    
+                    <h3>Features</h3>
+                    <ul>
+                        <li><strong>File Upload:</strong> Upload files to AWS S3 storage</li>
+                        <li><strong>File Management:</strong> View, download, and delete stored files</li>
+                        <li><strong>Message Processing:</strong> RabbitMQ integration for background processing</li>
+                        <li><strong>Database Integration:</strong> PostgreSQL for metadata storage</li>
+                    </ul>
+                    
+                    <h3>Architecture</h3>
+                    <p>This application consists of two main modules:</p>
+                    <ul>
+                        <li><strong>Web Module:</strong> Handles user interactions and file operations</li>
+                        <li><strong>Worker Module:</strong> Processes background tasks and message queues</li>
+                    </ul>
+                    
+                    <h3>Spring Boot Migration Demo</h3>
+                    <p>This project also serves as a demonstration for Spring Boot 2.x to 3.x migration challenges, showcasing deprecated APIs and patterns that need attention during upgrades.</p>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Quick Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <a href="/s3" class="btn btn-primary btn-block mb-2">View Files</a>
+                            <a href="/s3/upload" class="btn btn-success btn-block mb-2">Upload File</a>
+                            <a href="/help" class="btn btn-info btn-block">Help</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
