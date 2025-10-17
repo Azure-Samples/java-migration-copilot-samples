@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     /**
-     * Configure resource handlers with caching for static content.
+     * Resource handlers with caching for static content.
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -36,7 +36,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     }
 
     /**
-     * Add simple view controllers to provide direct mapping from URL paths to view names.
+     * Simple view controllers to provide direct mapping from URL paths to view names.
      * This provides a shortcut for simple page navigation without needing controller methods.
      */
     @Override
@@ -52,7 +52,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     }
 
     /**
-     * Add interceptors for request logging and file operation monitoring.
+     * Interceptors for request logging and file operation monitoring.
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -62,8 +62,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     }
 
     /**
-     * Custom interceptor using HandlerInterceptorAdapter (DEPRECATED).
-     * 
+     * Custom interceptor using HandlerInterceptorAdapter.
      * This interceptor logs file operations for monitoring and debugging purposes.
      */
     private static class FileOperationLoggingInterceptor extends HandlerInterceptorAdapter {
