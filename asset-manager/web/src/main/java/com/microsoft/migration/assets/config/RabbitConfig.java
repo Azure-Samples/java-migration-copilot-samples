@@ -19,7 +19,6 @@ public class RabbitConfig {
     public Queue imageProcessingQueue() {
         return QueueBuilder.durable(IMAGE_PROCESSING_QUEUE)
         .ttl(300000) // Message TTL of 5 minutes
-        .expires(86400000) // Queue expires after 24 hours of inactivity
         .maxLength(1000) // Max 1000 messages in the queue
         .build();
     }
