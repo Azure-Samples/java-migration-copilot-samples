@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -12,9 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Web MVC configuration using WebMvcConfigurerAdapter.
- */
 @Configuration
 @SuppressWarnings("deprecation")
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
@@ -33,22 +29,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/favicon.ico")
                 .addResourceLocations("classpath:/static/")
                 .setCacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePublic());
-    }
-
-    /**
-     * Simple view controllers to provide direct mapping from URL paths to view names.
-     * This provides a shortcut for simple page navigation without needing controller methods.
-     */
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        // Redirect root to the S3 file listing page
-        registry.addRedirectViewController("/", "/s3");
-        
-        // Add a simple about page
-        registry.addViewController("/about").setViewName("about");
-        
-        // Add a help page for file upload instructions
-        registry.addViewController("/help").setViewName("help");
     }
 
     /**
