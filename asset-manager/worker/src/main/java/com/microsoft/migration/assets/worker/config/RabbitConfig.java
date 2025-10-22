@@ -36,7 +36,8 @@ public class RabbitConfig {
         } catch (ResourceNotFoundException e) {
             try {
                 CreateQueueOptions options = new CreateQueueOptions()
-                    .setDefaultMessageTimeToLive(Duration.ofMillis(300000));
+                    .setDefaultMessageTimeToLive(Duration.ofMillis(300000))
+                    .setMaxMessageSizeInKilobytes(256);
                 queue = adminClient.createQueue(IMAGE_PROCESSING_QUEUE, options);
             } catch (ResourceExistsException ex) {
                 // Queue was created by another instance in the meantime
