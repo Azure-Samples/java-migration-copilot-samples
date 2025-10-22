@@ -19,8 +19,6 @@ import java.time.Duration;
 @Configuration
 public class RabbitConfig {
     public static final String IMAGE_PROCESSING_QUEUE = "image-processing";
-    public static final String RETRY_QUEUE = "retry-queue";
-    public static final Duration RETRY_QUEUE_TTL = Duration.ofMinutes(1);
 
     @Bean
     public ServiceBusAdministrationClient adminClient(AzureServiceBusProperties properties, TokenCredential credential) {
@@ -29,22 +27,6 @@ public class RabbitConfig {
             .buildClient();
     }
 
-    @Bean
-    public QueueProperties retryQueue(ServiceBusAdministrationClient adminClient) {
-        try {
-            return adminClient.getQueue(RETRY_QUEUE);
-        } catch (ResourceNotFoundException e) {
-            try {
-                CreateQueueOptions options = new CreateQueueOptions()
-                    .setDefaultMessageTimeToLive(RETRY_QUEUE_TTL)
-                    .setDeadLetteringOnMessageExpiration(true);
-                return adminClient.createQueue(RETRY_QUEUE, options);
-            } catch (ResourceExistsException ex) {
-                // Queue was created by another instance in the meantime
-                return adminClient.getQueue(RETRY_QUEUE);
-            }
-        }
-    }
 
     @Bean
     public QueueProperties imageProcessingQueue(ServiceBusAdministrationClient adminClient, QueueProperties retryQueue) {
@@ -54,22 +36,13 @@ public class RabbitConfig {
         } catch (ResourceNotFoundException e) {
             try {
                 CreateQueueOptions options = new CreateQueueOptions()
-                    .setForwardDeadLetteredMessagesTo(RETRY_QUEUE);
+                    .setDefaultMessageTimeToLive(Duration.ofMillis(300000));
                 queue = adminClient.createQueue(IMAGE_PROCESSING_QUEUE, options);
             } catch (ResourceExistsException ex) {
                 // Queue was created by another instance in the meantime
                 queue = adminClient.getQueue(IMAGE_PROCESSING_QUEUE);
             }
         }
-
-        // Configure retry queue's DLQ forwarding now that image processing queue exists
-        try {
-            retryQueue.setForwardDeadLetteredMessagesTo(IMAGE_PROCESSING_QUEUE);
-            adminClient.updateQueue(retryQueue);
-        } catch (Exception ex) {
-            // Ignore update errors since basic functionality will still work
-        }
-
         return queue;
     }
 
