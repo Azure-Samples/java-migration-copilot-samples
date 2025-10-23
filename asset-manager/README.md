@@ -171,37 +171,23 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 1. Click the **Run Task** in the Assessment Report, on the right of the row `Messaging Service Migration (Spring AMQP RabbitMQ)	` - `Migrate from RabbitMQ(AMQP) to Azure Service Bus`.
 1. The followed steps are the same as the above PostgreSQL server migration.
 
-#### Migrate using Custom Tasks
+#### Migrate to expose health endpoints using Custom Tasks
 
-The Application `asset-manager` used AWS S3 for image storage and Spring AMQP with RabbitMQ for message queuing. We have already migrated the code of **Web** module to use Azure Blob Storage and Azure Service Bus. These changes are recorded in two separate commits in the `main` branch.
+In this section, you will use the custom tasks to expose health endpoints for your applications instead of writing code on your own.
 
-The following steps demonstrate how to generate custom formulas based on those existing commits. Then, you can migrate **Worker** module to use Azure Blob Storage and Azure Service Bus as well, using the created custom formulas.
+The following steps demonstrate how to generate custom tasks based on external web links and proper prompt.
 
-1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. Hover the mouse over the **Tasks** view.  Select **Create a Custom Task**.
+1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. Click the `+` button in **Tasks** view to create a custom task.
 
    ![Create Formula From Source Control](doc-media/create-formula-from-source-control.png)
-1. In the popped up quick-pick window, select **Create new task**.
+1. In the opened tab, input the **Task Name** and **Task Prompt** as below.
+   - **Task Name**: Expose health endpoint via Spring Boot Actuator
+   - **Task Prompt**: You are a Spring Boot developer assistant, follow the Spring Boot Actuator documentation to add basic health endpoints for Azure Container Apps deployment.
+1. Click the **Add References** button to add the Spring Boot Actuator Offical doc as references.
 
-   ![Create new task](doc-media/create-new-task.png)
-1. Type **migrate web** to search for the commits that migrated the **Web** module, and you should see two commits listed:
-   * migrate web RabbitMQ to azure service bus
-   * migrate web s3 to azure blob storage
-
-   ![Migration Commits](doc-media/migration-commits.png)
-1. You will create two custom tasks based on the two commits. First, create the task for migrating RabbitMQ. Select the commit of **migrate web RabbitMQ to azure service bus**, click OK.
-1. For the next question of **Select uncommitted changes (Optional)**, select nothing and click OK.
-1. For the next question of **Describe changes using local files (Optional)**, choose **Skip file selection**.
-
-   ![Skip file selection](doc-media/skip-file-selection.png)
-1. Default task name will be generated. Give it a new name: "custom task migrate RabbitMQ". Press `Enter` to confirm. Then, task description, and search patterns will be generated in order. Press `Enter` repeatedly to confirm.
-1. Now, the custom task for migrating RabbitMQ is generated and shows under the item of `My Tasks` of the `Tasks` view.
-1. Create another custom task for migrating S3. Follow the same steps you just did, select the commit **migrate web s3 to azure blob storage** to create a new custom task with name: "custom task migrate s3".
-1. Now, the two custom tasks are ready.
-
-   ![Custom Formulas](doc-media/custom-formulas.png)
-1. Select and run the two custom tasks one by one you created in the `Tasks` view of `GITHUB COPILOT APP MODERNIZATION`, one at a time.
-
-   ![Run Formula](doc-media/run-formula.png)
+   ![Health endpoint task](doc-media/health-endpoint-task.png)
+1. In the popped up quick-pick window, select **External links**. Then paste the follow link: `https://docs.spring.io/spring-boot/reference/actuator/endpoints.html`. Click **Save** to create the task.
+1. Click **Run** button to trigger the custom task.
 1. Follow the same steps as the predefined task to review and apply the changes.
 1. Review the proposed code changes and click **Keep** to apply them.
 
