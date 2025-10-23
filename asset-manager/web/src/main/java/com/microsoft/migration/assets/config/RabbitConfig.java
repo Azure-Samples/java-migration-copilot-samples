@@ -18,8 +18,6 @@ public class RabbitConfig {
     @Bean
     public Queue imageProcessingQueue() {
         return QueueBuilder.durable(IMAGE_PROCESSING_QUEUE)
-        .ttl(300000)
-        .maxLengthBytes(1048576)
         .build();
     }
 

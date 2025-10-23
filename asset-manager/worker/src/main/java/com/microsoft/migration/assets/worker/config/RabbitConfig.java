@@ -18,8 +18,6 @@ public class RabbitConfig {
     @Bean
     public Queue imageProcessingQueue() {
         return QueueBuilder.durable(IMAGE_PROCESSING_QUEUE)
-        .ttl(300000) // Message TTL of 5 minutes
-        .maxLength(1000) // Max 1000 messages in the queue
         .build();
     }
 
