@@ -38,7 +38,7 @@ public class S3Controller {
     }
 
     @PostMapping("/upload")
-    public String uploadObject(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+    public String uploadObject(@RequestParam MultipartFile file, RedirectAttributes redirectAttributes) {
         try {
             if (file.isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "Please select a file to upload");
