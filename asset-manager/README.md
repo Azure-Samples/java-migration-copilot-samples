@@ -204,7 +204,7 @@ Now that you have successfully migrated your Java application to use Azure servi
     ![Containerization prompt and plan](doc-media/containerization-plan.png)
 1. View the plan and collaborate with Copilot Agent as it follows the **Execution Steps** in the plan by clicking **Continue**/**Allow** in pop-up chat notifications to run commands. Some of the execution steps leverage agentic tools of **Container Assist**.
 
-    ![Containerization execution steps](doc-media/containerization-execution-steps.png)
+    <!-- ![Containerization execution steps](doc-media/containerization-execution-steps.png) -->
 1. Copilot Agent will help generate Dockerfile, build Docker images and fix build errors if there are any. Click **Keep** to apply the generated code.
 
 ### Deploy to Azure
@@ -223,7 +223,7 @@ At this point, you have successfully migrated the sample Java application `asset
 
 1. View the architecture diagram, resource configurations, and execution steps in the plan. Collaborate with Copilot Agent as it follows the plan and leverages agent tools to create Bicep files for Azure resource provisioning and to use AZD for the overall deployment. You can also check the deployment status in **progress.copilotmd**.
 
-    ![Deployment progress](doc-media/deployment-progress.png)
+    <!--![Deployment progress](doc-media/deployment-progress.png) -->
 <!-- 1. To add some description here for intermediate steps -->
 
 #### Option 2: Use Azure CLI
