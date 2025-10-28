@@ -198,7 +198,7 @@ Now that you have successfully migrated your Java application to use Azure servi
 1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. In **Tasks** view, click the **Run Task** button of **Java** -> **Containerization Tasks** -> **Containerize Application**.
   
     ![Run Containerize Application task](doc-media/containerization-run-task.png)
- 
+
 1. A predefined prompt will be populated in the Copilot Chat panel with Agent Mode. Copilot Agent will start to analyze the workspace and to create a **containerization-plan.copiotmd** with the containerization plan.
 
     ![Containerization prompt and plan](doc-media/containerization-plan.png)
@@ -209,7 +209,26 @@ Now that you have successfully migrated your Java application to use Azure servi
 
 ### Deploy to Azure
 
-At this point, you have successfully migrated the sample Java application `asset-manager` to Migrate to Azure Database for PostgreSQL (Spring), Azure Blob Storage, and Azure Service Bus. Now, you can deploy the migrated application to Azure using the Azure CLI after you identify a working location for your Azure resources.
+At this point, you have successfully migrated the sample Java application `asset-manager` to Migrate to Azure Database for PostgreSQL (Spring), Azure Blob Storage, and Azure Service Bus and have containerized the modules. Now, you can deploy the migrated application to Azure using **Deployment Tasks** of `GITHUB COPILOT APP MODERNIZATION` or using the Azure CLI.
+
+#### Option 1: Execute Deployment Tasks
+
+1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. In **Tasks** view, click the **Run Task** button of **Java** -> **Deployment Tasks** -> **Provision Infrastructure and Deploy to Azure**.
+
+    ![Run Deployment task](doc-media/deployment-run-task.png)
+
+1. A predefined prompt will be populated in the Copilot Chat panel with Agent Mode. Copilot Agent will start to analyze the project and then create a deployment plan in **plan.copilotmd** with Azure resources architecture, recommended Azure resources for project and security configurations, and execution steps for deployment. The default hosting Azure service is Azure Container Apps. <!-- TODO: add steps to change the hosting service to AKS. -->
+
+    ![Deployment architecure](doc-media/deployment-architecure.png)
+
+1. View the architecture diagram, resource configurations, and execution steps in the plan. Collaborate with Copilot Agent as it follows the plan and leverages agent tools to create Bicep files for Azure resource provisioning and to use AZD for the overall deployment. You can also check the deployment status in **progress.copilotmd**.
+
+    ![Deployment progress](doc-media/deployment-progress.png)
+<!-- 1. To add some description here for intermediate steps -->
+
+#### Option 2: Use Azure CLI
+
+You can use Azure CLI after you identify a working location for your Azure resources.
 
 For example, an Azure Database for PostgreSQL Flexible Server requires a location that supports the service. Follow the instructions below to find a suitable location.
 
