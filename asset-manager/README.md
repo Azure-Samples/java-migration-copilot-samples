@@ -191,6 +191,22 @@ The following steps demonstrate how to generate custom tasks based on external w
 1. Follow the same steps as the predefined task to review and apply the changes.
 1. Review the proposed code changes and click **Keep** to apply them.
 
+### Containerize Applications
+
+Now that you have successfully migrated your Java application to use Azure services, the next step is to prepare it for cloud deployment by containerizing both the web and worker modules. In this section, you will use **Containerization Tasks** to containerize your migrated applications.
+
+1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. In **Tasks** view, click the **Run Task** button of **Java** -> **Containerization Tasks** -> **Containerize Application**.
+  
+    ![Run Containerize Application task](doc-media/containerization-run-task.png)
+ 
+1. A predefined prompt will be populated in the Copilot Chat panel with Agent Mode. Copilot Agent will start to analyze the workspace and to create a **containerization-plan.copiotmd** with the containerization plan.
+
+    ![Containerization prompt and plan](doc-media/containerization-plan.png)
+1. View the plan and collaborate with Copilot Agent as it follows the **Execution Steps** in the plan by clicking **Continue**/**Allow** in pop-up chat notifications to run commands. Some of the execution steps leverage agentic tools of **Container Assist**.
+
+    ![Containerization execution steps](doc-media/containerization-execution-steps.png)
+1. Copilot Agent will help generate Dockerfile, build Docker images and fix build errors if there are any. Click **Keep** to apply the generated code.
+
 ### Deploy to Azure
 
 At this point, you have successfully migrated the sample Java application `asset-manager` to Migrate to Azure Database for PostgreSQL (Spring), Azure Blob Storage, and Azure Service Bus. Now, you can deploy the migrated application to Azure using the Azure CLI after you identify a working location for your Azure resources.
