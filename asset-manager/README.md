@@ -219,7 +219,7 @@ At this point, you have successfully migrated the sample Java application `asset
 
 1. A predefined prompt will be populated in the Copilot Chat panel with Agent Mode. Copilot Agent will start to analyze the project and then create a deployment plan in **plan.copilotmd** with Azure resources architecture, recommended Azure resources for project and security configurations, and execution steps for deployment. The default hosting Azure service is Azure Container Apps. <!-- TODO: add steps to change the hosting service to AKS. -->
 
-    ![Deployment architecure](doc-media/deployment-architecure.png)
+    <!-- ![Deployment architecure](doc-media/deployment-architecure.png) -->
 
 1. View the architecture diagram, resource configurations, and execution steps in the plan. Collaborate with Copilot Agent as it follows the plan and leverages agent tools to create Bicep files for Azure resource provisioning and to use AZD for the overall deployment. You can also check the deployment status in **progress.copilotmd**.
 
