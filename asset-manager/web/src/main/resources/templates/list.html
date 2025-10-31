@@ -7,7 +7,7 @@
         <div class="row mt-4" id="imageContainer" th:if="${not #lists.isEmpty(objects)}">
             <div class="col-md-4 mb-4" th:each="object : ${objects}" th:attr="data-key=${object.key}">
                 <div class="card">
-                    <img th:src="${object.url}" class="card-img-top" alt="Image preview" style="height: 200px; object-fit: cover;">
+                    <img th:src="@{'/s3/view/' + ${object.key}}" class="card-img-top" alt="Image preview" style="height: 200px; object-fit: cover;">
                     <div class="card-body">
                         <h5 class="card-title text-truncate" th:text="${object.name}">Image name</h5>
                         <p class="card-text">

@@ -26,7 +26,7 @@ public class RabbitConfig {
 
 
     @Bean
-    public QueueProperties imageProcessingQueue(ServiceBusAdministrationClient adminClient, QueueProperties retryQueue) {
+    public QueueProperties imageProcessingQueue(ServiceBusAdministrationClient adminClient) {
         QueueProperties queue;
         try {
             queue = adminClient.getQueue(IMAGE_PROCESSING_QUEUE);
