@@ -142,21 +142,12 @@ In VSCode, open the Extensions view from the Activity Bar, search for the `GitHu
 **Alternative: IntelliJ IDEA**
 Alternatively, you can use IntelliJ IDEA. Open **File** > **Settings** (or **IntelliJ IDEA** > **Preferences** on macOS), navigate to **Plugins** > **Marketplace**, search for `GitHub Copilot app modernization`, and click **Install**. Restart IntelliJ IDEA if prompted.
 
-### Upgrade Runtime & Frameworks
+### Assess Your Java Application
+
+The first step is to assess the sample Java application `asset-manager`. The assessment provides insights into the application's readiness for migration to Azure.
 
 1. Open VS Code with all the prerequisites installed for the asset manager by changing the directory to the `asset-manager` directory and running `code .` in that directory.
 1. Open the `GitHub Copilot app modernization` extension.
-1. In the **QUICKSTART** view, click the **Upgrade Runtime & Frameworks** button.
-
-    ![Java Upgrade](doc-media/java-upgrade-button.png)
-1. After clicking the button, the Copilot Chat panel will open with Agent Mode. The agent will check out a new branch and start upgrading the JDK version and Spring/Spring Boot framework. Click **Allow** for any requests from the agent.
-
-### Assess Your Java Application
-
-Then you can assess the sample Java application `asset-manager`. The assessment provides insights into the application's readiness for migration to Azure.
-
-> Note: If starting freshly in this section, you can checkout the [workshop/java-upgrade](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/java-upgrade/asset-manager) branch to start with the upgraded status of the project. Additionally, if you have any problems with the Java upgrading step, you can also start from that branch for the content below.
-
 1. In the **QUICKSTART** view, click the **Migrate to Azure** button to trigger app assessment.
 
    ![Trigger Assessment](doc-media/trigger-assessment.png)
@@ -164,7 +155,18 @@ Then you can assess the sample Java application `asset-manager`. The assessment 
 1. Wait for the assessment to be completed and the report to be generated.
 1. Review the **Assessment Report**. Select the **Issues** tab to view the proposed solutions for the issues identified in the report.
 
+### Upgrade Runtime & Frameworks
+
+1. In the **Java Upgrade** table at the bottom of the **Issues** tab, click the **Run Task** button of the first entry **Java Version Upgrade**.
+
+    ![Java Upgrade](doc-media/java-upgrade.png)
+1. After clicking the **Run Task** button, the Copilot Chat panel will open with Agent Mode. The agent will check out a new branch and start upgrading the JDK version and Spring/Spring Boot framework. Click **Allow** for any requests from the agent.
+
 ### Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Tasks
+
+Then you can migrate the sample Java application `asset-manager` to Azure.
+
+> Note: We've set up a [workshop/java-upgrade](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/java-upgrade/asset-manager) branch where the Java upgrade has already been completed. Feel free to switch to this branch if you'd like to skip ahead and continue with the rest of the workshop.
 
 1. For this workshop, select **Migrate to Azure Database for PostgreSQL (Spring)** in the Solution list, then click **Run Task**.
 
