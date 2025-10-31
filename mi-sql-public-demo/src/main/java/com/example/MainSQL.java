@@ -28,9 +28,10 @@ public class MainSQL {
         }
 
         String connString = properties.getProperty("AZURE_SQLDB_CONNECTIONSTRING");
-        String clientId = properties.getProperty("AZURE_CLIENT_ID");
+        String user = properties.getProperty("AZURE_SQLDB_USER");
+        String password = properties.getProperty("AZURE_SQLDB_PASSWORD");
         
-        connString = connString + ";msiClientId=" + clientId + ";authentication=ActiveDirectoryMSI";
+        connString = connString + ";user=" + user + ";password=" + password;
         System.out.print(connString);
         
         SQLServerDataSource ds = new SQLServerDataSource();
