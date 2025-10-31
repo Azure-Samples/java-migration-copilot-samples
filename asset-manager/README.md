@@ -100,16 +100,16 @@ Run the following commands to start the apps locally. This will:
 Windows:
 
 ```batch
-scripts\start.cmd
+scripts\startapp.cmd
 ```
 
 Linux:
 
 ```bash
-scripts/start.sh
+scripts/startapp.sh
 ```
 
-To stop, run `stop.cmd` or `stop.sh` in the `scripts` directory.
+To stop, run `stopapp.cmd` or `stopapp.sh` in the `scripts` directory.
 
 ## App Modernization
 
