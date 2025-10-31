@@ -225,6 +225,25 @@ At this point, you have successfully migrated the sample Java application `asset
 
 Now, you can deploy the migrated application to Azure using the Azure CLI after you identify a working location for your Azure resources. For example, an Azure Database for PostgreSQL Flexible Server requires a location that supports the service. Follow the instructions below to find a suitable location.
 
+#### Option 1: Execute Deployment Tasks
+
+1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. In **Tasks** view, click the **Run Task** button of **Java** -> **Deployment Tasks** -> **Provision Infrastructure and Deploy to Azure**.
+
+    ![Run Deployment task](doc-media/deployment-run-task.png)
+1. A predefined prompt will be populated in the Copilot Chat panel with Agent Mode. The default hosting Azure service is Azure Container Apps.To change the hosting service to **Azure Kubernetes Service** (AKS), click on the prompt in the Copilot Chat panel and edit the last sentence of the prompt to **Hosting service: AKS**.
+    ![Deployment prompt](doc-media/deployment-prompt.png)
+
+1. Click ****Continue**/**Allow** if pop-up notifications to let Copilot Agent analyze the project and create a deployment plan in **plan.copilotmd** with Azure resources architecture, recommended Azure resources for project and security configurations, and execution steps for deployment.
+
+1. View the architecture diagram, resource configurations, and execution steps in the plan. Click **Keep** to save the plan and type in **Execute the plan** to start the deployment.
+    ![Deployment execute](doc-media/deployment-execute.png)
+
+1. Collaborate with Copilot Agent by clicking **Continue**/**Allow** in chat notifications or typing **y**/**yes** for interactive commands in terminal as Copilot Agent follows the plan and leverages agent tools to create and run provisioning and deployment scripts, fix potential errors, and finish the deployment. You can also check the deployment status in **progress.copilotmd**. **DO NOT interrupt** when provisioning or deployment scripts are running.
+
+    ![Deployment progress](doc-media/deployment-progress.png)
+
+#### Option 2: Use Azure CLI
+
 1. Run the following command to list all available locations for the current subscription.
 
    ```bash
