@@ -11,8 +11,6 @@ import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainer
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.Duration;
-
 @Configuration
 public class RabbitConfig {
     public static final String IMAGE_PROCESSING_QUEUE = "image-processing";
