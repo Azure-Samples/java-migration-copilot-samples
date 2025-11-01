@@ -1,6 +1,6 @@
 package com.microsoft.migration.assets.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

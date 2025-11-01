@@ -11,6 +11,7 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -32,7 +33,7 @@ public class S3FileProcessingService extends AbstractFileProcessingService {
                 .key(key)
                 .build();
                 
-        try (var inputStream = s3Client.getObject(request)) {
+        try (InputStream inputStream = s3Client.getObject(request)) {
             Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING);
         }
     }
