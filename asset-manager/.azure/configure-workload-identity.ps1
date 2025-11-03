@@ -1,7 +1,7 @@
 # Create federated identity credential for workload identity
-# This file represents a Powershell command that should be run after k8s manifests are generated and before deploying to AKS
+# During Copilot-assisted deployment, the command should be executed automatically in Copilot Chat panel after k8s manifests are generated and before deploying to AKS
+# This script is a substitute for Copilot command execution.
 # Usage: .\configure-workload-identity.ps1 -ResourceToken <token>
-# During Copilot-assisted deployment, the command should be executed automatically in Copilot Chat panel.
 
 param(
     [Parameter(Mandatory=$true)]

@@ -1,5 +1,5 @@
 -- PostgreSQL User Setup Template
--- This file is created when running the provisioning script, provision.ps1
+-- This file is created when running the provisioning script, provision.ps1 and should be automatically run by Copilot Agent.
 -- 
 -- Placeholders to replace:
 -- - {{MANAGED_IDENTITY_NAME}} - Replace with actual managed identity name (e.g., "idib6mj")
