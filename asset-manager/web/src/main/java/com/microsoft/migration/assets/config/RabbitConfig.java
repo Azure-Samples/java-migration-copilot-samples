@@ -11,8 +11,6 @@ import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainer
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.Duration;
-
 @Configuration
 public class RabbitConfig {
     public static final String IMAGE_PROCESSING_QUEUE = "image-processing";
@@ -24,30 +22,8 @@ public class RabbitConfig {
     }
 
     @Bean
-    public QueueProperties imageProcessingQueue(ServiceBusAdministrationClient adminClient, QueueProperties retryQueue) {
-        QueueProperties queue;
-        try {
-            queue = adminClient.getQueue(IMAGE_PROCESSING_QUEUE);
-        } catch (ResourceNotFoundException e) {
-            try {
-                CreateQueueOptions options = new CreateQueueOptions()
-                    .setForwardDeadLetteredMessagesTo(RETRY_QUEUE);
-                queue = adminClient.createQueue(IMAGE_PROCESSING_QUEUE, options);
-            } catch (ResourceExistsException ex) {
-                // Queue was created by another instance in the meantime
-                queue = adminClient.getQueue(IMAGE_PROCESSING_QUEUE);
-            }
-        }
-        
-        // Configure retry queue's DLQ forwarding now that image processing queue exists
-        try {
-            retryQueue.setForwardDeadLetteredMessagesTo(IMAGE_PROCESSING_QUEUE);
-            adminClient.updateQueue(retryQueue);
-        } catch (Exception ex) {
-            // Ignore update errors since basic functionality will still work
-        }
-        
-        return queue;
+    public MessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
     }
 
     @Bean
@@ -60,4 +36,5 @@ public class RabbitConfig {
         factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         return factory;
     }
+
 }
