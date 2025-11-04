@@ -11,6 +11,7 @@
 
     <properties>
         <aws-sdk.version>2.25.13</aws-sdk.version>
+        <version.spring.cloud.azure>5.19.0</version.spring.cloud.azure>
     </properties>
 
     <artifactId>assets-manager-web</artifactId>
@@ -27,12 +28,22 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
+            <groupId>com.azure.spring</groupId>
+             <artifactId>spring-cloud-azure-starter</artifactId>
+         </dependency>
+         <dependency>
+             <groupId>com.azure.spring</groupId>
+             <artifactId>spring-messaging-azure-servicebus</artifactId>
         </dependency>
         <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>s3</artifactId>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-storage-blob</artifactId>
+            <version>12.29.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-identity</artifactId>
+            <version>1.14.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -69,10 +80,17 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>software.amazon.awssdk</groupId>
-                <artifactId>s3</artifactId>
-                <version>${aws-sdk.version}</version>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-storage-blob-batch</artifactId>
+                <version>12.25.0</version>
             </dependency>
+            <dependency>
+                 <groupId>com.azure.spring</groupId>
+                 <artifactId>spring-cloud-azure-dependencies</artifactId>
+                 <version>${version.spring.cloud.azure}</version>
+                 <type>pom</type>
+                 <scope>import</scope>
+             </dependency>
         </dependencies>
     </dependencyManagement>
 

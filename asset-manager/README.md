@@ -1,12 +1,12 @@
 # Asset Manager
 
-This [workshop/initial](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/initial/asset-manager) branch of the asset-manager project is the original state before being migrated to Azure services. It is organized as follows:
+The [main](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager) branch of the asset-manager project is the original state before being migrated to Azure services. It is organized as follows:
 * AWS S3 for image storage, using password-based authentication (access key/secret key)
 * RabbitMQ for message queuing, using password-based authentication
 * PostgreSQL database for metadata storage, using password-based authentication
 
 In this workshop, you will use the **GitHub Copilot app modernization** extension to assess, upgrade, migrate, and finally deploy the project to Azure. There are 3 branches we have prepared for you in case you have any problems with any steps in this workshop:
-* [workshop/initial](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/initial/asset-manager): The original state of the asset-manager application.
+* [main](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager): The original state of the asset-manager application.
 * [workshop/java-upgrade](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/java-upgrade/asset-manager): The project state after assessment and Java upgrading steps.
 * [workshop/expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/expected/asset-manager): The project state after assessment, Java upgrading, and migration steps.
 
@@ -81,12 +81,11 @@ Password-based authentication
 
 ## Run Locally
 
-Check out the [workshop/initial](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/initial/asset-manager) branch to run the current infrastructure locally:
+Clone the repository and open the asset-manager folder to run the current project locally:
 
 ```bash
 git clone https://github.com/Azure-Samples/java-migration-copilot-samples.git
 cd java-migration-copilot-samples/asset-manager
-git checkout workshop/initial
 ```
 
 **Prerequisites**: 
@@ -101,34 +100,40 @@ Run the following commands to start the apps locally. This will:
 Windows:
 
 ```batch
-scripts\start.cmd
+scripts\startapp.cmd
 ```
 
 Linux:
 
 ```bash
-scripts/start.sh
+scripts/startapp.sh
 ```
 
-To stop, run `stop.cmd` or `stop.sh` in the `scripts` directory.
+To stop, run `stopapp.cmd` or `stopapp.sh` in the `scripts` directory.
 
 ## App Modernization
 
 The following sections guide you through the process of modernizing the sample Java application `asset-manager` to Azure using GitHub Copilot app modernization.
 
 **Prerequisites**: 
-To successfully complete this workshop, you need the following:
+- A GitHub account with [GitHub Copilot](https://github.com/features/copilot) enabled. A Pro, Pro+, Business, or Enterprise plan is required.
+- One of the following IDEs:
+  - The latest version of [Visual Studio Code](https://code.visualstudio.com/). Must be version 1.101 or later.
+    - [GitHub Copilot in Visual Studio Code](https://code.visualstudio.com/docs/copilot/overview). For setup instructions, see [Set up GitHub Copilot in Visual Studio Code](https://code.visualstudio.com/docs/copilot/setup). Be sure to sign in to your GitHub account within Visual Studio Code.
+    - [GitHub Copilot app modernization](https://marketplace.visualstudio.com/items?itemName=vscjava.migrate-java-to-azure). Restart Visual Studio Code after installation.
+  - The latest version of [IntelliJ IDEA](https://www.jetbrains.com/idea/download). Must be version 2023.3 or later.
+    - [GitHub Copilot](https://plugins.jetbrains.com/plugin/17718-github-copilot). Must be version 1.5.59 or later. For more instructions, see [Set up GitHub Copilot in IntelliJ IDEA](https://docs.github.com/en/copilot/get-started/quickstart). Be sure to sign in to your GitHub account within IntelliJ IDEA.
+    - [GitHub Copilot app modernization](https://plugins.jetbrains.com/plugin/28791-github-copilot-app-modernization). Restart IntelliJ IDEA after installation. If you don't have GitHub Copilot installed, you can install GitHub Copilot app modernization directly.
+    - For more efficient use of Copilot in app modernization: in the IntelliJ IDEA settings, select the **Tools** > **GitHub Copilot** configuration window, and then select **Auto-approve** and **Trust MCP Tool Annotations**. For more information, see [Configure settings for GitHub Copilot app modernization to optimize the experience for IntelliJ](configure-settings-intellij.md).
+- [Java JDK](/java/openjdk/download) for both the source and target JDK versions.
+- [Maven](https://maven.apache.org/download.cgi) or [Gradle](https://gradle.org/install/) to build Java projects.
+- A Git-managed Java project using Maven or Gradle.
+- For Maven-based projects: access to the public Maven Central repository.
+- In the Visual Studio Code settings, make sure `chat.extensionTools.enabled` is set to `true`. This setting might be controlled by your organization.
 
-- [VSCode](https://code.visualstudio.com/): The latest version is recommended.
-- [A GitHub account with GitHub Copilot enabled](https://github.com/features/copilot): All plans are supported, including the Free plan.
-- [GitHub Copilot extension in VSCode](https://code.visualstudio.com/docs/copilot/overview): The latest version is recommended.
-- [JDK 21](https://learn.microsoft.com/en-us/java/openjdk/download#openjdk-21): Required for the code remediation feature and running the initial application locally.
-- [Maven 3.9.9](https://maven.apache.org/install.html): Required for the assessment and code remediation feature.
-
-If you want to deploy the application to Azure, the following are also required:
-- [Azure subscription](https://azure.microsoft.com/free/): Required to deploy the migrated application to Azure.
-- [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli): Required if you deploy the migrated application to Azure locally. The latest version is recommended.
-- Fork the [GitHub repository](https://github.com/Azure-Samples/java-migration-copilot-samples) that contains the sample Java application. Please ensure you **uncheck** the default selection "Copy the `main` branch only". Clone it to your local machine. Open the `asset-manager` folder in VSCode and check out the `workshop/initial` branch.
+> Note: If you're using Gradle, only the Gradle wrapper version 5+ is supported. The Kotlin Domain Specific Language (DSL) isn't supported.
+>
+> The function `My Tasks` isn't supported yet for IntelliJ IDEA.
 
 ### Install GitHub Copilot app modernization
 
@@ -143,30 +148,32 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 
 1. Open VS Code with all the prerequisites installed for the asset manager by changing the directory to the `asset-manager` directory and running `code .` in that directory.
 1. Open the `GitHub Copilot app modernization` extension.
-1. In the **QUICKSTART** view, click the **Migrate to Azure** button to trigger the Modernization Assessor.
+1. In the **QUICKSTART** view, click the **Migrate to Azure** button to trigger app assessment.
 
    ![Trigger Assessment](doc-media/trigger-assessment.png)
 
 1. Wait for the assessment to be completed and the report to be generated.
 1. Review the **Assessment Report**. Select the **Issues** tab to view the proposed solutions for the issues identified in the report.
 
-### Upgrade Your Java Application
+### Upgrade Runtime & Frameworks
 
 1. In the **Java Upgrade** table at the bottom of the **Issues** tab, click the **Run Task** button of the first entry **Java Version Upgrade**.
 
     ![Java Upgrade](doc-media/java-upgrade.png)
 1. After clicking the **Run Task** button, the Copilot Chat panel will open with Agent Mode. The agent will check out a new branch and start upgrading the JDK version and Spring/Spring Boot framework. Click **Allow** for any requests from the agent.
 
-1. Refer to the [workshop/java-upgrade](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/java-upgrade/asset-manager) branch for the upgraded status of the project. Additionally, if you have any problems with the Java upgrading step, you can start from that branch for the content below.
-
 ### Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Tasks
+
+Then you can migrate the sample Java application `asset-manager` to Azure.
+
+> Note: We've set up a [workshop/java-upgrade](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/java-upgrade/asset-manager) branch where the Java upgrade has already been completed. Feel free to switch to this branch if you'd like to skip ahead and continue with the rest of the workshop.
 
 1. For this workshop, select **Migrate to Azure Database for PostgreSQL (Spring)** in the Solution list, then click **Run Task**.
 
    ![Confirm Solution](doc-media/confirm-postgresql-solution.png)
 1. After clicking the **Run Task** button in the Assessment Report, the Copilot Chat panel will open with Agent Mode.
 1. The Copilot Agent will first analyze the project and generate a migration plan.
-1. After the plan is generated, Copilot Chat will stop with two generated files: **plan.md** and **progress.md**. Please manually input "Continue" or "Proceed" in the chat to confirm the plan and proceed with its subsequent actions to execute the plan.
+1. After the plan is generated, Copilot Chat will stop with two generated files: **plan.md** and **progress.md**. If prompted, enter "Continue" or "Proceed" in the chat to confirm and execute the plan.
 1. When the code is migrated, the extension will prepare the **CVE Validation and Fixing** process. Click **Allow** to proceed.
 1. Review the proposed code changes and click **Keep** to apply them.
 
@@ -182,10 +189,9 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 
 ### Expose health endpoints using Custom Tasks
 
-In this section, you will use custom tasks to expose health endpoints for your applications instead of writing code yourself.
-> Note: Custom tasks are not supported for the IntelliJ IDEA plugin. If you are using IntelliJ IDEA, you can skip this section.
+In this section, you will use custom tasks to expose health endpoints for your applications instead of writing code yourself. The following steps demonstrate how to generate custom tasks based on external web links and proper prompts.
 
-The following steps demonstrate how to generate custom tasks based on external web links and proper prompts.
+> Note: Custom tasks are not supported for the IntelliJ IDEA plugin. If you are using IntelliJ IDEA, you can skip this section.
 
 1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. Click the `+` button in the **Tasks** view to create a custom task.
 
