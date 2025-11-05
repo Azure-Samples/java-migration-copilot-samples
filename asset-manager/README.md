@@ -1,5 +1,28 @@
 # Asset Manager
 
+This document serves as a comprehensive workshop guide that will walk you through the process of migrating a Java application to Azure using GitHub Copilot app modernization. The workshop covers assessment, Java/framework upgrades, migration to Azure services, containerization, and deployment.
+
+**What the modernization Process Will Do:**
+The modernization will transform your application from the outdated technologies to a modern Azure-native solution. This includes upgrading from Java 8 to Java 17, migrating from Spring Boot 2.x to 3.x, replacing AWS S3 with Azure Blob Storage, switching from RabbitMQ to Azure Service Bus, migrating to Azure Database for PostgreSQL, implementing managed identity authentication, adding health checks, containerizing the applications, and preparing them for cloud deployment with proper monitoring.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Current Architecture](#current-architecture)
+- [Run Locally](#run-locally)
+- [App Modernization](#app-modernization)
+  - [Install GitHub Copilot app modernization](#install-github-copilot-app-modernization)
+  - [Assess Your Java Application](#assess-your-java-application)
+  - [Upgrade Runtime & Frameworks](#upgrade-runtime--frameworks)
+  - [Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Tasks](#migrate-to-azure-database-for-postgresql-flexible-server-using-predefined-tasks)
+  - [Migrate to Azure Blob Storage using Predefined Tasks](#migrate-to-azure-blob-storage-using-predefined-tasks)
+  - [Migrate to Azure Service Bus using Predefined Tasks](#migrate-to-azure-service-bus-using-predefined-tasks)
+  - [Expose health endpoints using Custom Tasks](#expose-health-endpoints-using-custom-tasks)
+  - [Containerize Applications](#containerize-applications)
+  - [Deploy to Azure](#deploy-to-azure)
+
+## Overview
+
 The [main](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager) branch of the asset-manager project is the original state before being migrated to Azure services. It is organized as follows:
 * AWS S3 for image storage, using password-based authentication (access key/secret key)
 * RabbitMQ for message queuing, using password-based authentication
