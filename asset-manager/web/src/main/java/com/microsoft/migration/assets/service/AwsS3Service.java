@@ -134,9 +134,8 @@ public class AwsS3Service implements StorageService {
     }
 
     private String generateUrl(String key) {
-        return blobServiceClient.getBlobContainerClient(containerName)
-                .getBlobClient(key)
-                .getBlobUrl();
+        // Use application proxy URL for consistent behavior across storage types
+        return "/s3/view/" + key;
     }
 
     private String generateKey(String filename) {
