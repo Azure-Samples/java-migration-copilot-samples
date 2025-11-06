@@ -243,3 +243,5 @@ At this point, you have successfully migrated the sample Java application `asset
 1. When prompted, click **Continue**/**Allow** in chat notifications or type **y**/**yes** in terminal as Copilot Agent follows the plan and leverages agent tools to create and run provisioning and deployment scripts, fix potential errors, and finish the deployment. You can also check the deployment status in **progress.copilotmd**. **DO NOT interrupt** when provisioning or deployment scripts are running.
 
     ![Deployment progress](doc-media/deployment-progress.png)
+
+> Note: If you encounter any issues with the deployment step, you can refer to the expected Copilot-generated deployment scripts in /.azure folder of the [workshop/deployment-expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/deployment-expected/asset-manager) branch.
