@@ -244,4 +244,20 @@ At this point, you have successfully migrated the sample Java application `asset
 
     ![Deployment progress](doc-media/deployment-progress.png)
 
-> Note: If you encounter any issues with the deployment step, you can refer to the expected Copilot-generated deployment scripts in /.azure folder of the [workshop/deployment-expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/deployment-expected/asset-manager) branch.
+> Note: If you encounter any issues with the deployment step, you can refer to the expected Copilot-generated deployment scripts in /.azure folder of the [workshop/deployment-expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/deployment-expected/asset-manager) branch to compare what you have and troubleshoot the deployment scripts.
+
+#### Clean up
+
+When no longer needed, you can delete all related resources using the following scripts.
+
+Windows:
+```batch
+scripts\cleanup-azure-resources.cmd -ResourceGroupName <your resource group name>
+```
+
+Linux:
+```bash
+scripts/cleanup-azure-resources.sh -ResourceGroupName <your resource group name>
+```
+
+If you deploy the app using GitHub Codespaces, delete the Codespaces environment by navigating to your forked repository in GitHub and selecting **Code** > **Codespaces** > **Delete**.
