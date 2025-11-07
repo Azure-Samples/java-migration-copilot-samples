@@ -1,5 +1,6 @@
 package com.microsoft.migration.assets.controller;
 
+import com.microsoft.migration.assets.constants.StorageConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -8,6 +9,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "redirect:/s3";
+        return "redirect:/" + StorageConstants.STORAGE_PATH;
     }
 }
