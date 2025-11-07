@@ -1,5 +1,7 @@
 package com.microsoft.migration.assets.service;
 
+import com.microsoft.migration.assets.constants.StorageConstants;
+import com.microsoft.migration.assets.model.ImageProcessingMessage;
 import com.microsoft.migration.assets.model.S3StorageItem;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,5 +49,12 @@ public interface StorageService {
             return key.substring(0, dotIndex) + "_thumbnail" + key.substring(dotIndex);
         }
         return key + "_thumbnail";
+    }
+
+    /**
+     * Generate a URL for viewing the object
+     */
+    default String generateUrl(String key) {
+        return "/" + StorageConstants.STORAGE_PATH + "/view/" + key;
     }
 }

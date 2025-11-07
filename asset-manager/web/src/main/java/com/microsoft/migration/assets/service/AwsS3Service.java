@@ -145,11 +145,6 @@ public class AwsS3Service implements StorageService {
         return lastSlashIndex >= 0 ? key.substring(lastSlashIndex + 1) : key;
     }
 
-    private String generateUrl(String key) {
-        // Use application proxy URL for consistent behavior across storage types
-        return "/s3/view/" + key;
-    }
-
     private String generateKey(String filename) {
         return UUID.randomUUID().toString() + "-" + filename;
     }
