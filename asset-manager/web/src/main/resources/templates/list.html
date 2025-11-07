@@ -7,7 +7,7 @@
         <div class="row mt-4" id="imageContainer" th:if="${not #lists.isEmpty(objects)}">
             <div class="col-md-4 mb-4" th:each="object : ${objects}" th:attr="data-key=${object.key}">
                 <div class="card">
-                    <img th:src="@{'/s3/view/' + ${object.key}}" class="card-img-top" alt="Image preview" style="height: 200px; object-fit: cover;">
+                    <img th:src="@{'/storage/view/' + ${object.key}}" class="card-img-top" alt="Image preview" style="height: 200px; object-fit: cover;">
                     <div class="card-body">
                         <h5 class="card-title text-truncate" th:text="${object.name}">Image name</h5>
                         <p class="card-text">
@@ -17,8 +17,8 @@
                             </small>
                         </p>
                         <div class="d-flex justify-content-between">
-                            <a th:href="@{'/s3/view-page/' + ${object.key}}" class="btn btn-primary btn-sm">View</a>
-                            <form th:action="@{'/s3/delete/' + ${object.key}}" method="post" onsubmit="return confirm('Are you sure you want to delete this file?');">
+                            <a th:href="@{'/storage/view-page/' + ${object.key}}" class="btn btn-primary btn-sm">View</a>
+                            <form th:action="@{'/storage/delete/' + ${object.key}}" method="post" onsubmit="return confirm('Are you sure you want to delete this file?');">
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </div>
@@ -28,7 +28,7 @@
         </div>
 
         <div class="alert alert-info" th:if="${#lists.isEmpty(objects)}">
-            No images found in the S3 bucket. <a th:href="@{/s3/upload}" class="alert-link">Upload your first image!</a>
+            No images found in the S3 bucket. <a th:href="@{/storage/upload}" class="alert-link">Upload your first image!</a>
         </div>
 
         <!-- Loading indicator for auto-refreshing -->
