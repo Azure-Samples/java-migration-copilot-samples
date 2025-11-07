@@ -1,5 +1,6 @@
 package com.microsoft.migration.assets.config;
 
+import com.microsoft.migration.assets.constants.StorageConstants;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -37,8 +38,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new FileOperationLoggingInterceptor())
-                .addPathPatterns("/s3/**")
-                .excludePathPatterns("/s3/view/**"); // Exclude file download endpoints from detailed logging
+                .addPathPatterns("/" + StorageConstants.STORAGE_PATH + "/**")
+                .excludePathPatterns("/" + StorageConstants.STORAGE_PATH + "/view/**"); // Exclude file download endpoints from detailed logging
     }
 
     /**
@@ -89,7 +90,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 return "FILE_DOWNLOAD";
             } else if (uri.contains("/view-page/")) {
                 return "FILE_VIEW_PAGE";
-            } else if ("GET".equals(method) && uri.equals("/s3")) {
+            } else if ("GET".equals(method) && uri.equals("/" + StorageConstants.STORAGE_PATH)) {
                 return "FILE_LIST";
             } else {
                 return "FILE_OPERATION";

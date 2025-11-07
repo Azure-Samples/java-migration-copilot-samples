@@ -1,5 +1,6 @@
 package com.microsoft.migration.assets.controller;
 
+import com.microsoft.migration.assets.constants.StorageConstants;
 import com.microsoft.migration.assets.model.S3StorageItem;
 import com.microsoft.migration.assets.service.StorageService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/s3")
+@RequestMapping("/" + StorageConstants.STORAGE_PATH)
 @RequiredArgsConstructor
 public class S3Controller {
 
@@ -42,15 +43,15 @@ public class S3Controller {
         try {
             if (file.isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "Please select a file to upload");
-                return "redirect:/s3/upload";
+                return "redirect:/" + StorageConstants.STORAGE_PATH + "/upload";
             }
 
             storageService.uploadObject(file);
             redirectAttributes.addFlashAttribute("success", "File uploaded successfully");
-            return "redirect:/s3";
+            return "redirect:/" + StorageConstants.STORAGE_PATH;
         } catch (IOException e) {
             redirectAttributes.addFlashAttribute("error", "Failed to upload file: " + e.getMessage());
-            return "redirect:/s3/upload";
+            return "redirect:/" + StorageConstants.STORAGE_PATH + "/upload";
         }
     }
     
@@ -67,11 +68,11 @@ public class S3Controller {
                 return "view";
             } else {
                 redirectAttributes.addFlashAttribute("error", "Image not found");
-                return "redirect:/s3";
+                return "redirect:/" + StorageConstants.STORAGE_PATH;
             }
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to view image: " + e.getMessage());
-            return "redirect:/s3";
+            return "redirect:/" + StorageConstants.STORAGE_PATH;
         }
     }
 
@@ -100,6 +101,6 @@ public class S3Controller {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to delete file: " + e.getMessage());
         }
-        return "redirect:/s3";
+        return "redirect:/" + StorageConstants.STORAGE_PATH;
     }
 }
