@@ -48,4 +48,11 @@ public interface StorageService {
         }
         return key + "_thumbnail";
     }
+
+    /**
+     * Generate a URL for viewing the object
+     */
+    default String generateUrl(String key) {
+        return "/s3/view/" + key;
+    }
 }
