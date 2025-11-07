@@ -244,7 +244,7 @@ At this point, you have successfully migrated the sample Java application `asset
 
     ![Deployment progress](doc-media/deployment-progress.png)
 
-> Note: If you encounter any issues with the deployment step, you can refer to the expected Copilot-generated deployment scripts in /.azure folder of the [workshop/deployment-expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/deployment-expected/asset-manager) branch to compare what you have and troubleshoot the deployment scripts.
+> Note: If you encounter any issues with the deployment step, you can refer to the expected Copilot-generated deployment scripts in `/.azure` folder of the [workshop/deployment-expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/deployment-expected/asset-manager) branch to compare your deployment scripts and troubleshoot the problems.
 
 #### Clean up
 
