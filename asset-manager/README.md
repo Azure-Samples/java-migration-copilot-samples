@@ -32,6 +32,7 @@ In this workshop, you will use the **GitHub Copilot app modernization** extensio
 * [main](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager): The original state of the asset-manager application.
 * [workshop/java-upgrade](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/java-upgrade/asset-manager): The project state after assessment and Java upgrading steps.
 * [workshop/expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/expected/asset-manager): The project state after assessment, Java upgrading, and migration steps.
+* [workshop/deployment-expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/deployment-expected/asset-manager): The project state after containerization and deployment steps.
 
 ## Current Architecture
 ```mermaid
@@ -233,7 +234,7 @@ In this section, you will use custom tasks to expose health endpoints for your a
 ### Containerize Applications
 
 Now that you have successfully migrated your Java application to use Azure services, the next step is to prepare it for cloud deployment by containerizing both the web and worker modules. In this section, you will use **Containerization Tasks** to containerize your migrated applications.
-> Note: If you have any problems with the previous migration step, you can start from the [workshop/expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/expected/asset-manager) branch for the deployment operation.
+> Note: If you encounter any issues with the previous migration step, you can directly proceed with the containerization step using the [workshop/expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/expected/asset-manager) branch.
 
 1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. In **Tasks** view, click the **Run Task** button of **Java** -> **Containerization Tasks** -> **Containerize Application**.
   
@@ -249,54 +250,25 @@ Now that you have successfully migrated your Java application to use Azure servi
 
 ### Deploy to Azure
 
-At this point, you have successfully migrated the sample Java application `asset-manager` to Azure Database for PostgreSQL (Spring), Azure Blob Storage, and Azure Service Bus, and exposed health endpoints via Spring Boot Actuator.
-> Note:  If you encounter any issues with the previous migration step, you can directly proceed with the deployment step using the [workshop/expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/expected/asset-manager) branch.
+At this point, you have successfully migrated the sample Java application `asset-manager` to Azure Database for PostgreSQL (Spring), Azure Blob Storage, and Azure Service Bus, and exposed health endpoints via Spring Boot Actuator. Now, you can start the deployment to Azure.
+> Note: If you encounter any issues with the previous migration step, you can directly proceed with the deployment step using the [workshop/expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/expected/asset-manager) branch.
 
-Now, you can deploy the migrated application to Azure using the Azure CLI after you identify a working location for your Azure resources. For example, an Azure Database for PostgreSQL Flexible Server requires a location that supports the service. Follow the instructions below to find a suitable location.
+1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. In **Tasks** view, click the **Run Task** button of **Java** -> **Deployment Tasks** -> **Provision Infrastructure and Deploy to Azure**.
 
-1. Run the following command to list all available locations for the current subscription.
+    ![Run Deployment task](doc-media/deployment-run-task.png)
+1. A predefined prompt will be populated in the Copilot Chat panel with Agent Mode. The default hosting Azure service is Azure Container Apps.To change the hosting service to **Azure Kubernetes Service** (AKS), click on the prompt in the Copilot Chat panel and edit the last sentence of the prompt to **Hosting service: AKS**.
 
-   ```bash
-   az account list-locations -o table
-   ```
+    ![Deployment prompt](doc-media/deployment-prompt.png)
+1. Click ****Continue**/**Allow** if pop-up notifications to let Copilot Agent analyze the project and create a deployment plan in **plan.copilotmd** with Azure resources architecture, recommended Azure resources for project and security configurations, and execution steps for deployment.
 
-1. Select a location from column **Name** in the output.
+1. View the architecture diagram, resource configurations, and execution steps in the plan. Click **Keep** to save the plan and type in **Execute the plan** to start the deployment.
 
-1. Run the following command to list all available SKUs in the selected location for Azure Database for PostgreSQL Flexible Server:
+    ![Deployment execute](doc-media/deployment-execute.png)
+1. When prompted, click **Continue**/**Allow** in chat notifications or type **y**/**yes** in terminal as Copilot Agent follows the plan and leverages agent tools to create and run provisioning and deployment scripts, fix potential errors, and finish the deployment. You can also check the deployment status in **progress.copilotmd**. **DO NOT interrupt** when provisioning or deployment scripts are running.
 
-   ```bash
-   az postgres flexible-server list-skus --location <your location> -o table
-   ```
+    ![Deployment progress](doc-media/deployment-progress.png)
 
-1. If you see the output contains the SKU `Standard_B1ms` and the **Tier** is `Burstable`, you can use the location for the deployment. Otherwise, try another location.
-
-   ```text
-   SKU                Tier             VCore    Memory    Max Disk IOPS
-   -----------------  ---------------  -------  --------  ---------------
-   Standard_B1ms      Burstable        1        2 GiB     640e
-   ```
-
-You can either run the deployment script locally or use GitHub Codespaces. The recommended approach is to run the deployment script in GitHub Codespaces, as it provides a ready-to-use environment with all the necessary dependencies.
-
-Deploy using GitHub Codespaces:
-1. Commit and push the changes to your forked repository.
-1. Follow the instructions in [Use GitHub Codespaces for Deployment](README.md#use-github-codespaces-for-deployment) to deploy the app to Azure.
-
-Deploy using the local environment by running the deployment script in the terminal:
-1. Run `az login` to sign in to Azure.
-1. Run the following commands to deploy the app to Azure:
-
-   Windows:
-   ```batch
-   scripts\deploy-to-azure.cmd -ResourceGroupName <your resource group name> -Location <your resource group location, e.g., eastus2> -Prefix <your unique resource prefix>
-   ```
-
-   Linux:
-   ```bash
-   scripts/deploy-to-azure.sh -ResourceGroupName <your resource group name> -Location <your resource group location, e.g., eastus2> -Prefix <your unique resource prefix>
-   ```
-
-Once the deployment script completes successfully, it will output the URL of the web application. Open the URL in a browser to verify that the application is running as expected.
+> Note: If you encounter any issues with the deployment step, you can refer to the expected Copilot-generated deployment scripts in `/.azure` folder of the [workshop/deployment-expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/deployment-expected/asset-manager) branch to compare your deployment scripts and troubleshoot the problems.
 
 #### Clean up
 
