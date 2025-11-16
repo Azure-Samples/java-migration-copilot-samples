@@ -137,3 +137,6 @@ This sample uses several Oracle-specific features:
 1. If everything goes well, it will finish migration work and give a summary file.
 1. Click `keep` to save the changes.
    > ![click-keep-to-save-changes](./images/click-keep-to-save-changes.png)
+   
+
+## View the [code diff](https://github.com/Azure-Samples/java-migration-copilot-samples/commit/87654f27e86415caedb0689ad7b1ff945307ce41#diff-730f6c6bd09d4e51a8972bcfba2ec8052b00abc1905afb8241d601f7e3ae9bce) of the migrated to-do app 
