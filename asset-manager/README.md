@@ -28,7 +28,20 @@ The [main](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/
 * RabbitMQ for message queuing, using password-based authentication
 * PostgreSQL database for metadata storage, using password-based authentication
 
-In this workshop, you will use the **GitHub Copilot app modernization** extension to assess, upgrade, migrate, and finally deploy the project to Azure. There are 3 branches we have prepared for you in case you have any problems with any steps in this workshop:
+In this workshop, you will use the **GitHub Copilot app modernization** extension to assess, upgrade, migrate, and finally deploy the project to Azure.
+
+**Time Estimates:**
+The complete workshop takes approximately **2 hours** to complete. Here's the breakdown for each major step:
+- **Assess Your Java Application**: ~5 minutes
+- **Upgrade Runtime & Frameworks**: ~10 minutes
+- **Migrate to Azure Database for PostgreSQL**: ~15 minutes
+- **Migrate to Azure Blob Storage**: ~15 minutes
+- **Migrate to Azure Service Bus**: ~15 minutes
+- **Expose Health Endpoints**: ~15 minutes
+- **Containerize Applications**: ~5 minutes
+- **Deploy to Azure**: ~40 minutes
+
+There are 3 branches we have prepared for you in case you have any problems with any steps in this workshop:
 * [main](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager): The original state of the asset-manager application.
 * [workshop/java-upgrade](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/java-upgrade/asset-manager): The project state after assessment and Java upgrading steps.
 * [workshop/expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/expected/asset-manager): The project state after assessment, Java upgrading, and migration steps.
