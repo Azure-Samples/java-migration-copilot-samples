@@ -1,13 +1,18 @@
 package com.microsoft.migration.assets.worker.config;
 
+import com.azure.storage.blob.BlobServiceClient;
+import com.microsoft.migration.assets.worker.repository.ImageMetadataRepository;
 import com.microsoft.migration.assets.worker.service.AzureBlobFileProcessingService;
 import com.microsoft.migration.assets.worker.service.S3FileProcessingService;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 /**
  * Integration test to verify that the feature flag correctly routes requests
@@ -16,6 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StorageProviderFeatureFlagTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(
+                    S3FileProcessingService.class,
+                    AzureBlobFileProcessingService.class
+            ))
             .withUserConfiguration(TestConfiguration.class);
 
     @Test
@@ -24,10 +33,8 @@ public class StorageProviderFeatureFlagTest {
                 .withPropertyValues(
                         "storage.provider.use-azure=false",
                         "aws.s3.bucket=test-bucket",
-                        "aws.accessKeyId=test-key",
-                        "aws.secretKey=test-secret",
-                        "aws.region=us-east-1",
-                        "spring.profiles.active=test"
+                        "azure.storage.container=test-container",
+                        "spring.profiles.active=prod"
                 )
                 .run(context -> {
                     // When storage.provider.use-azure is false, S3FileProcessingService should be present
@@ -42,9 +49,9 @@ public class StorageProviderFeatureFlagTest {
         contextRunner
                 .withPropertyValues(
                         "storage.provider.use-azure=true",
-                        "azure.storage.endpoint=https://testaccount.blob.core.windows.net",
+                        "aws.s3.bucket=test-bucket",
                         "azure.storage.container=test-container",
-                        "spring.profiles.active=test"
+                        "spring.profiles.active=prod"
                 )
                 .run(context -> {
                     // When storage.provider.use-azure is true, AzureBlobFileProcessingService should be present
@@ -59,10 +66,8 @@ public class StorageProviderFeatureFlagTest {
         contextRunner
                 .withPropertyValues(
                         "aws.s3.bucket=test-bucket",
-                        "aws.accessKeyId=test-key",
-                        "aws.secretKey=test-secret",
-                        "aws.region=us-east-1",
-                        "spring.profiles.active=test"
+                        "azure.storage.container=test-container",
+                        "spring.profiles.active=prod"
                 )
                 .run(context -> {
                     // When flag is not set, S3FileProcessingService should be loaded by default
@@ -78,10 +83,19 @@ public class StorageProviderFeatureFlagTest {
      */
     @Configuration
     static class TestConfiguration {
-        // Mock beans that would normally be provided by Spring Boot auto-configuration
         @Bean
-        public com.microsoft.migration.assets.worker.repository.ImageMetadataRepository imageMetadataRepository() {
-            return org.mockito.Mockito.mock(com.microsoft.migration.assets.worker.repository.ImageMetadataRepository.class);
+        public ImageMetadataRepository imageMetadataRepository() {
+            return mock(ImageMetadataRepository.class);
+        }
+        
+        @Bean
+        public S3Client s3Client() {
+            return mock(S3Client.class);
+        }
+        
+        @Bean
+        public BlobServiceClient blobServiceClient() {
+            return mock(BlobServiceClient.class);
         }
     }
 }
