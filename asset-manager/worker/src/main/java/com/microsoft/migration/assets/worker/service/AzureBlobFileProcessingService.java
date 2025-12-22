@@ -1,54 +1,54 @@
 package com.microsoft.migration.assets.worker.service;
 
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.sas.BlobSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.microsoft.migration.assets.worker.repository.ImageMetadataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.GetUrlRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.OffsetDateTime;
 
 @Service
 @Profile("!dev")
-@ConditionalOnProperty(name = "storage.provider.use-azure", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(name = "storage.provider.use-azure", havingValue = "true")
 @RequiredArgsConstructor
-public class S3FileProcessingService extends AbstractFileProcessingService {
-    private final S3Client s3Client;
+public class AzureBlobFileProcessingService extends AbstractFileProcessingService {
+    private final BlobServiceClient blobServiceClient;
     private final ImageMetadataRepository imageMetadataRepository;
     
-    @Value("${aws.s3.bucket}")
-    private String bucketName;
+    @Value("${azure.storage.container}")
+    private String containerName;
 
     @Override
     public void downloadOriginal(String key, Path destination) throws Exception {
-        GetObjectRequest request = GetObjectRequest.builder()
-                .bucket(bucketName)
-                .key(key)
-                .build();
-                
-        try (InputStream inputStream = s3Client.getObject(request)) {
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
+        BlobClient blobClient = containerClient.getBlobClient(key);
+        
+        try (InputStream inputStream = blobClient.openInputStream()) {
             Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
     @Override
     public void uploadThumbnail(Path source, String key, String contentType) throws Exception {
-        PutObjectRequest request = PutObjectRequest.builder()
-                .bucket(bucketName)
-                .key(key)
-                .contentType(contentType)
-                .build();
-                
-        s3Client.putObject(request, RequestBody.fromFile(source));
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
+        BlobClient blobClient = containerClient.getBlobClient(key);
+        
+        blobClient.uploadFromFile(source.toString(), true);
+        
+        // Set content type
+        blobClient.setHttpHeaders(new com.azure.storage.blob.models.BlobHttpHeaders()
+            .setContentType(contentType));
 
         // Extract the original key from the thumbnail key
         String originalKey = extractOriginalKey(key);
@@ -66,16 +66,21 @@ public class S3FileProcessingService extends AbstractFileProcessingService {
 
     @Override
     public String getStorageType() {
-        return "s3";
+        return "azure";
     }
 
     @Override
     protected String generateUrl(String key) {
-        GetUrlRequest request = GetUrlRequest.builder()
-                .bucket(bucketName)
-                .key(key)
-                .build();
-        return s3Client.utilities().getUrl(request).toString();
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
+        BlobClient blobClient = containerClient.getBlobClient(key);
+        
+        // Generate SAS token with read permissions valid for 1 hour
+        BlobSasPermission sasPermission = new BlobSasPermission().setReadPermission(true);
+        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(
+            OffsetDateTime.now().plusHours(1), sasPermission);
+        
+        String sasToken = blobClient.generateSas(sasValues);
+        return blobClient.getBlobUrl() + "?" + sasToken;
     }
 
     private String extractOriginalKey(String key) {
