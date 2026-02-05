@@ -1,0 +1,43 @@
+{
+    "UserConfig": {
+        "Namespaces": [
+            {
+                "Name": "sbemulatorns",
+                "Queues": [
+                    {
+                        "Name": "image-processing",
+                        "Properties": {
+                            "DeadLetteringOnMessageExpiration": false,
+                            "DefaultMessageTimeToLive": "PT1H",
+                            "DuplicateDetectionHistoryTimeWindow": "PT20S",
+                            "ForwardDeadLetteredMessagesTo": "",
+                            "ForwardTo": "",
+                            "LockDuration": "PT1M",
+                            "MaxDeliveryCount": 3,
+                            "RequiresDuplicateDetection": false,
+                            "RequiresSession": false
+                        }
+                    },
+                    {
+                        "Name": "retry-queue",
+                        "Properties": {
+                            "DeadLetteringOnMessageExpiration": true,
+                            "DefaultMessageTimeToLive": "PT1M",
+                            "DuplicateDetectionHistoryTimeWindow": "PT20S",
+                            "ForwardDeadLetteredMessagesTo": "",
+                            "ForwardTo": "",
+                            "LockDuration": "PT1M",
+                            "MaxDeliveryCount": 3,
+                            "RequiresDuplicateDetection": false,
+                            "RequiresSession": false
+                        }
+                    }
+                ],
+                "Topics": []
+            }
+        ],
+        "Logging": {
+            "Type": "File"
+        }
+    }
+}
