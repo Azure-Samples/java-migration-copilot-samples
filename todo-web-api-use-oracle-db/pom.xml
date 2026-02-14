@@ -17,6 +17,7 @@
     <properties>
         <java.version>17</java.version>
         <spring-cloud-azure.version>5.22.0</spring-cloud-azure.version>
+        <mssql-jdbc.version>12.4.3.jre11</mssql-jdbc.version>
     </properties>
 
     <dependencyManagement>
@@ -27,6 +28,11 @@
                 <version>${spring-cloud-azure.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.microsoft.sqlserver</groupId>
+                <artifactId>mssql-jdbc</artifactId>
+                <version>${mssql-jdbc.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
