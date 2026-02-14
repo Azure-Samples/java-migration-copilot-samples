@@ -86,16 +86,6 @@
         </dependency>
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>software.amazon.awssdk</groupId>
-                <artifactId>s3</artifactId>
-                <version>${aws-sdk.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <build>
         <plugins>
             <plugin>
