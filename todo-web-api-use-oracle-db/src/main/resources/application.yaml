@@ -1,11 +1,10 @@
 spring:
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521/XEPDB1
-    username: system
-    password: oracle
-    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:sqlserver://<your_server>.database.windows.net:1433;database=<your_database>;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;authentication=ActiveDirectoryMSI
+    username:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
-    database-platform: org.hibernate.dialect.OracleDialect
+    database-platform: org.hibernate.dialect.SQLServerDialect
     hibernate:
       ddl-auto: none  # We're using schema.sql for schema definition
     # show-sql: true
@@ -15,11 +14,16 @@ spring:
   sql:
     init:
       mode: always  # Run schema.sql and data.sql on startup
-      platform: oracle
+      platform: sqlserver
       continue-on-error: true  # Set to true to continue despite errors
       schema-locations: classpath:schema.sql
       data-locations: classpath:data.sql
       separator: ;  # Use semicolon as separator
+  cloud:
+    azure:
+      credential:
+        managed-identity-enabled: true
+        client-id: <your_managed_identity_client_id>
 
 server:
   port: 8080
