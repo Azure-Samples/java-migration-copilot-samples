@@ -1,5 +1,8 @@
 package com.microsoft.migration.assets.worker.service;
 
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
 import com.microsoft.migration.assets.worker.repository.ImageMetadataRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,26 +11,29 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import software.amazon.awssdk.core.ResponseInputStream;
-import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.GetObjectResponse;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class S3FileProcessingServiceTest {
 
     @Mock
-    private S3Client s3Client;
+    private BlobServiceClient blobServiceClient;
+
+    @Mock
+    private BlobContainerClient blobContainerClient;
+
+    @Mock
+    private BlobClient blobClient;
 
     @Mock
     private ImageMetadataRepository imageMetadataRepository;
@@ -35,54 +41,58 @@ public class S3FileProcessingServiceTest {
     @InjectMocks
     private S3FileProcessingService s3FileProcessingService;
 
-    private final String bucketName = "test-bucket";
+    private final String containerName = "test-container";
     private final String testKey = "test-image.jpg";
     private final String thumbnailKey = "test-image_thumbnail.jpg";
 
     @BeforeEach
     void setUp() {
-        ReflectionTestUtils.setField(s3FileProcessingService, "bucketName", bucketName);
+        ReflectionTestUtils.setField(s3FileProcessingService, "containerName", containerName);
+        when(blobServiceClient.getBlobContainerClient(containerName)).thenReturn(blobContainerClient);
     }
 
     @Test
-    void getStorageTypeReturnsS3() {
+    void getStorageTypeReturnsBlob() {
         // Act
         String result = s3FileProcessingService.getStorageType();
 
         // Assert
-        assertEquals("s3", result);
+        assertEquals("blob", result);
     }
 
     @Test
-    void downloadOriginalCopiesFileFromS3() throws Exception {
+    void downloadOriginalCopiesFileFromBlob() throws Exception {
         // Arrange
         Path tempFile = Files.createTempFile("download-", ".tmp");
-        @SuppressWarnings("unchecked")
-        ResponseInputStream<GetObjectResponse> mockResponse = mock(ResponseInputStream.class);
+        InputStream mockInputStream = new ByteArrayInputStream("test data".getBytes());
 
-        when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(mockResponse);
+        when(blobContainerClient.getBlobClient(testKey)).thenReturn(blobClient);
+        when(blobClient.openInputStream()).thenReturn(mockInputStream);
 
         // Act
         s3FileProcessingService.downloadOriginal(testKey, tempFile);
 
         // Assert
-        verify(s3Client).getObject(any(GetObjectRequest.class));
+        verify(blobContainerClient).getBlobClient(testKey);
+        verify(blobClient).openInputStream();
 
         // Clean up
         Files.deleteIfExists(tempFile);
     }
 
     @Test
-    void uploadThumbnailPutsFileToS3() throws Exception {
+    void uploadThumbnailPutsFileToBlob() throws Exception {
         // Arrange
         Path tempFile = Files.createTempFile("thumbnail-", ".tmp");
+        when(blobContainerClient.getBlobClient(thumbnailKey)).thenReturn(blobClient);
         when(imageMetadataRepository.findAll()).thenReturn(Collections.emptyList());
 
         // Act
         s3FileProcessingService.uploadThumbnail(tempFile, thumbnailKey, "image/jpeg");
 
         // Assert
-        verify(s3Client).putObject(any(PutObjectRequest.class), any(RequestBody.class));
+        verify(blobContainerClient).getBlobClient(thumbnailKey);
+        verify(blobClient).uploadFromFile(tempFile.toString(), true);
 
         // Clean up
         Files.deleteIfExists(tempFile);
