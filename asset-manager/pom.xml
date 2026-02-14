@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
     
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
         <spring-cloud-azure.version>4.19.0</spring-cloud-azure.version>
         <mssql-jdbc.version>12.4.3.jre11</mssql-jdbc.version>
     </properties>
