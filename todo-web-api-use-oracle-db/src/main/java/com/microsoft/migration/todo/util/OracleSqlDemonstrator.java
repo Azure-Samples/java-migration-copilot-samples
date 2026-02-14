@@ -22,27 +22,27 @@ public class OracleSqlDemonstrator {
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * Demonstrates executing raw Oracle SQL queries directly
-     * This method shows Oracle-specific SQL features like:
-     * - VARCHAR2 data type
-     * - Oracle specific date functions
-     * - Oracle specific string functions
+     * Demonstrates executing raw SQL Server queries directly
+     * This method shows SQL Server-specific SQL features like:
+     * - VARCHAR data type
+     * - SQL Server specific date functions
+     * - SQL Server specific string functions
      */
     public List<Map<String, Object>> executeRawOracleQuery(String keyword, int minPriority) {
         String sql = """
                 SELECT
                     ID,
                     TITLE,
-                    SUBSTR(DESCRIPTION, 1, 50) AS SHORT_DESC,
-                    CASE WHEN LENGTH(DESCRIPTION) > 50 THEN 'Y' ELSE 'N' END AS IS_LONG_DESC,
+                    SUBSTRING(DESCRIPTION, 1, 50) AS SHORT_DESC,
+                    CASE WHEN LEN(DESCRIPTION) > 50 THEN 'Y' ELSE 'N' END AS IS_LONG_DESC,
                     PRIORITY,
-                    TO_CHAR(DUE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS FORMATTED_DUE_DATE,
-                    ROUND(SYSDATE - CREATED_AT) AS DAYS_SINCE_CREATION
+                    CONVERT(VARCHAR(19), DUE_DATE, 120) AS FORMATTED_DUE_DATE,
+                    DATEDIFF(DAY, CREATED_AT, GETDATE()) AS DAYS_SINCE_CREATION
                 FROM
                     TODO_ITEMS
                 WHERE
-                    (UPPER(TITLE) LIKE UPPER('%' || ? || '%') OR
-                     UPPER(DESCRIPTION) LIKE UPPER('%' || ? || '%'))
+                    (UPPER(TITLE) LIKE UPPER('%' + ? + '%') OR
+                     UPPER(DESCRIPTION) LIKE UPPER('%' + ? + '%'))
                     AND PRIORITY >= ?
                 ORDER BY
                     PRIORITY DESC,
@@ -75,51 +75,42 @@ public class OracleSqlDemonstrator {
                 results.add(row);
             }
 
-            log.info("Executed Oracle-specific SQL query with {} results", results.size());
+            log.info("Executed SQL Server-specific SQL query with {} results", results.size());
             return results;
 
         } catch (SQLException e) {
-            log.error("Error executing Oracle SQL", e);
-            throw new RuntimeException("Failed to execute Oracle SQL query", e);
+            log.error("Error executing SQL Server SQL", e);
+            throw new RuntimeException("Failed to execute SQL Server SQL query", e);
         }
     }
 
     /**
-     * Demonstrates Oracle-specific database operations
-     * Uses Oracle's VARCHAR2 data type and other Oracle-specific functions
+     * Demonstrates SQL Server-specific database operations
+     * Uses SQL Server's VARCHAR data type and other SQL Server-specific functions
      */
     public void performOracleSpecificOperations() {
-        // Example of creating a temporary table with VARCHAR2
+        // Example of creating a temporary table with SQL Server syntax
         String createTempTable = """
-                DECLARE
-                   v_count NUMBER;
-                BEGIN
-                   SELECT COUNT(*) INTO v_count FROM USER_TABLES WHERE TABLE_NAME = 'TEMP_TODO_STATS';
-                   IF v_count > 0 THEN
-                      EXECUTE IMMEDIATE 'DROP TABLE TEMP_TODO_STATS';
-                   END IF;
+                IF OBJECT_ID('tempdb..#TEMP_TODO_STATS', 'U') IS NOT NULL
+                   DROP TABLE #TEMP_TODO_STATS;
 
-                   EXECUTE IMMEDIATE 'CREATE TABLE TEMP_TODO_STATS (
-                      CATEGORY VARCHAR2(100),
-                      COUNT_VALUE NUMBER,
-                      LAST_UPDATED TIMESTAMP
-                   )';
+                CREATE TABLE #TEMP_TODO_STATS (
+                   CATEGORY VARCHAR(100),
+                   COUNT_VALUE INT,
+                   LAST_UPDATED DATETIME
+                );
 
-                   -- Insert some statistics
-                   EXECUTE IMMEDIATE 'INSERT INTO TEMP_TODO_STATS VALUES (''TOTAL'', (SELECT COUNT(*) FROM TODO_ITEMS), SYSTIMESTAMP)';
-                   EXECUTE IMMEDIATE 'INSERT INTO TEMP_TODO_STATS VALUES (''COMPLETED'', (SELECT COUNT(*) FROM TODO_ITEMS WHERE COMPLETED = 1), SYSTIMESTAMP)';
-                   EXECUTE IMMEDIATE 'INSERT INTO TEMP_TODO_STATS VALUES (''PENDING'', (SELECT COUNT(*) FROM TODO_ITEMS WHERE COMPLETED = 0), SYSTIMESTAMP)';
-                   EXECUTE IMMEDIATE 'INSERT INTO TEMP_TODO_STATS VALUES (''HIGH_PRIORITY'', (SELECT COUNT(*) FROM TODO_ITEMS WHERE PRIORITY >= 8), SYSTIMESTAMP)';
-
-                   COMMIT;
-                END;
+                INSERT INTO #TEMP_TODO_STATS VALUES ('TOTAL', (SELECT COUNT(*) FROM TODO_ITEMS), GETDATE());
+                INSERT INTO #TEMP_TODO_STATS VALUES ('COMPLETED', (SELECT COUNT(*) FROM TODO_ITEMS WHERE COMPLETED = 1), GETDATE());
+                INSERT INTO #TEMP_TODO_STATS VALUES ('PENDING', (SELECT COUNT(*) FROM TODO_ITEMS WHERE COMPLETED = 0), GETDATE());
+                INSERT INTO #TEMP_TODO_STATS VALUES ('HIGH_PRIORITY', (SELECT COUNT(*) FROM TODO_ITEMS WHERE PRIORITY >= 8), GETDATE());
                 """;
 
         try {
             jdbcTemplate.execute(createTempTable);
-            log.info("Successfully executed Oracle PL/SQL block to create and populate temporary statistics table");
+            log.info("Successfully executed SQL Server T-SQL block to create and populate temporary statistics table");
         } catch (Exception e) {
-            log.error("Error executing Oracle PL/SQL block", e);
+            log.error("Error executing SQL Server T-SQL block", e);
         }
     }
 }
