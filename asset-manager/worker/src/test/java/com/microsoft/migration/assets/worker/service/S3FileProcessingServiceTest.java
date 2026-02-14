@@ -3,6 +3,7 @@ package com.microsoft.migration.assets.worker.service;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.specialized.BlobInputStream;
 import com.microsoft.migration.assets.worker.repository.ImageMetadataRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -34,6 +34,9 @@ public class S3FileProcessingServiceTest {
 
     @Mock
     private BlobClient blobClient;
+
+    @Mock
+    private BlobInputStream blobInputStream;
 
     @Mock
     private ImageMetadataRepository imageMetadataRepository;
@@ -64,10 +67,9 @@ public class S3FileProcessingServiceTest {
     void downloadOriginalCopiesFileFromBlob() throws Exception {
         // Arrange
         Path tempFile = Files.createTempFile("download-", ".tmp");
-        InputStream mockInputStream = new ByteArrayInputStream("test data".getBytes());
 
         when(blobContainerClient.getBlobClient(testKey)).thenReturn(blobClient);
-        when(blobClient.openInputStream()).thenReturn(mockInputStream);
+        when(blobClient.openInputStream()).thenReturn(blobInputStream);
 
         // Act
         s3FileProcessingService.downloadOriginal(testKey, tempFile);
