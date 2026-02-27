@@ -62,7 +62,14 @@ When you see the "DATABASE IS READY TO USE" message, the database is initialized
 
 ### 2. Clone the repository
 
+**Bash / macOS / Linux:**
 ```bash
+git clone <repository-url>
+cd todo-web-api-use-oracle-db
+```
+
+**PowerShell (Windows):**
+```powershell
 git clone <repository-url>
 cd todo-web-api-use-oracle-db
 ```
@@ -71,7 +78,15 @@ cd todo-web-api-use-oracle-db
 
 Once the Oracle database is ready, you can build and run the application:
 
+**Bash / macOS / Linux:**
 ```bash
+mvn clean spring-boot:run
+```
+
+**PowerShell (Windows):**
+```powershell
+.\mvnw.cmd clean spring-boot:run
+# or if Maven is installed globally:
 mvn clean spring-boot:run
 ```
 
@@ -102,24 +117,36 @@ Invoke-RestMethod -Method GET -Uri http://localhost:8080/api/todos
 curl -X POST http://localhost:8080/api/todos \
   -H "Content-Type: application/json" \
   -d '{
-    "title": "Learn GitHub Copilot App Modernzation for Java",
+    "title": "Learn GitHub Copilot App Modernization for Java",
     "description": "Get started today https://aka.ms/AM4Jgetstarted",
     "priority": 1,
-    "dueDate": "2025-06-18T23:59:59"
+    "dueDate": "2026-06-18T23:59:59"
   }'
 ```
 
 **PowerShell (Windows):**
 ```powershell
 $body = @{
-    title = "Learn GitHub Copilot App Modernzation for Java"
+    title = "Learn GitHub Copilot App Modernization for Java"
     description = "Get started today https://aka.ms/AM4Jgetstarted"
     priority = 1
-    dueDate = "2025-06-18T23:59:59"
+    dueDate = "2026-06-18T23:59:59"
 } | ConvertTo-Json
 
 Invoke-RestMethod -Method POST -Uri http://localhost:8080/api/todos `
   -ContentType "application/json" -Body $body
+```
+
+### Run Oracle-Specific Operations
+
+**Bash / macOS / Linux:**
+```bash
+curl -X POST http://localhost:8080/api/todos/run-oracle-operations
+```
+
+**PowerShell (Windows):**
+```powershell
+Invoke-RestMethod -Method POST -Uri http://localhost:8080/api/todos/run-oracle-operations
 ```
 
 ## API Endpoints
