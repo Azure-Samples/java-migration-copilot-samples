@@ -30,6 +30,7 @@ The app uses:
 
 Run the following command to start an Oracle Database XE container:
 
+**Bash / macOS / Linux:**
 ```bash
 docker run -d --name oracle-xe \
   -p 1521:1521 \
@@ -37,10 +38,24 @@ docker run -d --name oracle-xe \
   container-registry.oracle.com/database/express:latest
 ```
 
+**PowerShell (Windows):**
+```powershell
+docker run -d --name oracle-xe `
+  -p 1521:1521 `
+  -e ORACLE_PWD=oracle `
+  container-registry.oracle.com/database/express:latest
+```
+
 Note: The first time you run this, it may take a few minutes for the database to initialize (typically 5-10 minutes). You can check if the database is ready by running:
 
+**Bash / macOS / Linux:**
 ```bash
 docker logs oracle-xe | grep "DATABASE IS READY TO USE"
+```
+
+**PowerShell (Windows):**
+```powershell
+docker logs oracle-xe 2>&1 | Select-String "DATABASE IS READY TO USE"
 ```
 
 When you see the "DATABASE IS READY TO USE" message, the database is initialized and ready.
@@ -70,12 +85,19 @@ The application will automatically:
 
 ### Get All Todos
 
+**Bash / macOS / Linux:**
 ```bash
 curl -X GET http://localhost:8080/api/todos
 ```
 
+**PowerShell (Windows):**
+```powershell
+Invoke-RestMethod -Method GET -Uri http://localhost:8080/api/todos
+```
+
 ### Create a Todo Item
 
+**Bash / macOS / Linux:**
 ```bash
 curl -X POST http://localhost:8080/api/todos \
   -H "Content-Type: application/json" \
@@ -83,8 +105,21 @@ curl -X POST http://localhost:8080/api/todos \
     "title": "Learn GitHub Copilot App Modernzation for Java",
     "description": "Get started today https://aka.ms/AM4Jgetstarted",
     "priority": 1,
-    "dueDate": "2025-6-18T23:59:59"
+    "dueDate": "2025-06-18T23:59:59"
   }'
+```
+
+**PowerShell (Windows):**
+```powershell
+$body = @{
+    title = "Learn GitHub Copilot App Modernzation for Java"
+    description = "Get started today https://aka.ms/AM4Jgetstarted"
+    priority = 1
+    dueDate = "2025-06-18T23:59:59"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Method POST -Uri http://localhost:8080/api/todos `
+  -ContentType "application/json" -Body $body
 ```
 
 ## API Endpoints
