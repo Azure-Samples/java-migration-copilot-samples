@@ -56,8 +56,8 @@ if exist "%PROJECT_ROOT%\pids\worker.pid" (
 )
 
 echo Stopping and removing Docker containers...
-docker stop assets-postgres assets-rabbitmq 2>nul
-docker rm assets-postgres assets-rabbitmq 2>nul
+docker stop assets-postgres 2>nul
+docker rm assets-postgres 2>nul
 
 echo All services stopped!
 goto :eof
