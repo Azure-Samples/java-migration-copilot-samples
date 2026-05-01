@@ -3,6 +3,7 @@ package com.microsoft.migration.assets.worker.service;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.microsoft.migration.assets.worker.repository.ImageMetadataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +40,7 @@ public class AzureBlobFileProcessingService extends AbstractFileProcessingServic
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
         BlobClient blobClient = containerClient.getBlobClient(key);
 
-        blobClient.uploadFromFile(source.toString(), true);
+        blobClient.uploadFromFile(source.toString(), null, new BlobHttpHeaders().setContentType(contentType), null, null, null, null);
 
         // Extract the original key from the thumbnail key
         String originalKey = extractOriginalKey(key);

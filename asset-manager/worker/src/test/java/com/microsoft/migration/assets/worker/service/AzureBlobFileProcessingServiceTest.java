@@ -3,6 +3,7 @@ package com.microsoft.migration.assets.worker.service;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.specialized.BlobInputStream;
 import com.microsoft.migration.assets.worker.repository.ImageMetadataRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,9 @@ import java.nio.file.Path;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -93,7 +96,7 @@ public class AzureBlobFileProcessingServiceTest {
         azureBlobFileProcessingService.uploadThumbnail(tempFile, thumbnailKey, "image/jpeg");
 
         // Assert
-        verify(blobClient).uploadFromFile(anyString(), eq(true));
+        verify(blobClient).uploadFromFile(anyString(), isNull(), any(BlobHttpHeaders.class), isNull(), isNull(), isNull(), isNull());
 
         // Clean up
         Files.deleteIfExists(tempFile);

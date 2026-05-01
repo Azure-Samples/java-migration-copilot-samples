@@ -3,7 +3,9 @@ package com.microsoft.migration.assets.service;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.microsoft.migration.assets.model.ImageMetadata;
 import com.microsoft.migration.assets.model.ImageProcessingMessage;
 import com.microsoft.migration.assets.model.S3StorageItem;
@@ -77,7 +79,10 @@ public class AzureBlobService implements StorageService {
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
         BlobClient blobClient = containerClient.getBlobClient(key);
 
-        blobClient.upload(file.getInputStream(), file.getSize(), true);
+        BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders().setContentType(file.getContentType());
+        blobClient.uploadWithResponse(
+                new BlobParallelUploadOptions(file.getInputStream()).setHeaders(blobHttpHeaders),
+                null, null);
 
         // Send message to queue for thumbnail generation
         ImageProcessingMessage message = new ImageProcessingMessage(
