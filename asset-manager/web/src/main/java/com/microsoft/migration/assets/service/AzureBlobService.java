@@ -11,7 +11,9 @@ import com.microsoft.migration.assets.model.ImageProcessingMessage;
 import com.microsoft.migration.assets.model.S3StorageItem;
 import com.microsoft.migration.assets.repository.ImageMetadataRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,7 @@ import static com.microsoft.migration.assets.config.RabbitConfig.IMAGE_PROCESSIN
 public class AzureBlobService implements StorageService {
 
     private final BlobServiceClient blobServiceClient;
-    private final RabbitTemplate rabbitTemplate;
+    private final ServiceBusTemplate serviceBusTemplate;
     private final ImageMetadataRepository imageMetadataRepository;
 
     @Value("${azure.storage.blob.container-name}")
@@ -91,7 +93,8 @@ public class AzureBlobService implements StorageService {
             getStorageType(),
             file.getSize()
         );
-        rabbitTemplate.convertAndSend(IMAGE_PROCESSING_QUEUE, message);
+        Message<ImageProcessingMessage> sbMessage = MessageBuilder.withPayload(message).build();
+        serviceBusTemplate.send(IMAGE_PROCESSING_QUEUE, sbMessage);
 
         // Create and save metadata to database
         ImageMetadata metadata = new ImageMetadata();

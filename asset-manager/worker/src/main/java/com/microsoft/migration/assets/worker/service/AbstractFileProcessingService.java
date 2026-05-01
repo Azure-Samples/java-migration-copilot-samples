@@ -1,11 +1,12 @@
 package com.microsoft.migration.assets.worker.service;
 
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.messaging.implementation.annotation.EnableAzureMessaging;
+import com.azure.spring.messaging.servicebus.implementation.core.annotation.ServiceBusListener;
+import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import com.microsoft.migration.assets.worker.model.ImageProcessingMessage;
 import com.microsoft.migration.assets.worker.util.StorageUtil;
-import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 
 import javax.imageio.ImageIO;
@@ -19,12 +20,12 @@ import java.nio.file.Path;
 import static com.microsoft.migration.assets.worker.config.RabbitConfig.IMAGE_PROCESSING_QUEUE;
 
 @Slf4j
+@EnableAzureMessaging
 public abstract class AbstractFileProcessingService implements FileProcessor {
 
-    @RabbitListener(queues = IMAGE_PROCESSING_QUEUE)
+    @ServiceBusListener(destination = IMAGE_PROCESSING_QUEUE)
     public void processImage(final ImageProcessingMessage message, 
-                           Channel channel, 
-                           @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) {
+                           @Header(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT) ServiceBusReceivedMessageContext context) {
         boolean processingSuccess = false;
         Path tempDir = null;
         Path originalFile = null;
@@ -76,16 +77,20 @@ public abstract class AbstractFileProcessingService implements FileProcessor {
 
                 if (processingSuccess) {
                     // Acknowledge the message if processing was successful
-                    channel.basicAck(deliveryTag, false);
+                    if (context != null) {
+                        context.complete();
+                    }
                     log.debug("Message acknowledged for: {}", message.getKey());
                 } else {
                     // Reject the message with requeue=false to trigger dead letter exchange
                     // This will route the message to the retry queue with delay
-                    channel.basicNack(deliveryTag, false, false);
+                    if (context != null) {
+                        context.abandon();
+                    }
                     log.debug("Message rejected and sent to dead letter exchange for delayed retry: {}", message.getKey());
                 }
-            } catch (IOException e) {
-                log.error("Error handling RabbitMQ acknowledgment for: {}", message.getKey(), e);
+            } catch (Exception e) {
+                log.error("Error handling Service Bus acknowledgment for: {}", message.getKey(), e);
             }
         }
     }
