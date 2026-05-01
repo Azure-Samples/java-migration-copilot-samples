@@ -10,7 +10,6 @@ import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.converter.SmartMessageConverter;
 
 import java.util.function.BiFunction;
 

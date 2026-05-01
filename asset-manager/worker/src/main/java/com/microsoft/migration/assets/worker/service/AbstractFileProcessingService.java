@@ -1,7 +1,6 @@
 package com.microsoft.migration.assets.worker.service;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.messaging.implementation.annotation.EnableAzureMessaging;
 import com.azure.spring.messaging.servicebus.implementation.core.annotation.ServiceBusListener;
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import com.microsoft.migration.assets.worker.model.ImageProcessingMessage;
@@ -20,7 +19,6 @@ import java.nio.file.Path;
 import static com.microsoft.migration.assets.worker.config.RabbitConfig.IMAGE_PROCESSING_QUEUE;
 
 @Slf4j
-@EnableAzureMessaging
 public abstract class AbstractFileProcessingService implements FileProcessor {
 
     @ServiceBusListener(destination = IMAGE_PROCESSING_QUEUE)
