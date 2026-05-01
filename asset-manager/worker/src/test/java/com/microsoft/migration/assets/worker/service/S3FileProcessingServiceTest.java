@@ -15,6 +15,7 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.ByteArrayInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -57,10 +58,11 @@ public class S3FileProcessingServiceTest {
     void downloadOriginalCopiesFileFromS3() throws Exception {
         // Arrange
         Path tempFile = Files.createTempFile("download-", ".tmp");
-        @SuppressWarnings("unchecked")
-        ResponseInputStream<GetObjectResponse> mockResponse = mock(ResponseInputStream.class);
+        ResponseInputStream<GetObjectResponse> realResponse = new ResponseInputStream<>(
+                GetObjectResponse.builder().build(),
+                new ByteArrayInputStream(new byte[0]));
 
-        when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(mockResponse);
+        when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(realResponse);
 
         // Act
         s3FileProcessingService.downloadOriginal(testKey, tempFile);
