@@ -3,6 +3,7 @@ package com.microsoft.migration.assets.worker.service;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.specialized.BlobInputStream;
 import com.microsoft.migration.assets.worker.repository.ImageMetadataRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,9 @@ public class AzureBlobFileProcessingServiceTest {
 
     @Mock
     private BlobContainerClient containerClient;
+
+    @Mock
+    private BlobInputStream mockBlobInputStream;
 
     @Mock
     private BlobClient blobClient;
@@ -62,11 +66,10 @@ public class AzureBlobFileProcessingServiceTest {
     void downloadOriginalCopiesFileFromBlob() throws Exception {
         // Arrange
         Path tempFile = Files.createTempFile("download-", ".tmp");
-        InputStream mockStream = new ByteArrayInputStream(new byte[0]);
 
         when(blobServiceClient.getBlobContainerClient(containerName)).thenReturn(containerClient);
         when(containerClient.getBlobClient(testKey)).thenReturn(blobClient);
-        when(blobClient.openInputStream()).thenReturn(mockStream);
+        when(blobClient.openInputStream()).thenReturn(mockBlobInputStream);
 
         // Act
         azureBlobFileProcessingService.downloadOriginal(testKey, tempFile);
