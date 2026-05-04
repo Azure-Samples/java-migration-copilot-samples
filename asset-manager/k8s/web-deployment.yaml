@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: assets-manager-web
+  namespace: assets-manager
+  labels:
+    app: assets-manager-web
+    azure.workload.identity/use: "true"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: assets-manager-web
+  template:
+    metadata:
+      labels:
+        app: assets-manager-web
+        azure.workload.identity/use: "true"
+    spec:
+      serviceAccountName: assets-manager-web-sa
+      containers:
+        - name: assets-manager-web
+          image: crassetsmanagers7c7m.azurecr.io/assets-manager-web:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: AZURE_STORAGE_ACCOUNT_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: assets-manager-config
+                  key: AZURE_STORAGE_ACCOUNT_NAME
+            - name: AZURE_STORAGE_BLOB_CONTAINER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: assets-manager-config
+                  key: AZURE_STORAGE_BLOB_CONTAINER_NAME
+            - name: AZURE_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: assets-manager-config
+                  key: AZURE_CLIENT_ID
+            - name: AZURE_SERVICEBUS_NAMESPACE
+              valueFrom:
+                configMapKeyRef:
+                  name: assets-manager-config
+                  key: AZURE_SERVICEBUS_NAMESPACE
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: assets-manager-config
+                  key: SPRING_DATASOURCE_URL
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: assets-manager-config
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: assets-manager-pg-secrets
+                  key: POSTGRES_PASSWORD
+            - name: SPRING_DATASOURCE_AZURE_PASSWORDLESSENABLED
+              value: "false"
+            - name: SPRING_MAIN_ALLOW_BEAN_DEFINITION_OVERRIDING
+              value: "true"
+            - name: AZURE_STORAGE_BLOB_ENDPOINT
+              value: "https://stassetsmanagers7c7m.blob.core.windows.net"
+          volumeMounts:
+            - name: kv-secrets
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+      volumes:
+        - name: kv-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "assets-manager-kv-secrets"

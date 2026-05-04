@@ -1,0 +1,32 @@
+# Version control
+.git
+.gitignore
+
+# Build outputs (built inside Docker instead)
+**/target/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.code-workspace
+
+# Logs and runtime files
+logs/
+pids/
+*.log
+*.pid
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test reports
+**/surefire-reports/
+
+# Local scripts
+scripts/
+
+# Documentation
+*.md
+doc-media/

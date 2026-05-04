@@ -5,7 +5,6 @@ import com.microsoft.migration.assets.model.S3StorageItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -104,8 +103,7 @@ public class LocalFileStorageService implements StorageService {
             getStorageType(),
             file.getSize()
         );
-        Message<ImageProcessingMessage> sbMessage = MessageBuilder.withPayload(message).build();
-        serviceBusTemplate.send(IMAGE_PROCESSING_QUEUE, sbMessage);
+        serviceBusTemplate.send(IMAGE_PROCESSING_QUEUE, MessageBuilder.withPayload(message).build());
     }
 
     @Override

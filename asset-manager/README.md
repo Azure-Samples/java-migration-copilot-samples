@@ -17,7 +17,7 @@ The modernization will transform your application from the outdated technologies
   - [Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Tasks](#migrate-to-azure-database-for-postgresql-flexible-server-using-predefined-tasks)
   - [Migrate to Azure Blob Storage using Predefined Tasks](#migrate-to-azure-blob-storage-using-predefined-tasks)
   - [Migrate to Azure Service Bus using Predefined Tasks](#migrate-to-azure-service-bus-using-predefined-tasks)
-  - [Expose health endpoints using Custom Skills](#expose-health-endpoints-using-custom-skills)
+  - [Expose health endpoints using Custom Tasks](#expose-health-endpoints-using-custom-tasks)
   - [Containerize Applications](#containerize-applications)
   - [Deploy to Azure](#deploy-to-azure)
 
@@ -184,13 +184,13 @@ Alternatively, you can use IntelliJ IDEA. Open **File** > **Settings** (or **Int
 The first step is to assess the sample Java application `asset-manager`. The assessment provides insights into the application's readiness for migration to Azure.
 
 1. Open VS Code with all the prerequisites installed for the asset manager by changing the directory to the `asset-manager` directory and running `code .` in that directory.
-1. In the Activity sidebar, open the **GitHub Copilot app modernization** extension pane.
-1. In the **QUICKSTART** section, click **Start Assessment** to trigger the app assessment.
+1. Open the `GitHub Copilot app modernization` extension.
+1. In the **QUICKSTART** view, click the **Migrate to Azure** button to trigger app assessment.
 
    ![Trigger Assessment](doc-media/trigger-assessment.png)
 
-1. Wait for the assessment to be completed. This step could take several minutes.
-1. Upon completion, an **Assessment Report** tab opens. This report provides a categorized view of cloud readiness issues and recommended solutions. Select the **Issues** tab to view proposed solutions and proceed with migration steps.
+1. Wait for the assessment to be completed and the report to be generated.
+1. Review the **Assessment Report**. Select the **Issues** tab to view the proposed solutions for the issues identified in the report.
 
 ### Upgrade Runtime & Frameworks
 
@@ -198,8 +198,6 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 
     ![Java Upgrade](doc-media/java-upgrade.png)
 1. After clicking the **Run Task** button, the Copilot Chat panel will open with Agent Mode. The agent will check out a new branch and start upgrading the JDK version and Spring/Spring Boot framework. Click **Allow** for any requests from the agent.
-
-> Note: The upgrading tool also supports upgrading to JDK 25 (the latest LTS version). To do this, click on the generated chat message, edit the target Java version to 25, and then click **Send** to apply the change.
 
 ### Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Tasks
 
@@ -211,15 +209,9 @@ Then you can migrate the sample Java application `asset-manager` to Azure.
 
    ![Confirm Solution](doc-media/confirm-postgresql-solution.png)
 1. After clicking the **Run Task** button in the Assessment Report, the Copilot Chat panel will open with Agent Mode.
-1. The Copilot Agent will analyze the project, generate and open **plan.md** and **progress.md**, then automatically proceed with the migration process.
-1. The agent checks the version control system status and checks out a new branch for migration, then performs the code changes. Click **Allow** for any tool call requests from the agent.
-1. When the code migration is complete, the agent will automatically run a **validation and fix iteration loop** which includes:
-   - **CVE Validation**: Detects Common Vulnerabilities and Exposures in current dependencies and fixes them.
-   - **Build Validation**: Attempts to resolve any build errors.
-   - **Consistency Validation**: Analyzes the code for functional consistency.
-   - **Test Validation**: Runs unit tests and automatically fixes any failures.
-   - **Completeness Validation**: Catches migration items missed in the initial code migration and fixes them.
-1. After all validations complete, the agent generates a **summary.md** as the final step.
+1. The Copilot Agent will first analyze the project and generate a migration plan.
+1. After the plan is generated, Copilot Chat will stop with two generated files: **plan.md** and **progress.md**. If prompted, enter "Continue" or "Proceed" in the chat to confirm and execute the plan.
+1. When the code is migrated, the extension will prepare the **CVE Validation and Fixing** process. Click **Allow** to proceed.
 1. Review the proposed code changes and click **Keep** to apply them.
 
 ### Migrate to Azure Blob Storage using Predefined Tasks
@@ -232,26 +224,24 @@ Then you can migrate the sample Java application `asset-manager` to Azure.
 1. Click the **Run Task** in the Assessment Report, on the right of the row `Messaging Service Migration (Spring AMQP RabbitMQ)` - `Migrate from RabbitMQ(AMQP) to Azure Service Bus`.
 1. The following steps are the same as the above PostgreSQL server migration.
 
-### Expose health endpoints using Custom Skills
+### Expose health endpoints using Custom Tasks
 
-In this section, you will use custom skills to expose health endpoints for your applications instead of writing code yourself. The following steps demonstrate how to create a custom skill with references and proper prompts.
+In this section, you will use custom tasks to expose health endpoints for your applications instead of writing code yourself. The following steps demonstrate how to generate custom tasks based on external web links and proper prompts.
 
-> Note: Custom skills (My Skills) are not supported for the IntelliJ IDEA plugin. If you are using IntelliJ IDEA, you can skip this section.
+> Note: Custom tasks are not supported for the IntelliJ IDEA plugin. If you are using IntelliJ IDEA, you can skip this section.
 
-1. In the Activity sidebar, open the **GitHub Copilot app modernization** extension pane. Hover over the **TASKS** section, and then select **Create a Custom Skill**.
+1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. Click the `+` button in the **Tasks** view to create a custom task.
 
-   ![Create Custom Skill](doc-media/create-formula-from-source-control.png)
-1. A **Create a Skill** form opens with the following fields. Fill them in as shown below:
-   - **Skill Name**: `expose-health-endpoint`
-   - **Skill Description**: `This skill helps add Spring Boot Actuator health endpoints for Azure Container Apps deployment readiness.`
-   - **Skill Content**: `You are a Spring Boot developer assistant, follow the Spring Boot Actuator documentation to add basic health endpoints for Azure Container Apps deployment.`
+   ![Create Formula From Source Control](doc-media/create-formula-from-source-control.png)
+1. In the opened tab, enter the **Task Name** and **Task Prompt** as shown below:
+   - **Task Name**: Expose health endpoint via Spring Boot Actuator
+   - **Task Prompt**: You are a Spring Boot developer assistant, follow the Spring Boot Actuator documentation to add basic health endpoints for Azure Container Apps deployment.
+1. Click the **Add References** button to add the Spring Boot Actuator official documentation as references.
 
-1. Click **Add Resources** to add the Spring Boot Actuator official documentation as a resource. Paste the following link: `https://docs.spring.io/spring-boot/reference/actuator/endpoints.html`.
-
-   ![Create a Skill form](doc-media/health-endpoint-task.png)
-1. Click **Save** to create the skill. Your custom skill now appears in the **TASKS** > **My Skills** section.
-1. Click **Run** to execute it.
-1. The Copilot chat window opens in Agent Mode and automatically generates the migration plan, checks out a new branch, performs code changes, and runs the validation and fix iteration loop. Click **Allow** for any tool call requests from the agent.
+   ![Health endpoint task](doc-media/health-endpoint-task.png)
+1. In the popped-up quick-pick window, select **External links**. Then paste the following link: `https://docs.spring.io/spring-boot/reference/actuator/endpoints.html`. Click **Save** to create the task.
+1. Click the **Run** button to trigger the custom task.
+1. Follow the same steps as the predefined task to review and apply the changes.
 1. Review the proposed code changes and click **Keep** to apply them.
 
 ### Containerize Applications
@@ -259,7 +249,7 @@ In this section, you will use custom skills to expose health endpoints for your 
 Now that you have successfully migrated your Java application to use Azure services, the next step is to prepare it for cloud deployment by containerizing both the web and worker modules. In this section, you will use **Containerization Tasks** to containerize your migrated applications.
 > Note: If you encounter any issues with the previous migration step, you can directly proceed with the containerization step using the [workshop/expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/expected/asset-manager) branch.
 
-1. In the Activity sidebar, open the **GitHub Copilot app modernization** extension pane. In the **TASKS** section, expand **Common Tasks** > **Containerize Tasks** and click the run button for **Containerize Application**.
+1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. In **Tasks** view, click the **Run Task** button of **Java** -> **Containerization Tasks** -> **Containerize Application**.
   
     ![Run Containerize Application task](doc-media/containerization-run-task.png)
 
@@ -276,7 +266,7 @@ Now that you have successfully migrated your Java application to use Azure servi
 At this point, you have successfully migrated the sample Java application `asset-manager` to Azure Database for PostgreSQL (Spring), Azure Blob Storage, and Azure Service Bus, and exposed health endpoints via Spring Boot Actuator. Now, you can start the deployment to Azure.
 > Note: If you encounter any issues with the previous migration step, you can directly proceed with the deployment step using the [workshop/expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/expected/asset-manager) branch.
 
-1. In the Activity sidebar, open the **GitHub Copilot app modernization** extension pane. In the **TASKS** section, expand **Common Tasks** > **Deployment Tasks**. Click the run button for **Provision Infrastructure and Deploy to Azure**.
+1. Open the sidebar of `GITHUB COPILOT APP MODERNIZATION`. In **Tasks** view, click the **Run Task** button of **Java** -> **Deployment Tasks** -> **Provision Infrastructure and Deploy to Azure**.
 
     ![Run Deployment task](doc-media/deployment-run-task.png)
 1. A predefined prompt will be populated in the Copilot Chat panel with Agent Mode. The default hosting Azure service is Azure Container Apps.To change the hosting service to **Azure Kubernetes Service** (AKS), click on the prompt in the Copilot Chat panel and edit the last sentence of the prompt to **Hosting service: AKS**.

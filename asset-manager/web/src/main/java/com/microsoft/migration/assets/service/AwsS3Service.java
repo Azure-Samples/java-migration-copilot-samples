@@ -1,8 +1,8 @@
 package com.microsoft.migration.assets.service;
 
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobContainerClient;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -12,10 +12,8 @@ import com.microsoft.migration.assets.model.S3StorageItem;
 import com.microsoft.migration.assets.repository.ImageMetadataRepository;
 import lombok.RequiredArgsConstructor;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
+ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,15 +24,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static com.microsoft.migration.assets.config.RabbitConfig.IMAGE_PROCESSING_QUEUE;
 
-@Primary
 @Service
 @RequiredArgsConstructor
 @Profile("!dev") // Active when not in dev profile
-public class AzureBlobService implements StorageService {
+public class AwsS3Service implements StorageService {
 
     private final BlobServiceClient blobServiceClient;
     private final ServiceBusTemplate serviceBusTemplate;
@@ -45,33 +41,22 @@ public class AzureBlobService implements StorageService {
 
     @Override
     public List<S3StorageItem> listObjects() {
-        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
-
-        return StreamSupport.stream(containerClient.listBlobs().spliterator(), false)
+        return blobServiceClient.getBlobContainerClient(containerName).listBlobs().stream()
                 .map(blobItem -> {
-                    String key = blobItem.getName();
-                    Instant lastModified = blobItem.getProperties().getLastModified() != null
-                            ? blobItem.getProperties().getLastModified().toInstant()
-                            : Instant.now();
-
                     // Try to get metadata for upload time
                     Instant uploadedAt = imageMetadataRepository.findAll().stream()
-                            .filter(metadata -> metadata.getS3Key().equals(key))
+                            .filter(metadata -> metadata.getS3Key().equals(blobItem.getName()))
                             .map(metadata -> metadata.getUploadedAt().atZone(java.time.ZoneId.systemDefault()).toInstant())
                             .findFirst()
-                            .orElse(lastModified);
-
-                    Long size = blobItem.getProperties().getContentLength() != null
-                            ? blobItem.getProperties().getContentLength()
-                            : 0L;
+                            .orElse(blobItem.getProperties().getLastModified().toInstant()); // fallback to lastModified if metadata not found
 
                     return new S3StorageItem(
-                            key,
-                            extractFilename(key),
-                            size,
-                            lastModified,
+                            blobItem.getName(),
+                            extractFilename(blobItem.getName()),
+                            blobItem.getProperties().getContentLength(),
+                            blobItem.getProperties().getLastModified().toInstant(),
                             uploadedAt,
-                            generateUrl(key)
+                            generateUrl(blobItem.getName())
                     );
                 })
                 .collect(Collectors.toList());
@@ -80,13 +65,11 @@ public class AzureBlobService implements StorageService {
     @Override
     public void uploadObject(MultipartFile file) throws IOException {
         String key = generateKey(file.getOriginalFilename());
-        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
-        BlobClient blobClient = containerClient.getBlobClient(key);
 
-        BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders().setContentType(file.getContentType());
-        blobClient.uploadWithResponse(
-                new BlobParallelUploadOptions(file.getInputStream()).setHeaders(blobHttpHeaders),
-                null, null);
+        var blobClient = blobServiceClient.getBlobContainerClient(containerName).getBlobClient(key);
+        BlobHttpHeaders headers = new BlobHttpHeaders().setContentType(file.getContentType());
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(file.getInputStream()).setHeaders(headers);
+        blobClient.uploadWithResponse(options, null, null);
 
         // Send message to queue for thumbnail generation
         ImageProcessingMessage message = new ImageProcessingMessage(
@@ -95,8 +78,7 @@ public class AzureBlobService implements StorageService {
             getStorageType(),
             file.getSize()
         );
-        Message<ImageProcessingMessage> sbMessage = MessageBuilder.withPayload(message).build();
-        serviceBusTemplate.send(IMAGE_PROCESSING_QUEUE, sbMessage);
+        serviceBusTemplate.send(IMAGE_PROCESSING_QUEUE, MessageBuilder.withPayload(message).build());
 
         // Create and save metadata to database
         ImageMetadata metadata = new ImageMetadata();
@@ -112,21 +94,23 @@ public class AzureBlobService implements StorageService {
 
     @Override
     public InputStream getObject(String key) throws IOException {
-        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
-        BlobClient blobClient = containerClient.getBlobClient(key);
-        return blobClient.openInputStream();
+        return blobServiceClient.getBlobContainerClient(containerName)
+                .getBlobClient(key)
+                .openInputStream();
     }
 
     @Override
     public void deleteObject(String key) throws IOException {
-        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
-
-        // Delete original blob
-        containerClient.getBlobClient(key).deleteIfExists();
+        // Delete both original and thumbnail if it exists
+        blobServiceClient.getBlobContainerClient(containerName)
+                .getBlobClient(key)
+                .delete();
 
         try {
             // Try to delete thumbnail if it exists
-            containerClient.getBlobClient(getThumbnailKey(key)).deleteIfExists();
+            blobServiceClient.getBlobContainerClient(containerName)
+                    .getBlobClient(getThumbnailKey(key))
+                    .delete();
         } catch (Exception e) {
             // Ignore if thumbnail doesn't exist
         }
@@ -140,10 +124,11 @@ public class AzureBlobService implements StorageService {
 
     @Override
     public String getStorageType() {
-        return "blob";
+        return "azure";
     }
 
     private String extractFilename(String key) {
+        // Extract filename from the object key
         int lastSlashIndex = key.lastIndexOf('/');
         return lastSlashIndex >= 0 ? key.substring(lastSlashIndex + 1) : key;
     }

@@ -1,10 +1,10 @@
 package com.microsoft.migration.assets.worker.service;
 
-import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.messaging.servicebus.implementation.core.annotation.ServiceBusListener;
-import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import com.microsoft.migration.assets.worker.model.ImageProcessingMessage;
 import com.microsoft.migration.assets.worker.util.StorageUtil;
+import com.azure.spring.messaging.servicebus.implementation.core.annotation.ServiceBusListener;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Header;
 
@@ -75,20 +75,16 @@ public abstract class AbstractFileProcessingService implements FileProcessor {
 
                 if (processingSuccess) {
                     // Acknowledge the message if processing was successful
-                    if (context != null) {
-                        context.complete();
-                    }
+                    context.complete();
                     log.debug("Message acknowledged for: {}", message.getKey());
                 } else {
                     // Reject the message with requeue=false to trigger dead letter exchange
                     // This will route the message to the retry queue with delay
-                    if (context != null) {
-                        context.abandon();
-                    }
+                    context.deadLetter();
                     log.debug("Message rejected and sent to dead letter exchange for delayed retry: {}", message.getKey());
                 }
             } catch (Exception e) {
-                log.error("Error handling Service Bus acknowledgment for: {}", message.getKey(), e);
+                log.error("Error handling Azure Service Bus acknowledgment for: {}", message.getKey(), e);
             }
         }
     }

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: assets-manager-config
+  namespace: assets-manager
+data:
+  AZURE_STORAGE_ACCOUNT_NAME: "stassetsmanagers7c7m"
+  AZURE_STORAGE_BLOB_CONTAINER_NAME: "assets"
+  AZURE_CLIENT_ID: "ec2e3812-9b30-40da-9a3a-d246a6b2166e"
+  AZURE_SERVICEBUS_NAMESPACE: "sb-assetsmanagers7c7m"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://psqlf-assetsmanagers7c7m2.postgres.database.azure.com:5432/assetsdb?sslmode=require"
+  SPRING_DATASOURCE_USERNAME: "pgadmin"
+  SPRING_DATASOURCE_AZURE_PASSWORDLESSENABLED: "false"
+  AZURE_STORAGE_BLOB_ENDPOINT: "https://stassetsmanagers7c7m.blob.core.windows.net"
