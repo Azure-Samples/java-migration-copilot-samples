@@ -14,9 +14,9 @@ The modernization will transform your application from the outdated technologies
   - [Install GitHub Copilot app modernization](#install-github-copilot-app-modernization)
   - [Assess Your Java Application](#assess-your-java-application)
   - [Upgrade Runtime & Frameworks](#upgrade-runtime--frameworks)
-  - [Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Tasks](#migrate-to-azure-database-for-postgresql-flexible-server-using-predefined-tasks)
-  - [Migrate to Azure Blob Storage using Predefined Tasks](#migrate-to-azure-blob-storage-using-predefined-tasks)
-  - [Migrate to Azure Service Bus using Predefined Tasks](#migrate-to-azure-service-bus-using-predefined-tasks)
+  - [Migrate to Azure Database for PostgreSQL Flexible Server](#migrate-to-azure-database-for-postgresql-flexible-server)
+  - [Migrate to Azure Blob Storage](#migrate-to-azure-blob-storage)
+  - [Migrate to Azure Service Bus](#migrate-to-azure-service-bus)
   - [Expose health endpoints using Custom Skills](#expose-health-endpoints-using-custom-skills)
   - [Containerize Applications](#containerize-applications)
   - [Deploy to Azure](#deploy-to-azure)
@@ -194,23 +194,23 @@ The first step is to assess the sample Java application `asset-manager`. The ass
 
 ### Upgrade Runtime & Frameworks
 
-1. In the **Java Upgrade** table at the bottom of the **Issues** tab, click the **Run Task** button of the first entry **Java Version Upgrade**.
+1. In the **Issues** tab, find the **Java Upgrade** domain section. Check the checkbox next to the **Java Version is not the latest LTS** category, then click the **Create Plan** button (showing the count of selected categories) at the top of the Assessment Report.
 
     ![Java Upgrade](doc-media/java-upgrade.png)
-1. After clicking the **Run Task** button, the Copilot Chat panel will open with Agent Mode. The agent will check out a new branch and start upgrading the JDK version and Spring/Spring Boot framework. Click **Allow** for any requests from the agent.
+1. The Copilot Chat panel will open with Agent Mode. The agent will check out a new branch and start upgrading the JDK version and Spring/Spring Boot framework. Click **Allow** for any requests from the agent.
 
 > Note: The upgrading tool also supports upgrading to JDK 25 (the latest LTS version). To do this, click on the generated chat message, edit the target Java version to 25, and then click **Send** to apply the change.
 
-### Migrate to Azure Database for PostgreSQL Flexible Server using Predefined Tasks
+### Migrate to Azure Database for PostgreSQL Flexible Server
 
 Then you can migrate the sample Java application `asset-manager` to Azure.
 
 > Note: We've set up a [workshop/java-upgrade](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/java-upgrade/asset-manager) branch where the Java upgrade has already been completed. Feel free to switch to this branch if you'd like to skip ahead and continue with the rest of the workshop.
 
-1. For this workshop, select **Migrate to Azure Database for PostgreSQL (Spring)** in the Solution list, then click **Run Task**.
+1. In the **Issues** tab, find the **Cloud Readiness** domain section. Check the checkbox next to the **PostgreSQL database found** category, then click the **Create Plan** button (showing the count of selected categories) at the top of the Assessment Report. When the agent asks which database service to migrate to, specify **Azure Database for PostgreSQL (Spring)**.
 
    ![Confirm Solution](doc-media/confirm-postgresql-solution.png)
-1. After clicking the **Run Task** button in the Assessment Report, the Copilot Chat panel will open with Agent Mode.
+1. The Copilot Chat panel will open with Agent Mode.
 1. The Copilot Agent will analyze the project, generate and open **plan.md** and **progress.md**, then automatically proceed with the migration process.
 1. The agent checks the version control system status and checks out a new branch for migration, then performs the code changes. Click **Allow** for any tool call requests from the agent.
 1. When the code migration is complete, the agent will automatically run a **validation and fix iteration loop** which includes:
@@ -222,14 +222,14 @@ Then you can migrate the sample Java application `asset-manager` to Azure.
 1. After all validations complete, the agent generates a **summary.md** as the final step.
 1. Review the proposed code changes and click **Keep** to apply them.
 
-### Migrate to Azure Blob Storage using Predefined Tasks
+### Migrate to Azure Blob Storage
 
-1. Click the **Run Task** in the Assessment Report, on the right of the row `Storage Migration (AWS S3)` - `Migrate from AWS S3 to Azure Blob Storage`.
+1. In the **Issues** tab, find the **Storage Migration (AWS S3)** category. Check its checkbox, then click the **Create Plan** button (showing the count of selected categories). The agent will plan and execute the migration from AWS S3 to Azure Blob Storage.
 1. The following steps are the same as the above PostgreSQL server migration.
 
-### Migrate to Azure Service Bus using Predefined Tasks
+### Migrate to Azure Service Bus
 
-1. Click the **Run Task** in the Assessment Report, on the right of the row `Messaging Service Migration (Spring AMQP RabbitMQ)` - `Migrate from RabbitMQ(AMQP) to Azure Service Bus`.
+1. In the **Issues** tab, find the **Messaging Service Migration (Spring AMQP RabbitMQ)** category. Check its checkbox, then click the **Create Plan** button (showing the count of selected categories). The agent will plan and execute the migration from RabbitMQ to Azure Service Bus.
 1. The following steps are the same as the above PostgreSQL server migration.
 
 ### Expose health endpoints using Custom Skills
