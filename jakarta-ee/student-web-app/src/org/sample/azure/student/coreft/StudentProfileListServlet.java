@@ -43,18 +43,18 @@ public class StudentProfileListServlet extends HttpServlet {
                 
                 out.println("<table border='1'><tr><th>ID</th><th>Name</th><th>Email</th><th>Major</th></tr>");
                 for (StudentProfile student : students) {
-                    out.println("<tr><td>" + student.getId() + "</td>" +
-                               "<td>" + student.getName() + "</td>" +
-                               "<td>" + student.getEmail() + "</td>" +
-                               "<td>" + student.getMajor() + "</td></tr>");
+                    out.println("<tr><td>" + escapeHtml(student.getId()) + "</td>" +
+                               "<td>" + escapeHtml(student.getName()) + "</td>" +
+                               "<td>" + escapeHtml(student.getEmail()) + "</td>" +
+                               "<td>" + escapeHtml(student.getMajor()) + "</td></tr>");
                 }
                 out.println("</table>");
                 out.println("<br/><br/><br/>");
-                out.println(objectMapper.writeValueAsString(students));
+                out.println(escapeHtml(objectMapper.writeValueAsString(students)));
                 
             } catch (Exception ex) {
                 logger.error("Error retrieving student list: " + ex.getMessage(), ex);
-                out.println("<p>Error: " + ex.getMessage() + "</p>");
+                out.println("<p>Error: " + escapeHtml(ex.getMessage()) + "</p>");
                 throw new RuntimeException(ex);
             } finally {
                 if (session != null) {
@@ -67,5 +67,26 @@ public class StudentProfileListServlet extends HttpServlet {
             }
             out.println("</body></html>");
         }
+    }
+
+    /** HTML-escape untrusted values to prevent stored XSS (CWE-79). */
+    private static String escapeHtml(Object value) {
+        if (value == null) {
+            return "";
+        }
+        String s = String.valueOf(value);
+        StringBuilder sb = new StringBuilder(s.length());
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '&': sb.append("&amp;"); break;
+                case '<': sb.append("&lt;"); break;
+                case '>': sb.append("&gt;"); break;
+                case '"': sb.append("&quot;"); break;
+                case '\'': sb.append("&#39;"); break;
+                default: sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }
