@@ -2,6 +2,16 @@
 (function() {
     'use strict';
 
+    // HTML-escape untrusted values before inserting them into the DOM (CWE-79).
+    function escapeHtml(value) {
+        return String(value == null ? '' : value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     var NotificationSystem = {
         container: null,
         notificationCount: 0,
@@ -79,9 +89,9 @@
             
             notificationEl.innerHTML = 
                 '<button class="notification-close" onclick="NotificationSystem.closeNotification(this)">&times;</button>' +
-                '<div class="notification-title">' + notification.Operation + ' - ' + notification.EntityType + '</div>' +
-                '<div class="notification-message">' + notification.Message + '</div>' +
-                '<div class="notification-time">By ' + notification.CreatedBy + ' • ' + timeAgo + '</div>';
+                '<div class="notification-title">' + escapeHtml(notification.Operation) + ' - ' + escapeHtml(notification.EntityType) + '</div>' +
+                '<div class="notification-message">' + escapeHtml(notification.Message) + '</div>' +
+                '<div class="notification-time">By ' + escapeHtml(notification.CreatedBy) + ' • ' + escapeHtml(timeAgo) + '</div>';
             
             // Add to container
             this.container.appendChild(notificationEl);
