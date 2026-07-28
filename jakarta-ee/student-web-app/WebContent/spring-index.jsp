@@ -1,6 +1,28 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="org.sample.azure.student.coreft.StudentProfile" %>
 <%@ page import="java.util.List" %>
+<%!
+    /* HTML-escape untrusted values to prevent stored XSS (CWE-79). */
+    private static String esc(Object value) {
+        if (value == null) {
+            return "";
+        }
+        String s = String.valueOf(value);
+        StringBuilder sb = new StringBuilder(s.length());
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '&': sb.append("&amp;"); break;
+                case '<': sb.append("&lt;"); break;
+                case '>': sb.append("&gt;"); break;
+                case '"': sb.append("&quot;"); break;
+                case '\'': sb.append("&#39;"); break;
+                default: sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+%>
 <html>
 <head>
     <title>Student Management System - Spring Framework 5.3</title>
@@ -40,19 +62,19 @@
         if (error != null) { 
     %>
         <div class="error">
-            <strong>Error:</strong> <%= error %>
+            <strong>Error:</strong> <%= esc(error) %>
         </div>
     <% } %>
     
     <% if (successMessage != null) { %>
         <div class="info">
-            <strong>Success:</strong> <%= successMessage %>
+            <strong>Success:</strong> <%= esc(successMessage) %>
         </div>
     <% } %>
     
     <% if (errorMessage != null) { %>
         <div class="error">
-            <strong>Error:</strong> <%= errorMessage %>
+            <strong>Error:</strong> <%= esc(errorMessage) %>
         </div>
     <% } %>
 
@@ -80,10 +102,10 @@
                     for (StudentProfile student : students) {
             %>
             <tr>
-                <td><%= student.getId() %></td>
-                <td><%= student.getName() %></td>
-                <td><%= student.getEmail() %></td>
-                <td><%= student.getMajor() %></td>
+                <td><%= esc(student.getId()) %></td>
+                <td><%= esc(student.getName()) %></td>
+                <td><%= esc(student.getEmail()) %></td>
+                <td><%= esc(student.getMajor()) %></td>
             </tr>
             <%      }
                 } else { %>
