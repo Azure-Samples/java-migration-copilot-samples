@@ -15,13 +15,13 @@ public interface TodoRepository extends JpaRepository<TodoItem, Long> {
 
     List<TodoItem> findByPriorityGreaterThanEqual(int priority);
 
-    // Oracle specific SQL with VARCHAR2
-    @Query(value = "SELECT * FROM TODO_ITEMS WHERE TITLE LIKE '%' || :keyword || '%' OR DESCRIPTION LIKE '%' || :keyword || '%'",
+    // SQL Server query with string concatenation using +
+    @Query(value = "SELECT * FROM TODO_ITEMS WHERE TITLE LIKE '%' + :keyword + '%' OR DESCRIPTION LIKE '%' + :keyword + '%'",
            nativeQuery = true)
     List<TodoItem> findByKeyword(String keyword);
 
-    // Another Oracle specific query showing off more Oracle SQL features
-    @Query(value = "SELECT * FROM TODO_ITEMS WHERE PRIORITY > :priority AND ROWNUM <= :limit ORDER BY CREATED_AT DESC",
+    // SQL Server query showing T-SQL specific syntax with TOP clause instead of ROWNUM
+    @Query(value = "SELECT TOP :limit * FROM TODO_ITEMS WHERE PRIORITY > :priority ORDER BY CREATED_AT DESC",
            nativeQuery = true)
     List<TodoItem> findTopPriorityTasks(int priority, int limit);
 }

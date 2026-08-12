@@ -67,42 +67,42 @@ public class TodoService {
         todoRepository.deleteById(id);
     }
 
-    // Demonstrating Oracle-specific SQL with direct JDBC execution
+    // Demonstrating Azure SQL-specific SQL with direct JDBC execution
     @Transactional
     public List<TodoItem> getOverdueTasks() {
-        String oracleSpecificSql = "SELECT * FROM TODO_ITEMS " +
-                                   "WHERE DUE_DATE < SYSDATE " +
-                                   "AND COMPLETED = 0 " +
-                                   "ORDER BY PRIORITY DESC, DUE_DATE ASC";
+        String sqlServerSql = "SELECT * FROM TODO_ITEMS " +
+                              "WHERE DUE_DATE < GETDATE() " +
+                              "AND COMPLETED = 0 " +
+                              "ORDER BY PRIORITY DESC, DUE_DATE ASC";
 
-        Query query = entityManager.createNativeQuery(oracleSpecificSql, TodoItem.class);
+        Query query = entityManager.createNativeQuery(sqlServerSql, TodoItem.class);
         return query.getResultList();
     }
 
-    // Another example of Oracle-specific SQL
+    // Another example of SQL Server-specific SQL
     @Transactional
     public void updateTasksWithOracle(LocalDateTime cutoffDate, int newPriority) {
-        String oracleSql = "UPDATE TODO_ITEMS " +
-                           "SET PRIORITY = :newPriority, " +
-                           "UPDATED_AT = SYSTIMESTAMP " +
-                           "WHERE DUE_DATE < :cutoffDate " +
-                           "AND COMPLETED = 0";
+        String sqlServerSql = "UPDATE TODO_ITEMS " +
+                              "SET PRIORITY = :newPriority, " +
+                              "UPDATED_AT = GETDATE() " +
+                              "WHERE DUE_DATE < :cutoffDate " +
+                              "AND COMPLETED = 0";
 
-        Query query = entityManager.createNativeQuery(oracleSql)
+        Query query = entityManager.createNativeQuery(sqlServerSql)
                                     .setParameter("newPriority", newPriority)
                                     .setParameter("cutoffDate", cutoffDate);
 
         query.executeUpdate();
     }
 
-    // Example using Oracle's VARCHAR2 data type specifics in a query
+    // Example using SQL Server text search in a query
     @Transactional
     public List<TodoItem> searchWithOracleVarchar2(String searchTerm) {
-        String oracleSql = "SELECT * FROM TODO_ITEMS " +
-                           "WHERE DBMS_LOB.INSTR(TITLE, :searchTerm) > 0 " +
-                           "OR DBMS_LOB.INSTR(DESCRIPTION, :searchTerm) > 0";
+        String sqlServerSql = "SELECT * FROM TODO_ITEMS " +
+                              "WHERE CHARINDEX(:searchTerm, TITLE) > 0 " +
+                              "OR CHARINDEX(:searchTerm, DESCRIPTION) > 0";
 
-        Query query = entityManager.createNativeQuery(oracleSql, TodoItem.class)
+        Query query = entityManager.createNativeQuery(sqlServerSql, TodoItem.class)
                                     .setParameter("searchTerm", searchTerm);
 
         return query.getResultList();
