@@ -2,16 +2,17 @@ package com.microsoft.migration.assets.service;
 
 import com.microsoft.migration.assets.model.ImageProcessingMessage;
 import com.microsoft.migration.assets.model.S3StorageItem;
+import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.microsoft.migration.assets.config.RabbitConfig.IMAGE_PROCESSING_QUEUE;
+import static com.microsoft.migration.assets.config.ServiceBusConfig.IMAGE_PROCESSING_QUEUE;
 
 @Service
 @Profile("dev") // Only active when dev profile is active
@@ -27,15 +28,15 @@ public class LocalFileStorageService implements StorageService {
 
     private static final Logger logger = LoggerFactory.getLogger(LocalFileStorageService.class);
     
-    private final RabbitTemplate rabbitTemplate;
+    private final ServiceBusTemplate serviceBusTemplate;
     
     @Value("${local.storage.directory:../storage}")
     private String storageDirectory;
     
     private Path rootLocation;
 
-    public LocalFileStorageService(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
+    public LocalFileStorageService(ServiceBusTemplate serviceBusTemplate) {
+        this.serviceBusTemplate = serviceBusTemplate;
     }
     
     @PostConstruct
@@ -102,7 +103,7 @@ public class LocalFileStorageService implements StorageService {
             getStorageType(),
             file.getSize()
         );
-        rabbitTemplate.convertAndSend(IMAGE_PROCESSING_QUEUE, message);
+        serviceBusTemplate.send(IMAGE_PROCESSING_QUEUE, MessageBuilder.withPayload(message).build());
     }
 
     @Override

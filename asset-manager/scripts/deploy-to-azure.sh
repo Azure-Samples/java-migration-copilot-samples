@@ -336,6 +336,7 @@ az containerapp create \
   --min-replicas 1 \
   --max-replicas 3 \
   --env-vars "AZURE_CLIENT_ID=${IdentityClientId}" \
+             "AZURE_MANAGED_IDENTITY_ENABLED=true" \
              "AZURE_STORAGE_ACCOUNT_NAME=${StorageAccountName}" \
              "AZURE_STORAGE_BLOB_CONTAINER_NAME=${ContainerName}" \
              "AZURE_SERVICEBUS_NAMESPACE=${ServiceBusNamespace}"
@@ -403,6 +404,7 @@ az containerapp create \
   --min-replicas 1 \
   --max-replicas 3 \
   --env-vars "AZURE_CLIENT_ID=${IdentityClientId}" \
+             "AZURE_MANAGED_IDENTITY_ENABLED=true" \
              "AZURE_STORAGE_ACCOUNT_NAME=${StorageAccountName}" \
              "AZURE_STORAGE_BLOB_CONTAINER_NAME=${ContainerName}" \
              "AZURE_SERVICEBUS_NAMESPACE=${ServiceBusNamespace}" \

@@ -26,8 +26,8 @@ else
     echo "Worker PID file not found, the service may not be running."
 fi
 
-echo "Stopping and removing Docker containers..."
-docker stop assets-postgres assets-rabbitmq 2>/dev/null
-docker rm assets-postgres assets-rabbitmq 2>/dev/null
+echo "Stopping and removing PostgreSQL container..."
+docker stop assets-postgres 2>/dev/null
+docker rm assets-postgres 2>/dev/null
 
 echo "All services stopped!"
