@@ -23,9 +23,9 @@ The modernization will transform your application from the outdated technologies
 
 ## Overview
 
-The [main](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager) branch of the asset-manager project is the original state before being migrated to Azure services. It is organized as follows:
+The [main](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager) branch contains the Asset Manager sample with its image-storage and database integrations, and uses Azure Service Bus for image-processing messages. It is organized as follows:
 * AWS S3 for image storage, using password-based authentication (access key/secret key)
-* RabbitMQ for message queuing, using password-based authentication
+* Azure Service Bus for image-processing messages, authenticated with Microsoft Entra ID
 * PostgreSQL database for metadata storage, using password-based authentication
 
 In this workshop, you will use the **GitHub Copilot app modernization** extension to assess, upgrade, migrate, and finally deploy the project to Azure.
@@ -42,7 +42,7 @@ The complete workshop takes approximately **2 hours** to complete. Here's the br
 - **Deploy to Azure**: ~40 minutes
 
 There are 3 branches we have prepared for you in case you have any problems with any steps in this workshop:
-* [main](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager): The original state of the asset-manager application.
+* [main](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/main/asset-manager): The Asset Manager sample with Azure Service Bus messaging.
 * [workshop/java-upgrade](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/java-upgrade/asset-manager): The project state after assessment and Java upgrading steps.
 * [workshop/expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/expected/asset-manager): The project state after assessment, Java upgrading, and migration steps.
 * [workshop/deployment-expected](https://github.com/Azure-Samples/java-migration-copilot-samples/tree/workshop/deployment-expected/asset-manager): The project state after containerization and deployment steps.
@@ -60,14 +60,14 @@ S3[(AWS S3)]
 LocalFS[("Local File System<br/>dev only")]
 
 %% Message Broker
-RabbitMQ(RabbitMQ)
+ServiceBus[Azure Service Bus]
 
 %% Database
 PostgreSQL[(PostgreSQL)]
 
 %% Queues
 Queue[image-processing queue]
-RetryQueue[image-processing.retry queue]
+DeadLetterQueue[Dead-letter queue]
 
 %% User
 User([User])
@@ -79,16 +79,15 @@ User -->|View Images| WebApp
 %% Web App Flows
 WebApp -->|Store Original Image| S3
 WebApp -->|Store Original Image| LocalFS
-WebApp -->|Send Processing Message| RabbitMQ
+WebApp -->|Send Processing Message| ServiceBus
 WebApp -->|Store Metadata| PostgreSQL
 WebApp -->|Retrieve Images| S3
 WebApp -->|Retrieve Images| LocalFS
 WebApp -->|Retrieve Metadata| PostgreSQL
 
-%% RabbitMQ Flow
-RabbitMQ -->|Push Message| Queue
-Queue -->|Processing Failed| RetryQueue
-RetryQueue -->|After 1 min delay| Queue
+%% Azure Service Bus Flow
+ServiceBus -->|Deliver message| Queue
+Queue -->|Max delivery count reached| DeadLetterQueue
 Queue -->|Consume Message| Worker
 
 %% Worker Flow
@@ -109,12 +108,12 @@ classDef user fill:#ef9a9a,stroke:#b71c1c,color:#b71c1c
 
 class WebApp,Worker app
 class S3,LocalFS storage
-class RabbitMQ broker
+class ServiceBus broker
 class PostgreSQL db
-class Queue,RetryQueue queue
+class Queue,DeadLetterQueue queue
 class User user
 ```
-Password-based authentication
+Azure Service Bus uses Microsoft Entra ID authentication.
 
 ## Run Locally
 
@@ -125,14 +124,15 @@ git clone https://github.com/Azure-Samples/java-migration-copilot-samples.git
 cd java-migration-copilot-samples/asset-manager
 ```
 
-**Prerequisites**: 
-- [JDK 8](https://learn.microsoft.com/en-us/java/openjdk/download#openjdk-8): Required for running the initial application locally.
+**Prerequisites**:
+- [JDK 21](https://learn.microsoft.com/en-us/java/openjdk/download): Required for running the application locally.
 - [Maven 3.6.0+](https://maven.apache.org/install.html): Required to build the application locally.
 - [Docker](https://docs.docker.com/desktop/): Required for running the application locally.
+- An Azure Service Bus namespace. Set `AZURE_SERVICEBUS_NAMESPACE` to its namespace name and authenticate locally with `az login`. The identity needs the **Azure Service Bus Data Owner** role to send/receive messages and create the `image-processing` queue.
 
 Run the following commands to start the apps locally. This will:
 * Use the local file system instead of S3 to store images
-* Launch RabbitMQ and PostgreSQL using Docker
+* Launch PostgreSQL using Docker and connect to Azure Service Bus
 
 Windows:
 
@@ -229,7 +229,7 @@ Then you can migrate the sample Java application `asset-manager` to Azure.
 
 ### Migrate to Azure Service Bus using Predefined Tasks
 
-1. Click the **Run Task** in the Assessment Report, on the right of the row `Messaging Service Migration (Spring AMQP RabbitMQ)` - `Migrate from RabbitMQ(AMQP) to Azure Service Bus`.
+1. The main branch already uses Azure Service Bus for messaging. To practice this task from the original RabbitMQ implementation, start from the unmodified source revision or use the assessment task against that version.
 1. The following steps are the same as the above PostgreSQL server migration.
 
 ### Expose health endpoints using Custom Skills
